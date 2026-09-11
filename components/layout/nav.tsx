@@ -1,6 +1,6 @@
 "use client";
 
-import { Globe2, Moon, Sun } from "lucide-react";
+import { Globe2, Menu, Moon, Sun, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
@@ -205,6 +205,8 @@ export function Nav(): ReactNode {
     width: number;
   } | null>(null);
   const [hasMeasured, setHasMeasured] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   const activeIndex = navItems.findIndex((item) =>
     item.href === "/"
@@ -221,6 +223,23 @@ export function Nav(): ReactNode {
           : copy.nav.home;
     document.title = `${current} | Portfolio`;
   }, [copy.nav, pathname]);
+
+  useEffect(() => {
+    const closeOnOutsideClick = (event: MouseEvent): void => {
+      if (!mobileMenuRef.current?.contains(event.target as Node)) {
+        setMobileMenuOpen(false);
+      }
+    };
+    const closeOnEscape = (event: KeyboardEvent): void => {
+      if (event.key === "Escape") setMobileMenuOpen(false);
+    };
+    document.addEventListener("mousedown", closeOnOutsideClick);
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("mousedown", closeOnOutsideClick);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, []);
 
   useLayoutEffect(() => {
     const id = requestAnimationFrame(() => {
@@ -250,9 +269,72 @@ export function Nav(): ReactNode {
   return (
     <nav
       aria-label={copy.nav.primary}
-      className="fixed top-3 left-1/2 z-50 max-w-[calc(100vw-1.5rem)] -translate-x-1/2 sm:top-6"
+      className="fixed top-3 right-3 z-50 max-w-[calc(100vw-1.5rem)] sm:top-6 sm:right-auto sm:left-1/2 sm:-translate-x-1/2"
     >
-      <div className="flex items-center gap-1.5 sm:gap-2">
+      <div ref={mobileMenuRef} className="relative sm:hidden">
+        <button
+          type="button"
+          onClick={() => setMobileMenuOpen((open) => !open)}
+          aria-label={mobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+          aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-navigation"
+          className="focus-ring border-foreground/8 bg-background text-foreground inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border shadow-sm transition-transform duration-200 active:scale-95"
+        >
+          <motion.span
+            initial={false}
+            animate={{ rotate: mobileMenuOpen ? 90 : 0 }}
+            transition={{ duration: 0.2 }}
+            className="inline-flex"
+          >
+            {mobileMenuOpen ? (
+              <X aria-hidden="true" className="h-5 w-5" />
+            ) : (
+              <Menu aria-hidden="true" className="h-5 w-5" />
+            )}
+          </motion.span>
+        </button>
+
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              id="mobile-navigation"
+              initial={{ opacity: 0, y: -8, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.96 }}
+              transition={{ type: "spring", stiffness: 430, damping: 32 }}
+              className="border-foreground/8 bg-background absolute top-full right-0 mt-2 w-56 overflow-hidden rounded-3xl border p-2 shadow-lg"
+            >
+              <ul className="flex flex-col gap-1">
+                {navItems.map((item, index) => {
+                  const isActive = index === activeIndex;
+                  return (
+                    <li key={`mobile-${item.href}`}>
+                      <Link
+                        href={item.href}
+                        aria-current={isActive ? "page" : undefined}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className={`focus-ring flex min-h-11 items-center rounded-2xl px-4 text-[15px] font-medium transition-colors ${
+                          isActive
+                            ? "bg-foreground text-background"
+                            : "text-foreground/70 hover:bg-foreground/5 hover:text-foreground"
+                        }`}
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+              <div className="border-foreground/8 mt-2 flex items-center justify-between border-t pt-2">
+                <NavThemeToggle />
+                <LanguageSwitcher />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      <div className="hidden items-center gap-2 sm:flex">
         <div className="bg-background border-foreground/8 flex items-center gap-0.5 rounded-full border p-1 shadow-sm sm:gap-1 sm:p-1.5">
           <ul ref={listRef} className="relative flex items-center gap-0.5 sm:gap-1">
             {pillRect && (
