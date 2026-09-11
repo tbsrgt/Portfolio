@@ -24,7 +24,13 @@ const CHIPS: Chip[] = [
   { label: "Codex", slug: "openai", bg: "#111111", fg: "#ffffff" },
   { label: "Claude", slug: "anthropic", bg: "#D97757", fg: "#ffffff" },
   { label: "Vercel", slug: "vercel", bg: "#0a0a0a", fg: "#ffffff" },
-  { label: "OVHcloud", slug: "ovh", bg: "#123F6D", fg: "#ffffff" },
+  {
+    label: "OVHcloud",
+    slug: "ovhcloud",
+    bg: "#123F6D",
+    fg: "#ffffff",
+    iconUrl: "https://cdn.simpleicons.org/ovhcloud",
+  },
   { label: "Adobe", slug: "adobe", bg: "#ED1C24", fg: "#ffffff" },
 ];
 

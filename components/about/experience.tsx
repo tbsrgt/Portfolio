@@ -9,7 +9,8 @@ type Entry = {
   company: string;
   role: string;
   period: string;
-  slug?: string;
+  logoUrl?: string;
+  mark?: string;
   brand?: string;
 };
 
@@ -19,24 +20,26 @@ const ENTRIES: Entry[] = [
     role: "Co-fondateur",
     period: "Mai 2026 - Aujourd'hui",
     brand: "#0a0a0a",
+    mark: "N/",
   },
   {
     company: "COGEBAT",
     role: "Social Media Designer",
     period: "Nov. 2025 - Aujourd'hui",
-    brand: "#DB4D3F",
+    logoUrl:
+      "https://le-de.cdn-website.com/ffa4b01ddf6042b7a8354606513c8c52/dms3rep/multi/opt/logo-transparent-255w.png",
   },
   {
     company: "Vimtails",
     role: "Product Designer — UX/UI & identité de marque",
     period: "Avr. 2025 - Mai 2025",
-    brand: "#5E6AD2",
+    logoUrl: "https://www.vimtails.fr/favicons/favicon-32x32.png",
   },
   {
     company: "Glass&Bio France",
     role: "Développement commercial & social media",
     period: "Nov. 2023 - Août 2024",
-    brand: "#2BBCF5",
+    logoUrl: "https://glassandbio.fr/assets/pictures/glass-and-bio-favicon.png",
   },
 ];
 
@@ -147,28 +150,27 @@ export function Experience(): ReactNode {
 }
 
 function CompanyLogo({ entry }: { entry: Entry }): ReactNode {
-  const initials = entry.company.charAt(0);
   return (
     <span
-      className="ring-foreground/8 inline-flex h-12 w-12 shrink-0 items-center justify-center bg-white ring-1 dark:ring-white/10"
+      className="ring-foreground/8 inline-flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden bg-white p-1.5 ring-1 dark:ring-white/10"
       aria-hidden="true"
       style={{
         borderRadius: 14,
-        ...(entry.slug ? {} : { backgroundColor: entry.brand }),
+        ...(entry.logoUrl ? {} : { backgroundColor: entry.brand }),
       }}
     >
-      {entry.slug ? (
+      {entry.logoUrl ? (
         <img
-          src={`https://cdn.simpleicons.org/${entry.slug}`}
+          src={entry.logoUrl}
           alt=""
-          width={24}
-          height={24}
-          className="h-6 w-6"
+          width={36}
+          height={36}
+          className="h-full w-full object-contain"
           draggable={false}
         />
       ) : (
-        <span className="text-[18px] font-semibold tracking-tight text-white">
-          {initials}
+        <span className="text-[16px] font-bold tracking-[-0.12em] text-white">
+          {entry.mark}
         </span>
       )}
     </span>

@@ -7,7 +7,7 @@ type Entry = {
   school: string;
   degree: string;
   period: string;
-  slug?: string;
+  logoUrl: string;
 };
 
 const ENTRIES: Entry[] = [
@@ -15,6 +15,8 @@ const ENTRIES: Entry[] = [
     school: "Aix Ynov Campus",
     degree: "Bachelor Marketing & Communication Digitale",
     period: "2023 - 2026",
+    logoUrl:
+      "https://eliobot.com/cdn/shop/files/logo-ynov-campus.webp?v=1692711533&width=3200",
   },
 ];
 
@@ -56,27 +58,20 @@ export function Education(): ReactNode {
 }
 
 function SchoolLogo({ entry }: { entry: Entry }): ReactNode {
-  const initials = entry.school.charAt(0);
   return (
     <span
-      className="border-foreground/15 inline-flex h-12 w-12 shrink-0 items-center justify-center border"
+      className="border-foreground/15 bg-white inline-flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden border p-1.5"
       aria-hidden="true"
       style={{ borderRadius: 14 }}
     >
-      {entry.slug ? (
-        <img
-          src={`https://cdn.simpleicons.org/${entry.slug}`}
-          alt=""
-          width={24}
-          height={24}
-          className="h-6 w-6"
-          draggable={false}
-        />
-      ) : (
-        <span className="text-foreground/60 text-[18px] font-semibold tracking-tight">
-          {initials}
-        </span>
-      )}
+      <img
+        src={entry.logoUrl}
+        alt=""
+        width={36}
+        height={36}
+        className="h-full w-full object-contain"
+        draggable={false}
+      />
     </span>
   );
 }
