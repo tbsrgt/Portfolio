@@ -36,9 +36,9 @@ type Project = {
 
 const PROJECTS: Project[] = [
   {
-    id: "loom",
+    id: "showcase",
     icon: Sparkles,
-    iconLabel: "LOOM",
+    iconLabel: "Site vitrine",
     title:
       "An AI writing companion that thinks alongside you, allowing you to capture ideas, edits, and drafts in one focused space.",
     description:
@@ -50,9 +50,9 @@ const PROJECTS: Project[] = [
     imageAlt: "Loom AI writing companion mockup",
   },
   {
-    id: "atlas",
+    id: "landing-page",
     icon: Compass,
-    iconLabel: "Atlas Studio",
+    iconLabel: "Landing page",
     title: "A two week brand and product sprint for a creative studio.",
     description:
       "End to end identity, marketing site, and a small product surface designed to feel quietly confident across every touchpoint.",
@@ -63,9 +63,9 @@ const PROJECTS: Project[] = [
     imageAlt: "Atlas Studio brand and product sprint mockup",
   },
   {
-    id: "rhythm",
+    id: "brand-website",
     icon: LineChart,
-    iconLabel: "Rhythm",
+    iconLabel: "Identité & site",
     title: "Calm analytics for indie founders.",
     description:
       "A weekly digest that turns raw product data into a simple narrative. Built so you can read it on a Sunday with coffee.",
@@ -76,9 +76,9 @@ const PROJECTS: Project[] = [
     imageAlt: "Rhythm calm analytics mockup",
   },
   {
-    id: "groove",
+    id: "redesign",
     icon: Wand2,
-    iconLabel: "Groove",
+    iconLabel: "Refonte",
     title:
       "Reimagining the booking flow for a music school, asisting thousands of students in finding the right lessons.",
     description:
@@ -90,9 +90,9 @@ const PROJECTS: Project[] = [
     imageAlt: "Groove music school booking flow mockup",
   },
   {
-    id: "fieldnote",
+    id: "responsive",
     icon: Layers,
-    iconLabel: "Fieldnote",
+    iconLabel: "Web design",
     title:
       "A pocket sized research tool for design teams that want to get out of their docs and into the world.",
     description:
@@ -104,9 +104,9 @@ const PROJECTS: Project[] = [
     imageAlt: "Fieldnote pocket sized research tool mockup",
   },
   {
-    id: "talkback",
+    id: "launch",
     icon: Bot,
-    iconLabel: "Talkback",
+    iconLabel: "Mise en ligne",
     title: "A friendlier interface for talking to language models.",
     description:
       "An exploration of how AI chat could feel less like a terminal and more like a conversation with a curious friend.",

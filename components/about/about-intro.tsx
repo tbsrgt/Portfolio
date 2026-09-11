@@ -17,7 +17,7 @@ export function AboutIntro(): ReactNode {
         <h1 className="text-foreground font-serif text-[1.75rem] font-medium tracking-tight sm:text-[2rem]">
           {about.hello}{" "}
           <span className="border-foreground/30 border-b pb-0.5">
-            Josh Mercer
+            Tobias Ringot
           </span>
           {"."}
         </h1>

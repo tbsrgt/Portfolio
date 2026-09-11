@@ -20,15 +20,12 @@ const CHIPS: Chip[] = [
     fg: "#ffffff",
     iconUrl: "https://svgl.app/library/figma.svg",
   },
-  { label: "React", slug: "react", bg: "#1FB6CB", fg: "#ffffff" },
-  { label: "Next.js", slug: "nextdotjs", bg: "#1f1f1f", fg: "#ffffff" },
-  { label: "TypeScript", slug: "typescript", bg: "#2F74C0", fg: "#ffffff" },
-  { label: "shadcn/ui", slug: "shadcnui", bg: "#5b54ff", fg: "#ffffff" },
-  { label: "Cursor", slug: "cursor", bg: "#111111", fg: "#ffffff" },
-  { label: "GSAP", slug: "gsap", bg: "#0AE448", fg: "#0a0a0a" },
   { label: "GitHub", slug: "github", bg: "#181717", fg: "#ffffff" },
+  { label: "Codex", slug: "openai", bg: "#111111", fg: "#ffffff" },
+  { label: "Claude", slug: "anthropic", bg: "#D97757", fg: "#ffffff" },
   { label: "Vercel", slug: "vercel", bg: "#0a0a0a", fg: "#ffffff" },
-  { label: "Tailwind CSS", slug: "tailwindcss", bg: "#2BBCF5", fg: "#ffffff" },
+  { label: "OVHcloud", slug: "ovh", bg: "#123F6D", fg: "#ffffff" },
+  { label: "Adobe", slug: "adobe", bg: "#ED1C24", fg: "#ffffff" },
 ];
 
 const CHIP_RADIUS = 14;
@@ -164,12 +161,21 @@ export function Stack(): ReactNode {
 
       let raf = 0;
       const tick = (): void => {
-        for (let i = 0; i < states.length; i++) {
-          const s = states[i];
-          const el = chipRefs.current[i];
-          if (!s || !el) continue;
-          const { x, y } = s.body.position;
-          el.style.transform = `translate3d(${x - s.width / 2}px, ${y - s.height / 2}px, 0) rotate(${s.body.angle}rad)`;
+        const isViewTransitioning =
+          document.documentElement.dataset.themeAnim === "1" ||
+          document.documentElement.dataset.languageAnim === "1";
+
+        // Keep both View Transition snapshots identical while the reveal is
+        // running. Otherwise Matter.js can move a chip between snapshots and
+        // leave a sliced/duplicated edge on screen.
+        if (!isViewTransitioning) {
+          for (let i = 0; i < states.length; i++) {
+            const s = states[i];
+            const el = chipRefs.current[i];
+            if (!s || !el) continue;
+            const { x, y } = s.body.position;
+            el.style.transform = `translate3d(${x - s.width / 2}px, ${y - s.height / 2}px, 0) rotate(${s.body.angle}rad)`;
+          }
         }
         raf = requestAnimationFrame(tick);
       };

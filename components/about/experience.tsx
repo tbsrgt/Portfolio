@@ -15,56 +15,32 @@ type Entry = {
 
 const ENTRIES: Entry[] = [
   {
-    company: "Linear",
-    role: "Senior Design Engineer",
-    period: "Mar 2024 - Present",
-    slug: "linear",
-    brand: "#5E6AD2",
-  },
-  {
-    company: "Vercel",
-    role: "Product Designer",
-    period: "Aug 2022 - Feb 2024",
-    slug: "vercel",
+    company: "NULLL.CLUB",
+    role: "Co-fondateur",
+    period: "Mai 2026 - Aujourd'hui",
     brand: "#0a0a0a",
   },
   {
-    company: "Stripe",
-    role: "Design Engineer",
-    period: "Jun 2021 - Jul 2022",
-    slug: "stripe",
-    brand: "#635BFF",
+    company: "COGEBAT",
+    role: "Social Media Designer",
+    period: "Nov. 2025 - Aujourd'hui",
+    brand: "#DB4D3F",
   },
   {
-    company: "Figma",
-    role: "UI Engineer",
-    period: "Sep 2019 - May 2021",
-    slug: "figma",
-    brand: "#A259FF",
+    company: "Vimtails",
+    role: "Product Designer — UX/UI & identité de marque",
+    period: "Avr. 2025 - Mai 2025",
+    brand: "#5E6AD2",
   },
   {
-    company: "Notion",
-    role: "Product Designer",
-    period: "Jan 2018 - Aug 2019",
-    slug: "notion",
-    brand: "#111111",
-  },
-  {
-    company: "Airbnb",
-    role: "Design Intern",
-    period: "May 2017 - Dec 2017",
-    slug: "airbnb",
-    brand: "#FF5A5F",
-  },
-  {
-    company: "Freelance",
-    role: "Designer & Developer",
-    period: "2015 - 2017",
-    brand: "#0AE448",
+    company: "Glass&Bio France",
+    role: "Développement commercial & social media",
+    period: "Nov. 2023 - Août 2024",
+    brand: "#2BBCF5",
   },
 ];
 
-const COLLAPSED_COUNT = 2.5;
+const COLLAPSED_COUNT = 2;
 const ROW_HEIGHT = 64;
 const ROW_GAP = 8;
 
