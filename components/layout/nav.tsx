@@ -88,7 +88,7 @@ function NavThemeToggle(): ReactNode {
           : copy.theme.toggle
       }
       aria-pressed={mounted ? isDark : undefined}
-      className="focus-ring bg-background ring-foreground/8 relative inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full ring-1 transition-colors"
+      className="focus-ring bg-background ring-foreground/8 relative inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-full ring-1 transition-colors sm:h-8 sm:w-8"
     >
       <span aria-hidden="true" className="relative h-4 w-4">
         <Sun
@@ -139,7 +139,7 @@ function LanguageSwitcher(): ReactNode {
   return (
     <div
       ref={menuRef}
-      className="border-foreground/8 bg-background flex h-11 items-center overflow-hidden rounded-full border shadow-sm"
+      className="border-foreground/8 bg-background flex h-10 items-center overflow-hidden rounded-full border shadow-sm sm:h-11"
     >
       <button
         type="button"
@@ -147,7 +147,7 @@ function LanguageSwitcher(): ReactNode {
         aria-label={copy.language}
         aria-expanded={isOpen}
         aria-controls="language-menu"
-        className="focus-ring text-foreground inline-flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full transition-transform duration-200 hover:scale-[1.04] active:scale-[0.96]"
+        className="focus-ring text-foreground inline-flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full transition-transform duration-200 hover:scale-[1.04] active:scale-[0.96] sm:h-11 sm:w-11"
       >
         <Globe2 aria-hidden="true" className="h-4 w-4" />
       </button>
@@ -156,7 +156,7 @@ function LanguageSwitcher(): ReactNode {
           <motion.div
             id="language-menu"
             initial={{ opacity: 0, width: 0 }}
-            animate={{ opacity: 1, width: 126 }}
+            animate={{ opacity: 1, width: 122 }}
             exit={{ opacity: 0, width: 0 }}
             transition={{ type: "spring", stiffness: 420, damping: 30 }}
             className="flex h-full shrink-0 items-center gap-1 overflow-hidden pr-1.5"
@@ -173,7 +173,7 @@ function LanguageSwitcher(): ReactNode {
                   }}
                   aria-pressed={isSelected}
                   title={language.name}
-                  className={`focus-ring inline-flex h-8 min-w-8 cursor-pointer items-center justify-center rounded-full px-2 text-[11px] font-semibold transition-colors duration-200 ${
+                  className={`focus-ring inline-flex h-7 min-w-7 cursor-pointer items-center justify-center rounded-full px-2 text-[11px] font-semibold transition-colors duration-200 sm:h-8 sm:min-w-8 ${
                     isSelected
                       ? "bg-foreground text-background"
                       : "text-foreground/60 hover:bg-foreground/5 hover:text-foreground"
@@ -250,11 +250,11 @@ export function Nav(): ReactNode {
   return (
     <nav
       aria-label={copy.nav.primary}
-      className="fixed top-6 left-1/2 z-50 -translate-x-1/2"
+      className="fixed top-3 left-1/2 z-50 max-w-[calc(100vw-1.5rem)] -translate-x-1/2 sm:top-6"
     >
-      <div className="flex items-center gap-2">
-        <div className="bg-background border-foreground/8 flex items-center gap-1 rounded-full border p-1.5 shadow-sm">
-          <ul ref={listRef} className="relative flex items-center gap-1">
+      <div className="flex items-center gap-1.5 sm:gap-2">
+        <div className="bg-background border-foreground/8 flex items-center gap-0.5 rounded-full border p-1 shadow-sm sm:gap-1 sm:p-1.5">
+          <ul ref={listRef} className="relative flex items-center gap-0.5 sm:gap-1">
             {pillRect && (
               <motion.span
                 aria-hidden="true"
@@ -282,7 +282,7 @@ export function Nav(): ReactNode {
                   <Link
                     href={item.href}
                     aria-current={isActive ? "page" : undefined}
-                    className="focus-ring relative inline-flex cursor-pointer items-center justify-center rounded-full px-3 py-1.5 text-[13px] font-medium transition-colors duration-300 sm:px-4 sm:text-sm"
+                    className="focus-ring relative inline-flex cursor-pointer items-center justify-center rounded-full px-2.5 py-1.5 text-[11px] font-medium transition-colors duration-300 sm:px-4 sm:text-sm"
                   >
                     <span
                       className={
