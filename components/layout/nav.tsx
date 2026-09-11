@@ -31,8 +31,7 @@ function useIsMounted(): boolean {
 
 function runCircularViewTransition(
   event: React.MouseEvent<HTMLButtonElement>,
-  update: () => void,
-  kind: "theme" | "language" = "theme"
+  update: () => void
 ): void {
   const prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)"
@@ -54,8 +53,7 @@ function runCircularViewTransition(
   root.style.setProperty("--theme-cx", `${cx}px`);
   root.style.setProperty("--theme-cy", `${cy}px`);
   root.style.setProperty("--theme-r", `${radius}px`);
-  const animationFlag = kind === "language" ? "languageAnim" : "themeAnim";
-  root.dataset[animationFlag] = "1";
+  root.dataset.themeAnim = "1";
 
   // React state updates are normally deferred. The view transition must see
   // the new language before taking its second snapshot.
@@ -63,7 +61,7 @@ function runCircularViewTransition(
     flushSync(update);
   });
   transition.finished.finally(() => {
-    delete root.dataset[animationFlag];
+    delete root.dataset.themeAnim;
   });
 }
 
@@ -169,15 +167,9 @@ function LanguageSwitcher(): ReactNode {
                 <button
                   key={language.code}
                   type="button"
-                  onClick={(event) => {
-                    runCircularViewTransition(
-                      event,
-                      () => {
-                        setLocale(language.code);
-                        setIsOpen(false);
-                      },
-                      "language"
-                    );
+                  onClick={() => {
+                    setLocale(language.code);
+                    setIsOpen(false);
                   }}
                   aria-pressed={isSelected}
                   title={language.name}

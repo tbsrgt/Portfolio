@@ -162,8 +162,7 @@ export function Stack(): ReactNode {
       let raf = 0;
       const tick = (): void => {
         const isViewTransitioning =
-          document.documentElement.dataset.themeAnim === "1" ||
-          document.documentElement.dataset.languageAnim === "1";
+          document.documentElement.dataset.themeAnim === "1";
 
         // Keep both View Transition snapshots identical while the reveal is
         // running. Otherwise Matter.js can move a chip between snapshots and
