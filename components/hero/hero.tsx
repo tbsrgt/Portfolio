@@ -25,11 +25,11 @@ export function Hero(): ReactNode {
               </span>
             </p>
 
-            <h1 className="text-foreground text-[clamp(2.25rem,11vw,2.75rem)] leading-[1.05] font-medium tracking-tight md:text-[2.5rem] lg:text-[3.65rem]">
-              <span className="block lg:whitespace-nowrap">
+            <h1 className="text-foreground text-balance text-[clamp(2.25rem,11vw,2.75rem)] leading-[1.05] font-medium tracking-tight md:text-[2.5rem] lg:text-[3.65rem]">
+              <span className="block">
                 {copy.hero.titleLine1}
               </span>
-              <span className="block lg:whitespace-nowrap">
+              <span className="block">
                 {copy.hero.titleLine2}
               </span>
             </h1>

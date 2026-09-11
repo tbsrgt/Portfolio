@@ -282,7 +282,7 @@ export function Nav(): ReactNode {
                   <Link
                     href={item.href}
                     aria-current={isActive ? "page" : undefined}
-                    className="focus-ring relative inline-flex cursor-pointer items-center justify-center rounded-full px-2.5 py-1.5 text-[11px] font-medium transition-colors duration-300 sm:px-4 sm:text-sm"
+                    className="focus-ring relative inline-flex cursor-pointer items-center justify-center rounded-full px-2.5 py-1.5 text-[11px] font-medium whitespace-nowrap transition-colors duration-300 sm:px-4 sm:text-sm"
                   >
                     <span
                       className={
