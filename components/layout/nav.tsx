@@ -13,17 +13,12 @@ import {
   useSyncExternalStore,
   type ReactNode,
 } from "react";
+import { useLanguage } from "@/lib/i18n";
 
 type NavItem = {
   label: string;
   href: string;
 };
-
-const NAV_ITEMS: readonly NavItem[] = [
-  { label: "Home", href: "/" },
-  { label: "Projects", href: "/projects" },
-  { label: "About", href: "/about" },
-];
 
 function useIsMounted(): boolean {
   return useSyncExternalStore(
@@ -36,6 +31,7 @@ function useIsMounted(): boolean {
 function NavThemeToggle(): ReactNode {
   const mounted = useIsMounted();
   const { setTheme, resolvedTheme } = useTheme();
+  const { copy } = useLanguage();
   const isDark = mounted && resolvedTheme === "dark";
 
   const toggleTheme = (event: React.MouseEvent<HTMLButtonElement>): void => {
@@ -84,26 +80,26 @@ function NavThemeToggle(): ReactNode {
       aria-label={
         mounted
           ? isDark
-            ? "Switch to light theme"
-            : "Switch to dark theme"
-          : "Toggle theme"
+            ? copy.theme.light
+            : copy.theme.dark
+          : copy.theme.toggle
       }
       aria-pressed={mounted ? isDark : undefined}
-      className="focus-ring relative inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-background ring-1 ring-foreground/8 transition-colors"
+      className="focus-ring bg-background ring-foreground/8 relative inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full ring-1 transition-colors"
     >
       <span aria-hidden="true" className="relative h-4 w-4">
         <Sun
-          className={`absolute inset-0 h-4 w-4 text-foreground transition-all duration-300 ${
+          className={`text-foreground absolute inset-0 h-4 w-4 transition-all duration-300 ${
             mounted && isDark
-              ? "rotate-0 scale-100 opacity-100"
-              : "-rotate-90 scale-0 opacity-0"
+              ? "scale-100 rotate-0 opacity-100"
+              : "scale-0 -rotate-90 opacity-0"
           }`}
         />
         <Moon
-          className={`absolute inset-0 h-4 w-4 text-foreground transition-all duration-300 ${
+          className={`text-foreground absolute inset-0 h-4 w-4 transition-all duration-300 ${
             mounted && !isDark
-              ? "rotate-0 scale-100 opacity-100"
-              : "rotate-90 scale-0 opacity-0"
+              ? "scale-100 rotate-0 opacity-100"
+              : "scale-0 rotate-90 opacity-0"
           }`}
         />
       </span>
@@ -112,6 +108,12 @@ function NavThemeToggle(): ReactNode {
 }
 
 export function Nav(): ReactNode {
+  const { locale, copy, toggleLocale } = useLanguage();
+  const navItems: readonly NavItem[] = [
+    { label: copy.nav.home, href: "/" },
+    { label: copy.nav.projects, href: "/projects" },
+    { label: copy.nav.about, href: "/about" },
+  ];
   const pathname = usePathname();
   const listRef = useRef<HTMLUListElement>(null);
   const itemRefs = useRef<Array<HTMLLIElement | null>>([]);
@@ -121,27 +123,40 @@ export function Nav(): ReactNode {
   } | null>(null);
   const [hasMeasured, setHasMeasured] = useState(false);
 
-  const activeIndex = NAV_ITEMS.findIndex((item) =>
+  const activeIndex = navItems.findIndex((item) =>
     item.href === "/"
       ? pathname === "/"
       : pathname === item.href || pathname.startsWith(`${item.href}/`)
   );
 
+  useEffect(() => {
+    const current =
+      pathname === "/projects"
+        ? copy.nav.projects
+        : pathname === "/about"
+          ? copy.nav.about
+          : copy.nav.home;
+    document.title = `${current} | Portfolio`;
+  }, [copy.nav, pathname]);
+
   useLayoutEffect(() => {
-    const list = listRef.current;
-    const activeEl =
-      activeIndex >= 0 ? itemRefs.current[activeIndex] : null;
-    if (!list || !activeEl) {
-      setPillRect(null);
-      return;
-    }
-    const listRect = list.getBoundingClientRect();
-    const itemRect = activeEl.getBoundingClientRect();
-    setPillRect({
-      x: itemRect.left - listRect.left,
-      width: itemRect.width,
+    const id = requestAnimationFrame(() => {
+      const list = listRef.current;
+      const activeEl = activeIndex >= 0 ? itemRefs.current[activeIndex] : null;
+      if (!list || !activeEl) {
+        setPillRect(null);
+        return;
+      }
+      const listRect = list.getBoundingClientRect();
+      const itemRect = activeEl.getBoundingClientRect();
+      setPillRect({
+        x: itemRect.left - listRect.left,
+        width: itemRect.width,
+      });
     });
-  }, [activeIndex, pathname]);
+
+    return () => cancelAnimationFrame(id);
+  }, [activeIndex, locale, pathname]);
 
   useEffect(() => {
     if (!pillRect) return;
@@ -151,55 +166,66 @@ export function Nav(): ReactNode {
 
   return (
     <nav
-      aria-label="Primary"
-      className="fixed left-1/2 top-6 z-50 -translate-x-1/2"
+      aria-label={copy.nav.primary}
+      className="fixed top-6 left-1/2 z-50 -translate-x-1/2"
     >
-      <div className="flex items-center gap-1 rounded-full bg-background p-1.5 shadow-sm border border-foreground/8">
-        <ul ref={listRef} className="relative flex items-center gap-1">
-          {pillRect && (
-            <motion.span
-              aria-hidden="true"
-              initial={false}
-              animate={{ x: pillRect.x, width: pillRect.width }}
-              transition={
-                hasMeasured
-                  ? { type: "spring", stiffness: 380, damping: 32 }
-                  : { duration: 0 }
-              }
-              style={{ left: 0, top: 0, bottom: 0 }}
-              className="absolute rounded-full bg-foreground/5 ring-1 ring-foreground/8"
-            />
-          )}
-          {NAV_ITEMS.map((item, index) => {
-            const isActive = index === activeIndex;
-            return (
-              <li
-                key={item.href}
-                ref={(el) => {
-                  itemRefs.current[index] = el;
-                }}
-                className="relative"
-              >
-                <Link
-                  href={item.href}
-                  aria-current={isActive ? "page" : undefined}
-                  className="focus-ring relative inline-flex cursor-pointer items-center justify-center rounded-full px-4 py-1.5 text-sm font-medium transition-colors duration-300"
+      <div className="flex items-center gap-2">
+        <div className="bg-background border-foreground/8 flex items-center gap-1 rounded-full border p-1.5 shadow-sm">
+          <ul ref={listRef} className="relative flex items-center gap-1">
+            {pillRect && (
+              <motion.span
+                aria-hidden="true"
+                initial={false}
+                animate={{ x: pillRect.x, width: pillRect.width }}
+                transition={
+                  hasMeasured
+                    ? { type: "spring", stiffness: 380, damping: 32 }
+                    : { duration: 0 }
+                }
+                style={{ left: 0, top: 0, bottom: 0 }}
+                className="bg-foreground/5 ring-foreground/8 absolute rounded-full ring-1"
+              />
+            )}
+            {navItems.map((item, index) => {
+              const isActive = index === activeIndex;
+              return (
+                <li
+                  key={item.href}
+                  ref={(el) => {
+                    itemRefs.current[index] = el;
+                  }}
+                  className="relative"
                 >
-                  <span
-                    className={
-                      isActive
-                        ? "relative z-10 text-foreground"
-                        : "relative z-10 text-foreground/60 hover:text-foreground"
-                    }
+                  <Link
+                    href={item.href}
+                    aria-current={isActive ? "page" : undefined}
+                    className="focus-ring relative inline-flex cursor-pointer items-center justify-center rounded-full px-3 py-1.5 text-[13px] font-medium transition-colors duration-300 sm:px-4 sm:text-sm"
                   >
-                    {item.label}
-                  </span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-        <NavThemeToggle />
+                    <span
+                      className={
+                        isActive
+                          ? "text-foreground relative z-10"
+                          : "text-foreground/60 hover:text-foreground relative z-10"
+                      }
+                    >
+                      {item.label}
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+          <NavThemeToggle />
+        </div>
+        <button
+          type="button"
+          onClick={toggleLocale}
+          aria-label={copy.language}
+          title={copy.language}
+          className="focus-ring border-foreground/8 bg-background text-foreground inline-flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full border text-[11px] font-semibold tracking-[-0.01em] shadow-sm transition-transform duration-200 hover:scale-[1.04] active:scale-[0.96]"
+        >
+          {locale === "en" ? "FR" : "EN"}
+        </button>
       </div>
     </nav>
   );

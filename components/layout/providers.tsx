@@ -4,6 +4,7 @@ import { ReducedMotionProvider } from "@/lib/motion";
 import { SmoothScroll } from "@/components/layout/smooth-scroll";
 import { ThemeProvider } from "next-themes";
 import type { ReactNode } from "react";
+import { LanguageProvider } from "@/lib/i18n";
 
 export function Providers({ children }: { children: ReactNode }): ReactNode {
   return (
@@ -13,9 +14,11 @@ export function Providers({ children }: { children: ReactNode }): ReactNode {
       enableSystem
       disableTransitionOnChange
     >
-      <ReducedMotionProvider>
-        <SmoothScroll>{children}</SmoothScroll>
-      </ReducedMotionProvider>
+      <LanguageProvider>
+        <ReducedMotionProvider>
+          <SmoothScroll>{children}</SmoothScroll>
+        </ReducedMotionProvider>
+      </LanguageProvider>
     </ThemeProvider>
   );
 }
