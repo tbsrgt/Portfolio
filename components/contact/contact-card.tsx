@@ -6,7 +6,6 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { ContactCardCtas } from "./contact-card-ctas";
-import { FooterBallpit } from "../footer/ballpit";
 import { FadeIn } from "@/components/ui/motion-primitives";
 import { ShaderFlow } from "../shaders/shader-flow";
 import { useLanguage } from "@/lib/i18n";
@@ -44,9 +43,8 @@ export function ContactCard(): ReactNode {
                 <ContactCardCtas />
               </div>
 
-              <div className="border-foreground/8 bg-background relative flex min-h-62.5 flex-col items-center justify-center gap-6 overflow-hidden rounded-[1.1rem] border p-6 sm:p-8">
-                <FooterBallpit />
-                <div className="relative z-10 flex items-center gap-3 opacity-90">
+              <div className="border-foreground/8 bg-background flex flex-col items-center justify-center gap-6 rounded-[1.1rem] border p-6 sm:p-8">
+                <div className="flex items-center gap-3 opacity-75">
                   <SocialIcon
                     href="mailto:tobiasringot13@gmail.com"
                     label="Email"
@@ -58,7 +56,7 @@ export function ContactCard(): ReactNode {
                     imageSrc="/linkedin.svg"
                   />
                 </div>
-                <div className="relative z-10 flex flex-col items-center gap-1 text-center">
+                <div className="flex flex-col items-center gap-1 text-center">
                   <p className="text-foreground/70 text-[13px] tracking-tight">
                     {copy.contact.builtWith}
                   </p>
