@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronDown } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
+import { motion } from "motion/react";
 import { useState, type ReactNode } from "react";
 import { useLanguage } from "@/lib/i18n";
 
@@ -63,7 +63,7 @@ export function Experience(): ReactNode {
       </h3>
       <div
         className={`border-foreground/5 bg-foreground/2 dark:bg-foreground/5 relative overflow-hidden rounded-4xl border px-2 pt-2 sm:px-4 sm:pt-4 ${
-          open ? "pb-2 sm:pb-4" : "pb-0"
+          "pb-1 sm:pb-2"
         }`}
       >
         <motion.div
@@ -100,39 +100,13 @@ export function Experience(): ReactNode {
           </ul>
         </motion.div>
 
-        <AnimatePresence>
-          {!open && (
-            <motion.div
-              key="fade"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-x-0 bottom-0"
-              style={{
-                height: ROW_HEIGHT,
-                backdropFilter: "blur(10px)",
-                WebkitBackdropFilter: "blur(10px)",
-                maskImage:
-                  "linear-gradient(to bottom, transparent 0%, black 80%)",
-                WebkitMaskImage:
-                  "linear-gradient(to bottom, transparent 0%, black 80%)",
-              }}
-            />
-          )}
-        </AnimatePresence>
 
         {hiddenCount > 0 && (
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
-            className={`focus-ring text-foreground flex w-full cursor-pointer items-center justify-center gap-1.5 bg-transparent text-[15px] font-medium tracking-tight ${
-              open
-                ? "relative mt-4"
-                : "absolute inset-x-0 bottom-0 z-10 py-3 sm:py-4"
-            }`}
+            className="focus-ring text-foreground relative flex min-h-11 w-full cursor-pointer items-center justify-center gap-1.5 rounded-2xl bg-transparent py-2 text-[15px] font-medium tracking-tight"
           >
             {open ? copy.about.showLess : copy.about.showMore(hiddenCount)}
             <motion.span

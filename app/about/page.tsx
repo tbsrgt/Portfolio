@@ -11,7 +11,7 @@ import type { ReactNode } from "react";
 
 export const metadata: Metadata = createMetadata({
   title: "À propos de Tobias Ringot",
-  description: "Découvrez le parcours de Tobias Ringot, designer web spécialisé en identité, contenu et expérience digitale.",
+  description: "Tobias Ringot, web designer à Aix-en-Provence : refontes et sites vitrines pour les entreprises de Provence, du design à la mise en ligne.",
   path: "/about",
 });
 
@@ -34,7 +34,6 @@ export default function AboutPage(): ReactNode {
       </section>
 
       <ContactCard />
-      <div className="h-12 sm:h-16" />
     </main>
   );
 }

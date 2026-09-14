@@ -21,12 +21,17 @@ Le formulaire envoie les demandes à `tobiasringot13@gmail.com` via l'API Resend
 
 Ne jamais commiter la clé API. La route `/api/contact` valide les champs, limite la taille du message et contient un champ piège anti-bot. Pour un trafic important, ajouter une protection anti-spam et une limitation de débit côté serveur.
 
+## Réalisations
+
+- Les données des projets sont dans `lib/projects.ts` : `live` pour les sites clients en ligne (nommés), `study` pour les études de refonte (toujours anonymisées).
+- Les visuels sont dans `public/projects/` : `<slug>-desktop.webp` (page qui défile au survol), `<slug>-mobile.webp` et `<slug>-cover.webp` (bandeau animé).
+- Pour ajouter ou refaire une capture : `python3 scripts/capture_projects.py <slug>`, puis relire les PNG indiqués avant publication. Vérifier qu'aucun nom, logo, téléphone, adresse ou ville précise ne reste visible sur les études.
+- Ne passer une étude en `live` (avec son nom) qu'après accord écrit de l'entreprise.
+
 ## Contenu à finaliser avant publication
 
-- Remplacer les deux témoignages explicitement étiquetés comme fictifs par de vrais avis autorisés, ou retirer la section.
-- Remplacer la carte « Projet à venir » et son texte Lorem ipsum par un projet réel, ou la retirer.
-- Compléter les études de cas avec ton rôle précis, des captures et des résultats seulement s'ils sont vérifiables.
-- Renseigner le domaine final dans `NEXT_PUBLIC_SITE_URL` pour les URL canoniques, le sitemap et les aperçus de partage.
-- Ajouter les informations légales et une politique de confidentialité adaptées à l'exploitation du formulaire avant publication.
-
-Les visuels des cartes Parentez² et Mistral TP proviennent de leurs propres images de partage. Aucun résultat commercial chiffré ni avis client n'est revendiqué.
+- Ajouter un portrait : déposer la photo dans `public/` (par exemple `public/tobias.jpg`) puis renseigner `photo` dans `lib/site.ts`. Les initiales s'affichent en attendant.
+- Vérifier que `RESEND_API_KEY` et `CONTACT_FROM_EMAIL` sont bien configurés sur Vercel, puis faire un envoi réel.
+- Renseigner `NEXT_PUBLIC_SITE_URL` avec l'URL finale.
+- Compléter les mentions légales (`app/mentions-legales/page.tsx`) avec le statut et le SIRET dès l'immatriculation.
+- Remplacer l'adresse Gmail par une adresse professionnelle quand un nom de domaine sera disponible (`lib/site.ts`).

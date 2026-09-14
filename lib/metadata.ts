@@ -6,7 +6,7 @@ const siteUrl = (configuredUrl || deploymentUrl || "http://localhost:3000").repl
 
 export const siteConfig = {
   name: "Tobias Ringot",
-  description: "Refonte de sites internet et création de sites vitrines pour les écoles, commerces et professionnels de l'immobilier.",
+  description: "Refonte de sites internet et création de sites vitrines à Aix-en-Provence, pour les entreprises de Provence. À partir de 1 500 €.",
   url: siteUrl,
   ogImage: "/opengraph-image",
 } as const;
@@ -14,11 +14,11 @@ export const siteConfig = {
 export const baseMetadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: `${siteConfig.name} — Web design & refonte`,
+    default: `${siteConfig.name} — Refonte de site internet à Aix-en-Provence`,
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  keywords: ["refonte site internet", "création site vitrine", "web design", "landing page", "Tobias Ringot"],
+  keywords: ["refonte site internet", "refonte site internet Aix-en-Provence", "création site vitrine", "web designer Aix-en-Provence", "site internet Marseille", "Tobias Ringot"],
   authors: [{ name: "Tobias Ringot" }],
   creator: "Tobias Ringot",
   publisher: "Tobias Ringot",

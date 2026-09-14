@@ -20,18 +20,17 @@ const CHIPS: Chip[] = [
     fg: "#ffffff",
     iconUrl: "https://svgl.app/library/figma.svg",
   },
-  { label: "GitHub", slug: "github", bg: "#181717", fg: "#ffffff" },
-  { label: "Codex", slug: "openai", bg: "#111111", fg: "#ffffff" },
-  { label: "Claude", slug: "anthropic", bg: "#D97757", fg: "#ffffff" },
-  { label: "Vercel", slug: "vercel", bg: "#0a0a0a", fg: "#ffffff" },
   {
-    label: "OVHcloud",
-    slug: "ovhcloud",
-    bg: "#123F6D",
+    label: "Adobe",
+    slug: "adobe",
+    bg: "#ED1C24",
     fg: "#ffffff",
-    iconUrl: "https://cdn.simpleicons.org/ovhcloud",
+    iconUrl: "https://svgl.app/library/adobe.svg",
   },
-  { label: "Adobe", slug: "adobe", bg: "#ED1C24", fg: "#ffffff" },
+  { label: "Next.js", slug: "nextdotjs", bg: "#111111", fg: "#ffffff" },
+  { label: "React", slug: "react", bg: "#20232a", fg: "#ffffff" },
+  { label: "GitHub", slug: "github", bg: "#181717", fg: "#ffffff" },
+  { label: "Vercel", slug: "vercel", bg: "#0a0a0a", fg: "#ffffff" },
 ];
 
 const CHIP_RADIUS = 14;

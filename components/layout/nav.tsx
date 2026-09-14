@@ -133,7 +133,6 @@ function LanguageSwitcher(): ReactNode {
   const languages = [
     { code: "fr", label: "FR", name: "Français" },
     { code: "en", label: "EN", name: "English" },
-    { code: "zh", label: "中文", name: "中文" },
   ] as const;
 
   return (
@@ -156,7 +155,7 @@ function LanguageSwitcher(): ReactNode {
           <motion.div
             id="language-menu"
             initial={{ opacity: 0, width: 0 }}
-            animate={{ opacity: 1, width: 122 }}
+            animate={{ opacity: 1, width: 80 }}
             exit={{ opacity: 0, width: 0 }}
             transition={{ type: "spring", stiffness: 420, damping: 30 }}
             className="flex h-full shrink-0 items-center gap-1 overflow-hidden pr-1.5"
@@ -199,6 +198,7 @@ export function Nav(): ReactNode {
     { label: copy.nav.about, href: "/about" },
   ];
   const pathname = usePathname();
+  const contactHref = pathname === "/mentions-legales" ? "/#contact" : "#contact";
   const listRef = useRef<HTMLUListElement>(null);
   const itemRefs = useRef<Array<HTMLLIElement | null>>([]);
   const [pillRect, setPillRect] = useState<{
@@ -217,11 +217,11 @@ export function Nav(): ReactNode {
 
   useEffect(() => {
     const titles = {
-      fr: { home: "Refonte et création de sites internet", projects: "Projets web", about: "À propos" },
-      en: { home: "Website redesign and web design", projects: "Web projects", about: "About" },
-      zh: { home: "网站改版与设计", projects: "网站项目", about: "关于" },
+      fr: { home: "Refonte de site internet à Aix-en-Provence", projects: "Réalisations", about: "À propos", legal: "Mentions légales" },
+      en: { home: "Website redesign in Aix-en-Provence", projects: "Work", about: "About", legal: "Legal notice" },
     };
-    const page = pathname === "/projects" ? "projects" : pathname === "/about" ? "about" : "home";
+    const page =
+      pathname === "/projects" ? "projects" : pathname === "/about" ? "about" : pathname === "/mentions-legales" ? "legal" : "home";
     document.title = `${titles[locale][page]} | Tobias Ringot`;
   }, [locale, pathname]);
 
@@ -267,72 +267,80 @@ export function Nav(): ReactNode {
     return () => cancelAnimationFrame(id);
   }, [pillRect]);
 
+  const contactButtonClass =
+    "focus-ring bg-foreground text-background inline-flex h-11 cursor-pointer items-center justify-center rounded-full px-4 text-sm font-medium shadow-sm transition-transform duration-200 hover:-translate-y-0.5 active:scale-95";
+
   return (
     <nav
       aria-label={copy.nav.primary}
       className="fixed top-3 right-3 z-50 max-w-[calc(100vw-1.5rem)] sm:top-6 sm:right-auto sm:left-1/2 sm:-translate-x-1/2"
     >
-      <div ref={mobileMenuRef} className="relative sm:hidden">
-        <button
-          type="button"
-          onClick={() => setMobileMenuOpen((open) => !open)}
-          aria-label={mobileMenuOpen ? (locale === "fr" ? "Fermer le menu" : locale === "en" ? "Close menu" : "关闭菜单") : (locale === "fr" ? "Ouvrir le menu" : locale === "en" ? "Open menu" : "打开菜单")}
-          aria-expanded={mobileMenuOpen}
-          aria-controls="mobile-navigation"
-          className="focus-ring border-foreground/8 bg-background text-foreground inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border shadow-sm transition-transform duration-200 active:scale-95"
-        >
-          <motion.span
-            initial={false}
-            animate={{ rotate: mobileMenuOpen ? 90 : 0 }}
-            transition={{ duration: 0.2 }}
-            className="inline-flex"
+      <div className="flex items-center gap-2 sm:hidden">
+        <a href={contactHref} className={contactButtonClass}>
+          {copy.nav.contact}
+        </a>
+        <div ref={mobileMenuRef} className="relative">
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen((open) => !open)}
+            aria-label={mobileMenuOpen ? copy.nav.closeMenu : copy.nav.openMenu}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-navigation"
+            className="focus-ring border-foreground/8 bg-background text-foreground inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border shadow-sm transition-transform duration-200 active:scale-95"
           >
-            {mobileMenuOpen ? (
-              <X aria-hidden="true" className="h-5 w-5" />
-            ) : (
-              <Menu aria-hidden="true" className="h-5 w-5" />
-            )}
-          </motion.span>
-        </button>
-
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div
-              id="mobile-navigation"
-              initial={{ opacity: 0, y: -8, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -8, scale: 0.96 }}
-              transition={{ type: "spring", stiffness: 430, damping: 32 }}
-              className="border-foreground/8 bg-background absolute top-full right-0 mt-2 w-56 overflow-hidden rounded-3xl border p-2 shadow-lg"
+            <motion.span
+              initial={false}
+              animate={{ rotate: mobileMenuOpen ? 90 : 0 }}
+              transition={{ duration: 0.2 }}
+              className="inline-flex"
             >
-              <ul className="flex flex-col gap-1">
-                {navItems.map((item, index) => {
-                  const isActive = index === activeIndex;
-                  return (
-                    <li key={`mobile-${item.href}`}>
-                      <Link
-                        href={item.href}
-                        aria-current={isActive ? "page" : undefined}
-                        onClick={() => setMobileMenuOpen(false)}
-                        className={`focus-ring flex min-h-11 items-center rounded-2xl px-4 text-[15px] font-medium transition-colors ${
-                          isActive
-                            ? "bg-foreground text-background"
-                            : "text-foreground/70 hover:bg-foreground/5 hover:text-foreground"
-                        }`}
-                      >
-                        {item.label}
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-              <div className="border-foreground/8 mt-2 flex items-center justify-between border-t pt-2">
-                <NavThemeToggle />
-                <LanguageSwitcher />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              {mobileMenuOpen ? (
+                <X aria-hidden="true" className="h-5 w-5" />
+              ) : (
+                <Menu aria-hidden="true" className="h-5 w-5" />
+              )}
+            </motion.span>
+          </button>
+
+          <AnimatePresence>
+            {mobileMenuOpen && (
+              <motion.div
+                id="mobile-navigation"
+                initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -8, scale: 0.96 }}
+                transition={{ type: "spring", stiffness: 430, damping: 32 }}
+                className="border-foreground/8 bg-background absolute top-full right-0 mt-2 w-56 overflow-hidden rounded-3xl border p-2 shadow-lg"
+              >
+                <ul className="flex flex-col gap-1">
+                  {navItems.map((item, index) => {
+                    const isActive = index === activeIndex;
+                    return (
+                      <li key={`mobile-${item.href}`}>
+                        <Link
+                          href={item.href}
+                          aria-current={isActive ? "page" : undefined}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className={`focus-ring flex min-h-11 items-center rounded-2xl px-4 text-[15px] font-medium transition-colors ${
+                            isActive
+                              ? "bg-foreground text-background"
+                              : "text-foreground/70 hover:bg-foreground/5 hover:text-foreground"
+                          }`}
+                        >
+                          {item.label}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+                <div className="border-foreground/8 mt-2 flex items-center justify-between border-t pt-2">
+                  <NavThemeToggle />
+                  <LanguageSwitcher />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
 
       <div className="hidden items-center gap-2 sm:flex">
@@ -384,6 +392,9 @@ export function Nav(): ReactNode {
           <NavThemeToggle />
         </div>
         <LanguageSwitcher />
+        <a href={contactHref} className={`${contactButtonClass} hidden md:inline-flex`}>
+          {copy.nav.contact}
+        </a>
       </div>
     </nav>
   );

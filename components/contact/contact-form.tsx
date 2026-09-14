@@ -65,8 +65,8 @@ export function ContactForm(): ReactNode {
         {copy.formService} *
         <select className={inputClass} name="service" required defaultValue="">
           <option value="" disabled>{copy.formServicePlaceholder}</option>
-          {copy.services.map((service, index) => (
-            <option key={service.title} value={["redesign", "showcase", "landing", "maintenance"][index]}>{service.title}</option>
+          {copy.formServices.map((service, index) => (
+            <option key={service} value={["redesign", "showcase", "landing", "maintenance"][index]}>{service}</option>
           ))}
         </select>
       </label>

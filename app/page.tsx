@@ -1,17 +1,18 @@
 import { ContactCard } from "@/components/contact/contact-card";
 import { Hero } from "@/components/hero/hero";
 import { Projects } from "@/components/projects/projects";
-import { Services } from "@/components/sales/services";
+import { AboutTeaser } from "@/components/sales/about-teaser";
 import { Approach } from "@/components/sales/approach";
-import { Testimonials } from "@/components/sales/testimonials";
-import { ToolLogoBand } from "@/components/sales/tool-logo-band";
+import { Faq } from "@/components/sales/faq";
+import { ProjectMarquee } from "@/components/sales/project-marquee";
+import { Services } from "@/components/sales/services";
 import { createMetadata } from "@/lib/metadata";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 export const metadata: Metadata = createMetadata({
-  title: "Refonte et création de sites internet",
-  description: "Tobias Ringot modernise les sites vieillissants et crée des sites vitrines clairs, rapides et sur mesure pour les écoles, commerces et professionnels de l'immobilier.",
+  title: "Refonte de site internet à Aix-en-Provence",
+  description: "Tobias Ringot, web designer à Aix-en-Provence, modernise les sites internet des entreprises de Provence. Refonte et site vitrine à partir de 1 500 €.",
   path: "/",
 });
 
@@ -20,14 +21,14 @@ export default function HomePage(): ReactNode {
     <main id="main-content" className="flex flex-1 flex-col gap-20 sm:gap-28">
       <div className="flex flex-col">
         <Hero />
-        <ToolLogoBand />
+        <ProjectMarquee />
       </div>
       <Services />
-      <Projects withHeadline />
+      <Projects variant="home" />
       <Approach />
-      <Testimonials />
+      <AboutTeaser />
+      <Faq />
       <ContactCard />
-      <div className="h-12 sm:h-16" />
     </main>
   );
 }

@@ -1,16 +1,23 @@
 "use client";
 
-import { Mail } from "lucide-react";
+import { Mail, MapPin } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { ContactForm } from "./contact-form";
 import { FadeIn } from "@/components/ui/motion-primitives";
+import { LinkedinIcon } from "@/components/ui/linkedin-icon";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { ShaderFlow } from "@/components/shaders/shader-flow";
 import { useLanguage } from "@/lib/i18n";
+import { salesCopy } from "@/lib/sales-copy";
+import { site } from "@/lib/site";
+
+const detailClass =
+  "focus-ring text-foreground/70 hover:text-foreground inline-flex min-h-11 items-center gap-2.5 rounded-lg text-sm transition-colors";
 
 export function ContactCard(): ReactNode {
-  const { copy } = useLanguage();
+  const { copy, locale } = useLanguage();
+  const sales = salesCopy[locale];
 
   return (
     <section id="contact" aria-labelledby="contact-heading" className="mx-auto my-12 w-full max-w-275 scroll-mt-24 px-6 sm:my-20 sm:px-10">
@@ -30,15 +37,31 @@ export function ContactCard(): ReactNode {
               </ScrollReveal>
               <ScrollReveal
                 containerClassName="mt-5"
-                textClassName="text-foreground/65 max-w-[31ch] text-lg leading-relaxed"
+                textClassName="text-foreground/65 max-w-[34ch] text-lg leading-relaxed"
               >
                 {copy.contact.description}
               </ScrollReveal>
-              <a href="mailto:tobiasringot13@gmail.com" className="focus-ring text-foreground/70 mt-8 inline-flex min-h-11 items-center gap-2 rounded-lg text-sm underline underline-offset-4 hover:text-foreground">
-                <Mail className="h-4 w-4" aria-hidden="true" />
-                tobiasringot13@gmail.com
-              </a>
-              <p className="text-foreground/45 mt-auto pt-8 text-xs">{copy.contact.builtWith}</p>
+              <p className="border-foreground/8 bg-background/80 text-foreground mt-6 rounded-full border px-3.5 py-1.5 text-sm font-medium backdrop-blur-md">
+                {sales.heroPrice}
+              </p>
+              <ul className="mt-6 flex flex-col">
+                <li>
+                  <a href={`mailto:${site.email}`} className={`${detailClass} underline underline-offset-4`}>
+                    <Mail className="h-4 w-4" aria-hidden="true" />
+                    {site.email}
+                  </a>
+                </li>
+                <li>
+                  <a href={site.linkedin} target="_blank" rel="noopener noreferrer" className={detailClass}>
+                    <LinkedinIcon className="h-4 w-4" />
+                    LinkedIn
+                  </a>
+                </li>
+                <li className="text-foreground/70 inline-flex min-h-11 items-center gap-2.5 text-sm">
+                  <MapPin className="h-4 w-4" aria-hidden="true" />
+                  {copy.contact.location}
+                </li>
+              </ul>
             </div>
             <ContactForm />
           </div>

@@ -6,8 +6,8 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 export const metadata: Metadata = createMetadata({
-  title: "Projets web",
-  description: "Découvrez Parentez² et Mistral TP, deux sites internet à explorer parmi les projets de Tobias Ringot.",
+  title: "Réalisations",
+  description: "Sites en ligne et études de refonte réalisés par Tobias Ringot, web designer à Aix-en-Provence, pour des entreprises de Provence.",
   path: "/projects",
 });
 
@@ -19,7 +19,6 @@ export default function ProjectsPage(): ReactNode {
       </section>
       <Projects />
       <ContactCard />
-      <div className="h-12 sm:h-16" />
     </main>
   );
 }

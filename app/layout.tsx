@@ -1,10 +1,12 @@
+import { Footer } from "@/components/layout/footer";
 import { Nav } from "@/components/layout/nav";
 import { PageBackdrop } from "@/components/layout/page-backdrop";
 import { Providers } from "@/components/layout/providers";
 import { SkipToContent } from "@/components/layout/skip-to-content";
 import { ClickSpark } from "@/components/ui/click-spark";
 import { GradualBlur } from "@/components/ui/gradual-blur";
-import { baseMetadata } from "@/lib/metadata";
+import { baseMetadata, siteConfig } from "@/lib/metadata";
+import { site } from "@/lib/site";
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Geist, Geist_Mono } from "next/font/google";
 import type { ReactNode } from "react";
@@ -31,6 +33,21 @@ const fraunces = Fraunces({
 
 export const metadata: Metadata = baseMetadata;
 
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: `${site.name}, web designer`,
+  url: siteConfig.url,
+  email: site.email,
+  image: `${siteConfig.url}/opengraph-image`,
+  description: siteConfig.description,
+  address: { "@type": "PostalAddress", addressLocality: site.city, addressRegion: "Provence-Alpes-Côte d'Azur", addressCountry: "FR" },
+  areaServed: "Provence",
+  priceRange: "À partir de 1 500 €",
+  sameAs: [site.linkedin],
+  founder: { "@type": "Person", name: site.name, jobTitle: site.role, sameAs: [site.linkedin] },
+};
+
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#ffffff" },
@@ -51,6 +68,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} min-h-screen bg-background font-sans text-foreground antialiased`}
       >
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
         <Providers>
           <ClickSpark>
             <div className="site-frame site-frame--top" aria-hidden="true" />
@@ -66,6 +84,7 @@ export default function RootLayout({
             <PageBackdrop />
             <Nav />
             {children}
+            <Footer />
             <GradualBlur
               target="page"
               position="bottom"
