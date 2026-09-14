@@ -1,6 +1,5 @@
 import { Education } from "@/components/about/education";
 import { Experience } from "@/components/about/experience";
-import { PolaroidStrip } from "@/components/about/polaroid-strip";
 import { Skills } from "@/components/about/skills";
 import { Stack } from "@/components/about/stack";
 import { ContactCard } from "@/components/contact/contact-card";
@@ -11,19 +10,15 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 export const metadata: Metadata = createMetadata({
-  title: "About",
-  description: "About me, background, and how to get in touch.",
+  title: "À propos de Tobias Ringot",
+  description: "Découvrez le parcours de Tobias Ringot, designer web spécialisé en identité, contenu et expérience digitale.",
   path: "/about",
 });
 
 export default function AboutPage(): ReactNode {
   return (
     <main id="main-content" className="flex flex-1 flex-col">
-      <section className="mx-auto w-full max-w-312 pt-40 sm:pt-56">
-        <PolaroidStrip />
-      </section>
-
-      <section className="mx-auto w-full max-w-160 px-6 pt-20 pb-16 sm:px-10 sm:pt-28 sm:pb-24">
+      <section className="mx-auto w-full max-w-160 px-6 pt-44 pb-16 sm:px-10 sm:pt-56 sm:pb-24">
         <AboutIntro />
       </section>
 

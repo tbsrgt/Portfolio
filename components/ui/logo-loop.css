@@ -1,0 +1,74 @@
+.logoloop {
+  position: relative;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.logoloop--horizontal .logoloop__track,
+.logoloop--horizontal .logoloop__list {
+  display: flex;
+  align-items: center;
+  width: max-content;
+}
+
+.logoloop--vertical .logoloop__track,
+.logoloop--vertical .logoloop__list {
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+}
+
+.logoloop__track {
+  will-change: transform;
+}
+
+.logoloop__list {
+  flex: none;
+  gap: var(--logoloop-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.logoloop--horizontal .logoloop__list {
+  padding-right: var(--logoloop-gap);
+}
+
+.logoloop--vertical .logoloop__list {
+  padding-bottom: var(--logoloop-gap);
+}
+
+.logoloop__item {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--logoloop-logoHeight);
+  transition: transform 250ms ease;
+}
+
+.logoloop__link {
+  display: inline-flex;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+}
+
+.logoloop--scale-hover .logoloop__item:hover {
+  transform: scale(1.08);
+}
+
+.logoloop--fade {
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+.logoloop--vertical.logoloop--fade {
+  mask-image: linear-gradient(to bottom, transparent, black 8%, black 92%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logoloop__track {
+    transform: none !important;
+    will-change: auto;
+  }
+}

@@ -1,0 +1,40 @@
+"use client";
+
+import type { ReactNode } from "react";
+
+import { FadeIn } from "@/components/ui/motion-primitives";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { useLanguage } from "@/lib/i18n";
+import { salesCopy } from "@/lib/sales-copy";
+
+export function Approach(): ReactNode {
+  const { locale } = useLanguage();
+  const copy = salesCopy[locale];
+
+  return (
+    <section aria-labelledby="approach-heading" className="px-6 sm:px-10">
+      <div className="mx-auto max-w-275">
+        <FadeIn>
+          <ScrollReveal
+            as="h2"
+            id="approach-heading"
+            textClassName="text-foreground font-serif max-w-2xl text-[2.5rem] leading-[1.08] font-medium tracking-tight md:text-[3rem]"
+          >
+            {copy.approachHeading}
+          </ScrollReveal>
+        </FadeIn>
+        <div className="border-foreground/10 mt-10 grid border-t md:grid-cols-3">
+          {copy.approachSteps.map((step, index) => (
+            <FadeIn key={step.title} delay={index * 0.08}>
+              <div className="border-foreground/10 min-h-48 border-b py-6 md:pr-8">
+                <span className="text-foreground/40 text-sm">0{index + 1}</span>
+                <h3 className="text-foreground mt-5 text-xl font-medium">{step.title}</h3>
+                <p className="text-foreground/60 mt-3 text-sm leading-relaxed sm:text-base">{step.description}</p>
+              </div>
+            </FadeIn>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

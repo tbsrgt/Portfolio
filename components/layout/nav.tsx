@@ -194,6 +194,7 @@ export function Nav(): ReactNode {
   const { locale, copy } = useLanguage();
   const navItems: readonly NavItem[] = [
     { label: copy.nav.home, href: "/" },
+    { label: copy.nav.services, href: "/#services" },
     { label: copy.nav.projects, href: "/projects" },
     { label: copy.nav.about, href: "/about" },
   ];
@@ -215,14 +216,14 @@ export function Nav(): ReactNode {
   );
 
   useEffect(() => {
-    const current =
-      pathname === "/projects"
-        ? copy.nav.projects
-        : pathname === "/about"
-          ? copy.nav.about
-          : copy.nav.home;
-    document.title = `${current} | Portfolio`;
-  }, [copy.nav, pathname]);
+    const titles = {
+      fr: { home: "Refonte et création de sites internet", projects: "Projets web", about: "À propos" },
+      en: { home: "Website redesign and web design", projects: "Web projects", about: "About" },
+      zh: { home: "网站改版与设计", projects: "网站项目", about: "关于" },
+    };
+    const page = pathname === "/projects" ? "projects" : pathname === "/about" ? "about" : "home";
+    document.title = `${titles[locale][page]} | Tobias Ringot`;
+  }, [locale, pathname]);
 
   useEffect(() => {
     const closeOnOutsideClick = (event: MouseEvent): void => {
@@ -275,7 +276,7 @@ export function Nav(): ReactNode {
         <button
           type="button"
           onClick={() => setMobileMenuOpen((open) => !open)}
-          aria-label={mobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+          aria-label={mobileMenuOpen ? (locale === "fr" ? "Fermer le menu" : locale === "en" ? "Close menu" : "关闭菜单") : (locale === "fr" ? "Ouvrir le menu" : locale === "en" ? "Open menu" : "打开菜单")}
           aria-expanded={mobileMenuOpen}
           aria-controls="mobile-navigation"
           className="focus-ring border-foreground/8 bg-background text-foreground inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border shadow-sm transition-transform duration-200 active:scale-95"

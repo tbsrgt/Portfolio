@@ -1,0 +1,10 @@
+.gradual-blur {
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.gradual-blur__layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}

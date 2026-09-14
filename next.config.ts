@@ -12,6 +12,14 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "cdn.dribbble.com",
       },
+      {
+        protocol: "https",
+        hostname: "parentez.vercel.app",
+      },
+      {
+        protocol: "https",
+        hostname: "mistraltp.vercel.app",
+      },
     ],
   },
 };
