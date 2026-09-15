@@ -5,6 +5,6 @@ export const site = {
   email: "tobiasringot13@gmail.com",
   linkedin: "https://www.linkedin.com/in/tobiasringot/",
   /** Portrait in /public (e.g. "/tobias.jpg"). Initials are shown while it is null. */
-  photo: null as string | null,
+  photo: "/tobias.jpg" as string | null,
   priceFrom: 1500,
 } as const;

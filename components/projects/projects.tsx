@@ -8,49 +8,16 @@ import { ProjectCard } from "./project-card";
 import { FadeIn } from "@/components/ui/motion-primitives";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { useLanguage } from "@/lib/i18n";
-import { liveProjects, studyProjects, type Project } from "@/lib/projects";
+import { projects } from "@/lib/projects";
 import { salesCopy } from "@/lib/sales-copy";
 
-const HOME_STUDY_COUNT = 4;
-
-function ProjectGroup({
-  heading,
-  description,
-  items,
-  as: Heading,
-  className,
-}: {
-  heading: string;
-  description: string;
-  items: readonly Project[];
-  as: "h2" | "h3";
-  className?: string;
-}): ReactNode {
-  return (
-    <div className={className}>
-      <FadeIn className="border-foreground/10 mb-6 flex flex-wrap items-end justify-between gap-3 border-b pb-5">
-        <div>
-          <Heading className="text-foreground text-2xl font-medium tracking-tight sm:text-[1.75rem]">{heading}</Heading>
-          <p className="text-foreground/55 mt-1.5 max-w-[60ch] text-sm leading-relaxed sm:text-base">{description}</p>
-        </div>
-        <span className="text-foreground/40 text-sm tabular-nums">{String(items.length).padStart(2, "0")}</span>
-      </FadeIn>
-      <div className="grid gap-6 md:grid-cols-2 md:gap-7">
-        {items.map((project, index) => (
-          <FadeIn key={project.slug} delay={Math.min(index * 0.06, 0.18)}>
-            <ProjectCard project={project} />
-          </FadeIn>
-        ))}
-      </div>
-    </div>
-  );
-}
+const HOME_PROJECT_COUNT = 4;
 
 export function Projects({ variant = "page" }: { variant?: "home" | "page" }): ReactNode {
   const { locale } = useLanguage();
   const copy = salesCopy[locale];
   const isHome = variant === "home";
-  const studies = isHome ? studyProjects.slice(0, HOME_STUDY_COUNT) : studyProjects;
+  const items = isHome ? projects.slice(0, HOME_PROJECT_COUNT) : projects;
 
   return (
     <section
@@ -75,21 +42,15 @@ export function Projects({ variant = "page" }: { variant?: "home" | "page" }): R
           </FadeIn>
         ) : null}
 
-        <ProjectGroup
-          as={isHome ? "h3" : "h2"}
-          heading={copy.liveHeading}
-          description={copy.liveDescription}
-          items={liveProjects}
-        />
-        <ProjectGroup
-          as={isHome ? "h3" : "h2"}
-          heading={copy.studiesHeading}
-          description={copy.studiesDescription}
-          items={studies}
-          className="mt-16 sm:mt-20"
-        />
+        <div className="grid gap-6 md:grid-cols-2 md:gap-7">
+          {items.map((project, index) => (
+            <FadeIn key={project.slug} delay={Math.min(index * 0.06, 0.18)}>
+              <ProjectCard project={project} />
+            </FadeIn>
+          ))}
+        </div>
 
-        {isHome ? (
+        {isHome && projects.length > HOME_PROJECT_COUNT ? (
           <FadeIn className="mt-12 flex justify-center">
             <Link
               href="/projects"

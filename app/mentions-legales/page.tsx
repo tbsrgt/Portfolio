@@ -52,10 +52,10 @@ export default function LegalPage(): ReactNode {
         </section>
 
         <section>
-          <h2>Études de refonte</h2>
+          <h2>Réalisations</h2>
           <p>
-            Les études de refonte présentées sont des travaux de conception réalisés à titre de démonstration. Elles ne
-            constituent pas des références clients : les noms, logos et coordonnées des entreprises concernées ont été masqués.
+            Certains projets présentés dans les réalisations sont des créations conçues à titre de démonstration. Les noms,
+            coordonnées et contenus de ces projets sont fictifs.
           </p>
         </section>
 

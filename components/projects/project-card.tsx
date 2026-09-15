@@ -11,12 +11,9 @@ import { salesCopy } from "@/lib/sales-copy";
 export function ProjectCard({ project }: { project: Project }): ReactNode {
   const { locale } = useLanguage();
   const copy = salesCopy[locale];
-  const isLive = project.kind === "live";
   const title = project.title[locale];
-  const host = project.url ? new URL(project.url).host : copy.studyBadge;
-  const alt = isLive
-    ? `${locale === "fr" ? "Aperçu du site" : "Preview of the website"} ${title}`
-    : `${copy.studyBadge} : ${title}`;
+  const host = project.url ? new URL(project.url).host : title;
+  const alt = `${locale === "fr" ? "Aperçu du site" : "Preview of the website"} ${title}`;
 
   return (
     <article className="project-card group border-foreground/8 bg-background flex h-full flex-col overflow-hidden rounded-3xl border p-3.5">
@@ -58,21 +55,10 @@ export function ProjectCard({ project }: { project: Project }): ReactNode {
       </div>
 
       <div className="flex flex-1 flex-col gap-3 px-2 pt-2 pb-2">
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-xs">
-          <span
-            className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-medium ${
-              isLive
-                ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400"
-                : "bg-foreground/5 text-foreground/60"
-            }`}
-          >
-            <span className={`h-1.5 w-1.5 rounded-full ${isLive ? "bg-emerald-500" : "bg-foreground/40"}`} />
-            {isLive ? copy.liveBadge : copy.studyBadge}
-          </span>
-          <span className="text-foreground/50">
-            {project.sector[locale]} · {project.place}
-          </span>
-        </div>
+        <p className="text-foreground/50 flex items-center gap-2 text-xs">
+          <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: project.accent }} />
+          {project.sector[locale]} · {project.place}
+        </p>
         <h3 className="text-foreground text-2xl font-medium tracking-tight">{title}</h3>
         <p className="text-foreground/65 text-sm leading-relaxed sm:text-base">{project.summary[locale]}</p>
         <ul className="mt-1 flex flex-col gap-1.5">

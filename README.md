@@ -23,10 +23,11 @@ Ne jamais commiter la clé API. La route `/api/contact` valide les champs, limit
 
 ## Réalisations
 
-- Les données des projets sont dans `lib/projects.ts` : `live` pour les sites clients en ligne (nommés), `study` pour les études de refonte (toujours anonymisées).
+- Les données des projets sont dans `lib/projects.ts`, affichées dans une seule section « Réalisations » (les 4 premières sur l'accueil).
 - Les visuels sont dans `public/projects/` : `<slug>-desktop.webp` (page qui défile au survol), `<slug>-mobile.webp` et `<slug>-cover.webp` (bandeau animé).
-- Pour ajouter ou refaire une capture : `python3 scripts/capture_projects.py <slug>`, puis relire les PNG indiqués avant publication. Vérifier qu'aucun nom, logo, téléphone, adresse ou ville précise ne reste visible sur les études.
-- Ne passer une étude en `live` (avec son nom) qu'après accord écrit de l'entreprise.
+- Les sites de démonstration sont dans `Documents/Realisations/<slug>` (un projet Next.js chacun, avec un mode `?capture=1` pour les captures).
+- Pour refaire une capture : lancer le site (`npm run build` puis `npx next start -p <port>`), puis `node Documents/Realisations/_tools/capture.mjs <slug>=http://localhost:<port>/?capture=1`, et relire les PNG indiqués avant publication.
+- Ne jamais publier de maquette réalisée pour un vrai prospect sans son accord écrit.
 
 ## Contenu à finaliser avant publication
 

@@ -10,6 +10,8 @@ type Entry = {
   role: string;
   period: string;
   logoUrl?: string;
+  /** The logo is a full square (own background): show it edge to edge. */
+  logoFill?: boolean;
   mark?: string;
   brand?: string;
 };
@@ -19,27 +21,28 @@ const ENTRIES: Entry[] = [
     company: "NULLL.CLUB",
     role: "Co-fondateur",
     period: "Mai 2026 - Aujourd'hui",
-    brand: "#0a0a0a",
-    mark: "N/",
+    logoUrl: "/logos/nulll-club.png",
+    logoFill: true,
   },
   {
     company: "COGEBAT",
     role: "Social Media Designer",
     period: "Nov. 2025 - Aujourd'hui",
-    logoUrl:
-      "https://le-de.cdn-website.com/ffa4b01ddf6042b7a8354606513c8c52/dms3rep/multi/opt/logo-transparent-255w.png",
+    logoUrl: "/logos/cogebat.png",
+    logoFill: true,
   },
   {
     company: "Vimtails",
     role: "Product Designer — UX/UI & identité de marque",
     period: "Avr. 2025 - Mai 2025",
-    logoUrl: "https://www.vimtails.fr/favicons/favicon-32x32.png",
+    logoUrl: "/logos/vimtails.png",
+    logoFill: true,
   },
   {
     company: "Glass&Bio France",
     role: "Développement commercial & social media",
     period: "Nov. 2023 - Août 2024",
-    logoUrl: "https://glassandbio.fr/assets/pictures/glass-and-bio-favicon.png",
+    logoUrl: "/logos/glass-and-bio.png",
   },
 ];
 
@@ -126,7 +129,9 @@ export function Experience(): ReactNode {
 function CompanyLogo({ entry }: { entry: Entry }): ReactNode {
   return (
     <span
-      className="ring-foreground/8 inline-flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden bg-white p-1.5 ring-1 dark:ring-white/10"
+      className={`ring-foreground/8 inline-flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden bg-white ring-1 dark:ring-white/10 ${
+        entry.logoFill ? "" : "p-1.5"
+      }`}
       aria-hidden="true"
       style={{
         borderRadius: 14,
@@ -137,9 +142,9 @@ function CompanyLogo({ entry }: { entry: Entry }): ReactNode {
         <img
           src={entry.logoUrl}
           alt=""
-          width={36}
-          height={36}
-          className="h-full w-full object-contain"
+          width={48}
+          height={48}
+          className={`h-full w-full ${entry.logoFill ? "object-cover" : "object-contain"}`}
           draggable={false}
         />
       ) : (
