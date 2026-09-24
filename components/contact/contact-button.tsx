@@ -11,7 +11,7 @@ export function ContactButton(): ReactNode {
   return (
     <Link
       href="/devis"
-      className="focus-ring bg-foreground text-background inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-medium transition-transform duration-300 hover:-translate-y-0.5"
+      className="focus-ring bg-foreground text-background hover:bg-brand inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-medium transition-colors"
     >
       {copy.contact.button}
       <ArrowRight className="h-4 w-4" aria-hidden="true" />

@@ -11,9 +11,13 @@ import { useLanguage } from "@/lib/i18n";
 import { projects } from "@/lib/projects";
 import { salesCopy } from "@/lib/sales-copy";
 
-const HOME_PROJECT_COUNT = 4;
+const HOME_PROJECT_COUNT = 3;
 
-export function Projects({ variant = "page" }: { variant?: "home" | "page" }): ReactNode {
+export function Projects({
+  variant = "page",
+}: {
+  variant?: "home" | "page";
+}): ReactNode {
   const { locale } = useLanguage();
   const copy = salesCopy[locale];
   const isHome = variant === "home";
@@ -28,7 +32,9 @@ export function Projects({ variant = "page" }: { variant?: "home" | "page" }): R
       <div className="mx-auto w-full max-w-300 px-4 sm:px-8">
         {isHome ? (
           <FadeIn className="flex flex-col items-center gap-5 pb-12 text-center sm:pb-16">
-            <p className="text-foreground/50 text-sm font-medium">{copy.projectsEyebrow}</p>
+            <p className="text-foreground/50 text-sm font-medium">
+              {copy.projectsEyebrow}
+            </p>
             <ScrollReveal
               as="h2"
               id="projects-heading"
@@ -44,8 +50,16 @@ export function Projects({ variant = "page" }: { variant?: "home" | "page" }): R
 
         <ol className="flex flex-col gap-5 lg:gap-8">
           {items.map((project, index) => (
-            <li key={project.slug} className="project-stack-item" style={{ top: `calc(6rem + ${index} * 1.25rem)` }}>
-              <ProjectCard project={project} index={index} total={items.length} />
+            <li
+              key={project.slug}
+              className="project-stack-item"
+              style={{ top: `calc(6rem + ${index} * 1.25rem)` }}
+            >
+              <ProjectCard
+                project={project}
+                index={index}
+                total={items.length}
+              />
             </li>
           ))}
         </ol>
@@ -57,7 +71,10 @@ export function Projects({ variant = "page" }: { variant?: "home" | "page" }): R
               className="focus-ring group border-foreground/8 bg-background text-foreground hover:bg-foreground/4 inline-flex min-h-11 items-center gap-2 rounded-xl border px-5 py-2.5 text-sm font-medium shadow-2xl transition-colors"
             >
               {copy.allProjects}
-              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
+              <ArrowRight
+                className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5"
+                aria-hidden="true"
+              />
             </Link>
           </FadeIn>
         ) : null}

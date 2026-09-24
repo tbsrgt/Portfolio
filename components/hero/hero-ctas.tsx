@@ -1,17 +1,17 @@
 "use client";
 
-import { ArrowRight } from "lucide-react";
+import { PhoneCall } from "lucide-react";
 import { LayoutGroup, motion } from "motion/react";
-import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { ContactButton } from "@/components/contact/contact-button";
 import { useLanguage } from "@/lib/i18n";
+import { salesCopy } from "@/lib/sales-copy";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 export function HeroCtas(): ReactNode {
-  const { copy } = useLanguage();
+  const { locale } = useLanguage();
 
   return (
     <LayoutGroup>
@@ -26,16 +26,13 @@ export function HeroCtas(): ReactNode {
           layout
           transition={{ layout: { duration: 0.55, ease: EASE } }}
         >
-          <Link
-            href="/projects"
-            className="border-foreground/5 focus-ring group bg-background text-foreground hover:bg-foreground/4 inline-flex cursor-pointer items-center gap-2 rounded-xl border px-5 py-2.5 text-sm font-medium shadow-2xl transition-colors"
+          <a
+            href="#rappel"
+            className="border-foreground/20 focus-ring group bg-background text-foreground hover:bg-foreground/5 inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-md border px-5 py-2.5 text-sm font-medium transition-colors"
           >
-            {copy.hero.workCta}
-            <ArrowRight
-              className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5"
-              aria-hidden="true"
-            />
-          </Link>
+            <PhoneCall className="h-4 w-4" aria-hidden="true" />
+            {salesCopy[locale].heroCallbackCta}
+          </a>
         </motion.div>
       </motion.div>
     </LayoutGroup>

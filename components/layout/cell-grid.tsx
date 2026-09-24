@@ -10,7 +10,13 @@ import { useEffect, useRef, type ReactNode } from "react";
 const CELL = 48;
 const ROW_HEIGHT = 32;
 
-type Pulse = { col: number; row: number; start: number; life: number };
+type Pulse = {
+  col: number;
+  row: number;
+  start: number;
+  life: number;
+  color: number;
+};
 
 export function CellGrid(): ReactNode {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -26,7 +32,8 @@ export function CellGrid(): ReactNode {
     let width = 0;
     let height = 0;
     let line = "rgba(0,0,0,0.07)";
-    let brand = "#b8472a";
+    let brand = "#f0561d";
+    let palette: string[] = [brand];
     let pointer: { x: number; y: number } | null = null;
     let pulses: Pulse[] = [];
     let frame = 0;
@@ -36,6 +43,9 @@ export function CellGrid(): ReactNode {
       const dark = document.documentElement.classList.contains("dark");
       line = dark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.065)";
       brand = styles.getPropertyValue("--brand").trim() || brand;
+      palette = ["--px-1", "--px-2", "--px-3", "--px-4", "--px-5"].map(
+        (name) => styles.getPropertyValue(name).trim() || brand
+      );
     };
 
     const resize = (): void => {
@@ -55,6 +65,7 @@ export function CellGrid(): ReactNode {
         row: Math.floor(Math.random() * rows * 0.7),
         start: now,
         life: 2600 + Math.random() * 2200,
+        color: Math.floor(Math.random() * 5),
       });
     };
 
@@ -78,8 +89,8 @@ export function CellGrid(): ReactNode {
       pulses = pulses.filter((p) => now - p.start < p.life);
       for (const p of pulses) {
         const t = (now - p.start) / p.life;
-        ctx.globalAlpha = Math.sin(t * Math.PI) * 0.22;
-        ctx.fillStyle = brand;
+        ctx.globalAlpha = Math.sin(t * Math.PI) * 0.35;
+        ctx.fillStyle = palette[p.color] ?? brand;
         ctx.fillRect(
           offsetX + p.col * CELL + 1,
           p.row * ROW_HEIGHT + 1,

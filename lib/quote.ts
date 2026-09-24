@@ -47,6 +47,9 @@ const o = (
 
 const isBuild = (answers: QuoteAnswers): boolean =>
   answers.need !== "maintenance" && answers.need !== "software";
+/** The simple visual refresh is a fixed-scope offer: no features or extras. */
+const hasOptions = (answers: QuoteAnswers): boolean =>
+  isBuild(answers) && answers.need !== "visual";
 const hasPages = (answers: QuoteAnswers): boolean =>
   isBuild(answers) && answers.need !== "landing" && answers.need !== "visual";
 
@@ -164,16 +167,16 @@ export const quoteSteps: readonly QuoteStep[] = [
     },
     options: [
       o("1", "Une seule page", "A single page", { price: 0 }),
-      o("2-5", "2 à 5 pages", "2 to 5 pages", { price: 400 }),
-      o("6-10", "6 à 10 pages", "6 to 10 pages", { price: 1100 }),
-      o("10+", "Plus de 10 pages", "More than 10 pages", { price: 2000 }),
-      o("unknown", "Je ne sais pas encore", "Not sure yet", { price: 400 }),
+      o("2-5", "2 à 5 pages", "2 to 5 pages", { price: 0 }),
+      o("6-10", "6 à 10 pages", "6 to 10 pages", { price: 500 }),
+      o("10+", "Plus de 10 pages", "More than 10 pages", { price: 1000 }),
+      o("unknown", "Je ne sais pas encore", "Not sure yet", { price: 0 }),
     ],
   },
   {
     id: "features",
     kind: "multi",
-    showIf: isBuild,
+    showIf: hasOptions,
     question: {
       fr: "Quelles fonctionnalités vous seraient utiles ?",
       en: "Which features would be useful?",
@@ -184,29 +187,29 @@ export const quoteSteps: readonly QuoteStep[] = [
     },
     options: [
       o("gallery", "Galerie de réalisations", "Project gallery", {
-        price: 300,
+        price: 150,
       }),
       o(
         "booking",
         "Réservation ou prise de rendez-vous",
         "Booking or appointments",
-        { price: 500 }
+        { price: 300 }
       ),
-      o("blog", "Actualités / blog", "News / blog", { price: 400 }),
+      o("blog", "Actualités / blog", "News / blog", { price: 250 }),
       o("cms", "Modifier les contenus moi-même", "Edit the content myself", {
-        price: 400,
+        price: 200,
       }),
       o("multilingual", "Plusieurs langues", "Several languages", {
-        price: 700,
+        price: 400,
       }),
-      o("shop", "Vente en ligne", "Online sales", { price: 1200 }),
+      o("shop", "Vente en ligne", "Online sales", { price: 800 }),
       o("none", "Rien de particulier", "Nothing specific", { price: 0 }),
     ],
   },
   {
     id: "extras",
     kind: "multi",
-    showIf: isBuild,
+    showIf: hasOptions,
     question: {
       fr: "De quoi aurez-vous besoin en plus ?",
       en: "What else will you need?",
@@ -216,18 +219,18 @@ export const quoteSteps: readonly QuoteStep[] = [
       en: "I can take care of what's missing.",
     },
     options: [
-      o("copywriting", "Rédaction des textes", "Copywriting", { price: 390 }),
+      o("copywriting", "Rédaction des textes", "Copywriting", { price: 250 }),
       o("logo", "Création ou modernisation du logo", "Logo design or refresh", {
-        price: 490,
+        price: 290,
       }),
       o("seo", "Optimisation pour Google (SEO local)", "Local SEO for Google", {
-        price: 300,
+        price: 150,
       }),
       o(
         "photos",
         "Sélection de photos professionnelles",
         "Professional photo selection",
-        { price: 150 }
+        { price: 90 }
       ),
       o("nothing", "Rien, j'ai déjà tout", "Nothing, I have everything", {
         price: 0,
@@ -240,19 +243,17 @@ export const quoteSteps: readonly QuoteStep[] = [
     showIf: isBuild,
     question: { fr: "Pour quand ?", en: "When do you need it?" },
     help: {
-      fr: "Un délai court m'oblige à tout prioriser : le prix augmente.",
-      en: "A short deadline means prioritising your project: the price goes up.",
+      fr: "Seule l'urgence (moins de 3 semaines) change le prix.",
+      en: "Only a rush job (under 3 weeks) changes the price.",
     },
     options: [
       o(
         "urgent",
-        "En urgence, sous 3 semaines (+30 %)",
-        "Urgent, within 3 weeks (+30%)",
-        { factor: 1.3 }
+        "En urgence, sous 3 semaines (+15 %)",
+        "Urgent, within 3 weeks (+15%)",
+        { factor: 1.15 }
       ),
-      o("1-2m", "D'ici 1 à 2 mois (+15 %)", "Within 1 to 2 months (+15%)", {
-        factor: 1.15,
-      }),
+      o("1-2m", "D'ici 1 à 2 mois", "Within 1 to 2 months", { factor: 1 }),
       o("3m+", "Dans 3 mois ou plus", "In 3 months or more", { factor: 1 }),
       o("flexible", "Pas de date précise", "No fixed date", { factor: 1 }),
     ],
@@ -365,7 +366,7 @@ export const quoteCopy = {
     title: "Estimez le prix de votre site",
     intro:
       "Quelques questions sur votre projet, et vous obtenez une estimation tout de suite. Je vous envoie ensuite le devis détaillé par e-mail.",
-    introMeta: ["2 minutes", "Prix affiché à la fin", "Sans engagement"],
+    introMeta: ["3 minutes", "Prix affiché à la fin", "Sans engagement"],
     start: "Commencer",
     next: "Continuer",
     back: "Retour",
@@ -403,7 +404,7 @@ export const quoteCopy = {
     title: "Estimate your website price",
     intro:
       "A few questions about your project and you get an estimate right away. I then email you the detailed quote.",
-    introMeta: ["2 minutes", "Price shown at the end", "No commitment"],
+    introMeta: ["3 minutes", "Price shown at the end", "No commitment"],
     start: "Start",
     next: "Continue",
     back: "Back",

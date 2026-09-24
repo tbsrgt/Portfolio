@@ -1,7 +1,6 @@
 import { ContactCard } from "@/components/contact/contact-card";
 import { Hero } from "@/components/hero/hero";
 import { Projects } from "@/components/projects/projects";
-import { AboutTeaser } from "@/components/sales/about-teaser";
 import { Approach } from "@/components/sales/approach";
 import { Faq } from "@/components/sales/faq";
 import { ProjectMarquee } from "@/components/sales/project-marquee";
@@ -29,7 +28,6 @@ export default function HomePage(): ReactNode {
       <Projects variant="home" />
       <WhyMe />
       <Approach />
-      <AboutTeaser />
       <Faq />
       <ContactCard />
     </main>

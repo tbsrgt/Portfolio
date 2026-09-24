@@ -12,6 +12,9 @@ export const serviceValues = [
   "erp-crm",
 ] as const;
 
+/** Values sent by the callback form, in the same order as `callbackSlots` below. */
+export const callbackSlots = ["matin", "midi", "apres-midi", "soir"] as const;
+
 export const salesCopy = {
   fr: {
     heroKicker: "Designer & développeur produit · Aix-en-Provence",
@@ -111,13 +114,11 @@ export const salesCopy = {
     projectsEyebrow: "Réalisations",
     projectsHeading: "Des projets pensés pour leur métier",
     projectsDescription:
-      "Architecture, travaux publics, restaurant, domaine viticole : chaque projet part du métier du client. Survolez une capture pour la faire défiler.",
+      "Logiciel de gestion, architecture, travaux publics : chaque projet part du métier du client. Survolez une capture pour la faire défiler.",
     projectsPageHeading: "Réalisations",
     projectsPageDescription:
       "Des projets conçus et développés de A à Z, chacun pensé pour son métier.",
     visitProject: "Visiter le site",
-    previewOnRequest:
-      "Site de démonstration, aperçu envoyé sur demande par e-mail.",
     allProjects: "Voir toutes les réalisations",
     hoverHint: "Survolez pour faire défiler",
     whyEyebrow: "Pourquoi moi",
@@ -239,6 +240,23 @@ export const salesCopy = {
     formError:
       "L'envoi n'a pas abouti. Vous pouvez aussi m'écrire directement par e-mail.",
     formPrivacy: "Vos informations servent uniquement à vous répondre.",
+    heroCallbackCta: "Être rappelé",
+    heroAvailability: "Disponible pour de nouveaux projets",
+    callbackTitle: "Pas le temps d'écrire ? Je vous rappelle.",
+    callbackText:
+      "Laissez votre numéro et le moment qui vous arrange : je vous rappelle moi-même, sans engagement.",
+    callbackName: "Votre nom",
+    callbackPhone: "Votre numéro",
+    callbackSlot: "Quand vous rappeler ?",
+    callbackSlots: [
+      "Le matin",
+      "Entre midi et deux",
+      "L'après-midi",
+      "En fin de journée",
+    ],
+    callbackTopic: "Votre besoin en un mot (facultatif)",
+    callbackSend: "Me rappeler",
+    callbackSuccess: "C'est noté ! Je vous rappelle au moment indiqué.",
     directEmail: "Écrire directement",
   },
   en: {
@@ -336,12 +354,11 @@ export const salesCopy = {
     projectsEyebrow: "Work",
     projectsHeading: "Projects shaped around their trade",
     projectsDescription:
-      "Architecture, public works, restaurant, wine estate: each project starts from the client's trade. Hover a screenshot to scroll through it.",
+      "Management software, architecture, public works: each project starts from the client's trade. Hover a screenshot to scroll through it.",
     projectsPageHeading: "Work",
     projectsPageDescription:
       "Projects designed and built end to end, each one shaped around its trade.",
     visitProject: "Visit website",
-    previewOnRequest: "Demo website, preview available on request by email.",
     allProjects: "See all work",
     hoverHint: "Hover to scroll",
     whyEyebrow: "Why me",
@@ -457,6 +474,23 @@ export const salesCopy = {
       "Thank you! Your message has been sent. I'll reply personally.",
     formError: "The message could not be sent. You can also email me directly.",
     formPrivacy: "Your information is used only to reply to you.",
+    heroCallbackCta: "Request a call",
+    heroAvailability: "Available for new projects",
+    callbackTitle: "No time to write? I'll call you.",
+    callbackText:
+      "Leave your number and a time that suits you: I'll call you myself, with no commitment.",
+    callbackName: "Your name",
+    callbackPhone: "Your phone number",
+    callbackSlot: "When should I call?",
+    callbackSlots: [
+      "In the morning",
+      "Around lunchtime",
+      "In the afternoon",
+      "Late afternoon",
+    ],
+    callbackTopic: "What you need in a word (optional)",
+    callbackSend: "Call me back",
+    callbackSuccess: "Got it! I'll call you at the time you chose.",
     directEmail: "Email me directly",
   },
 } as const satisfies Record<Locale, object>;

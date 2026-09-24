@@ -11,9 +11,92 @@ export type Project = {
   highlights: Localized<readonly string[]>;
   url?: string;
   accent: string;
+  /** Internal software: shown with a second screen instead of a phone mockup. */
+  kind?: "software";
 };
 
 export const projects: readonly Project[] = [
+  {
+    slug: "cogedoc",
+    title: { fr: "COGEDOC", en: "COGEDOC" },
+    sector: {
+      fr: "Logiciel de gestion · ERP",
+      en: "Management software · ERP",
+    },
+    place: "Entreprise générale du bâtiment",
+    summary: {
+      fr: "Le logiciel interne d'une entreprise générale du bâtiment : de l'appel d'offres reçu jusqu'au marché signé, avec le démarchage commercial et le suivi des fournisseurs au même endroit.",
+      en: "The in-house software of a general building contractor: from the tender received to the signed contract, with sales prospecting and supplier follow-up in one place.",
+    },
+    highlights: {
+      fr: [
+        "Un tableau de bord qui dit quoi traiter en premier",
+        "Consultations, offres client et marchés reliés, sans ressaisie",
+        "Relances fournisseurs et démarchage des architectes automatisés",
+        "Données isolées par entreprise, documents privés et sécurisés",
+      ],
+      en: [
+        "A dashboard that tells you what to handle first",
+        "Tenders, client offers and contracts linked, with no re-typing",
+        "Automated supplier reminders and architect prospecting",
+        "Data isolated per company, private and secure documents",
+      ],
+    },
+    accent: "#e8541a",
+    kind: "software",
+  },
+  {
+    slug: "parentez",
+    title: { fr: "Parentez²", en: "Parentez²" },
+    sector: { fr: "Architecture intérieure", en: "Interior architecture" },
+    place: "Aix-en-Provence",
+    summary: {
+      fr: "Le site d'un studio qui transforme maisons, villas et appartements en Provence.",
+      en: "The website of a studio transforming houses, villas and apartments in Provence.",
+    },
+    highlights: {
+      fr: [
+        "Les projets présentés en grand",
+        "Le studio et ses services expliqués simplement",
+        "Une demande de projet dès l'accueil",
+      ],
+      en: [
+        "Projects shown large",
+        "The studio and its services explained simply",
+        "A project enquiry right from the homepage",
+      ],
+    },
+    url: "https://parentez.vercel.app/",
+    accent: "#8a7a66",
+  },
+  {
+    slug: "mistral-tp",
+    title: { fr: "Mistral TP", en: "Mistral TP" },
+    sector: {
+      fr: "Terrassement & travaux publics",
+      en: "Earthworks & public works",
+    },
+    place: "Lançon-de-Provence",
+    summary: {
+      fr: "Le site d'une entreprise de terrassement, VRD, aménagement extérieur et démolition.",
+      en: "The website of an earthworks, utilities, landscaping and demolition company.",
+    },
+    highlights: {
+      fr: [
+        "Les métiers compris en un coup d'œil",
+        "La méthode de chantier étape par étape",
+        "Les questions fréquentes déjà répondues",
+      ],
+      en: [
+        "Services understood at a glance",
+        "The site method step by step",
+        "Common questions already answered",
+      ],
+    },
+    url: "https://mistraltp.vercel.app/",
+    accent: "#e8590c",
+  },
+
   {
     slug: "concept-renovation",
     title: { fr: "Concept Rénovation", en: "Concept Rénovation" },
@@ -24,8 +107,16 @@ export const projects: readonly Project[] = [
       en: "The website of a company that renovates homes turnkey or advises owners on their own projects (AMO), between Aix and Marseille.",
     },
     highlights: {
-      fr: ["Deux parcours clairs : rénovation clé en main ou AMO", "Des chantiers détaillés avec plans avant/après cotés", "Une demande d'estimation gratuite en cinq étapes"],
-      en: ["Two clear paths: turnkey renovation or AMO advisory", "Detailed projects with measured before/after floor plans", "A free five-step estimate request"],
+      fr: [
+        "Deux parcours clairs : rénovation clé en main ou AMO",
+        "Des chantiers détaillés avec plans avant/après cotés",
+        "Une demande d'estimation gratuite en cinq étapes",
+      ],
+      en: [
+        "Two clear paths: turnkey renovation or AMO advisory",
+        "Detailed projects with measured before/after floor plans",
+        "A free five-step estimate request",
+      ],
     },
     accent: "#b4532a",
   },
@@ -39,27 +130,19 @@ export const projects: readonly Project[] = [
       en: "A bold, appetising website for a seasonal restaurant, from the weekly menu to table booking.",
     },
     highlights: {
-      fr: ["Une réservation en ligne pensée pour le mobile", "La carte de la semaine avec prix et allergènes", "La carte interactive des producteurs"],
-      en: ["Online booking designed for mobile", "The weekly menu with prices and allergens", "An interactive map of local producers"],
+      fr: [
+        "Une réservation en ligne pensée pour le mobile",
+        "La carte de la semaine avec prix et allergènes",
+        "La carte interactive des producteurs",
+      ],
+      en: [
+        "Online booking designed for mobile",
+        "The weekly menu with prices and allergens",
+        "An interactive map of local producers",
+      ],
     },
     url: "https://racines-six.vercel.app/",
     accent: "#e5482c",
-  },
-  {
-    slug: "parentez",
-    title: { fr: "Parentez²", en: "Parentez²" },
-    sector: { fr: "Architecture intérieure", en: "Interior architecture" },
-    place: "Aix-en-Provence",
-    summary: {
-      fr: "Le site d'un studio qui transforme maisons, villas et appartements en Provence.",
-      en: "The website of a studio transforming houses, villas and apartments in Provence.",
-    },
-    highlights: {
-      fr: ["Les projets présentés en grand", "Le studio et ses services expliqués simplement", "Une demande de projet dès l'accueil"],
-      en: ["Projects shown large", "The studio and its services explained simply", "A project enquiry right from the homepage"],
-    },
-    url: "https://parentez.vercel.app/",
-    accent: "#8a7a66",
   },
   {
     slug: "domaine-solane",
@@ -71,25 +154,17 @@ export const projects: readonly Project[] = [
       en: "The website of an organic wine estate at the foot of Sainte-Victoire, telling its family story, wines and visits.",
     },
     highlights: {
-      fr: ["Une fiche détaillée pour chaque cuvée", "La demande de visite en ligne", "Le calendrier de la vigne et le plan d'accès"],
-      en: ["A detailed sheet for every wine", "Online visit requests", "The vineyard calendar and an access map"],
+      fr: [
+        "Une fiche détaillée pour chaque cuvée",
+        "La demande de visite en ligne",
+        "Le calendrier de la vigne et le plan d'accès",
+      ],
+      en: [
+        "A detailed sheet for every wine",
+        "Online visit requests",
+        "The vineyard calendar and an access map",
+      ],
     },
     accent: "#5a1a24",
-  },
-  {
-    slug: "mistral-tp",
-    title: { fr: "Mistral TP", en: "Mistral TP" },
-    sector: { fr: "Terrassement & travaux publics", en: "Earthworks & public works" },
-    place: "Lançon-de-Provence",
-    summary: {
-      fr: "Le site d'une entreprise de terrassement, VRD, aménagement extérieur et démolition.",
-      en: "The website of an earthworks, utilities, landscaping and demolition company.",
-    },
-    highlights: {
-      fr: ["Les métiers compris en un coup d'œil", "La méthode de chantier étape par étape", "Les questions fréquentes déjà répondues"],
-      en: ["Services understood at a glance", "The site method step by step", "Common questions already answered"],
-    },
-    url: "https://mistraltp.vercel.app/",
-    accent: "#e8590c",
   },
 ];

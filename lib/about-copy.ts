@@ -1,59 +1,138 @@
 import type { Locale } from "@/lib/i18n";
 
-export type Chapter = { year: string; place: string; logo: string; logoFill?: boolean; title: string; text: string };
+export type Chapter = {
+  place: string;
+  logo: string;
+  logoFill?: boolean;
+  title: string;
+  text: string;
+};
 
 export const aboutCopy = {
   fr: {
     availability: "Disponible pour de nouveaux projets",
-    heading: "Je dessine et je développe des sites pour les entreprises de Provence.",
-    lead: "Artisans, commerces, restaurants, PME : je m'occupe de tout, du premier message à la mise en ligne. Un seul interlocuteur, et un site qui fait son travail.",
-    ctaQuote: "Demander un devis",
+    heading:
+      "Je conçois les sites et les outils que vos équipes ont envie d'utiliser.",
+    lead: "Je suis Tobias, basé à Aix-en-Provence. Je dessine l'interface, je la développe et je la mets en production : sites web, espaces clients et logiciels de gestion. Vous avez un seul interlocuteur, qui comprend votre métier avant de toucher à l'écran.",
+    ctaQuote: "Démarrer un projet",
     ctaWork: "Voir les réalisations",
     principlesHeading: "Ma façon de travailler",
     principles: [
-      { title: "Un site doit rapporter.", text: "J'ai commencé dans la vente. Chaque page a donc un rôle précis : rassurer, expliquer, puis donner envie d'appeler ou d'écrire." },
-      { title: "Vous parlez à une seule personne.", text: "Design, textes, développement, mise en ligne : pas d'agence, pas d'intermédiaire. Vous échangez directement avec moi, par écrit, du début à la fin." },
-      { title: "Le téléphone d'abord.", text: "La plupart de vos visiteurs arrivent depuis leur mobile. Je conçois pour eux en premier, puis j'adapte à l'ordinateur." },
-      { title: "Vos contenus, en mieux.", text: "Je pars de ce que vous avez déjà, je réorganise et je réécris. Votre image est modernisée sans être trahie." },
+      {
+        title: "Un outil doit rapporter.",
+        text: "Je viens de la vente. Un site doit faire venir des clients, un logiciel doit faire gagner des heures. Si ce n'est pas mesurable, ce n'est pas fini.",
+      },
+      {
+        title: "Le métier avant l'écran.",
+        text: "Je commence par comprendre qui fait quoi, avec quels outils, et où ça coince. L'interface vient ensuite, pas l'inverse.",
+      },
+      {
+        title: "Vous parlez à une seule personne.",
+        text: "Cadrage, design, développement, mise en ligne : pas d'intermédiaire. Ce que vous me dites est ce qui est construit.",
+      },
+      {
+        title: "Tout vous appartient.",
+        text: "Code, données, nom de domaine et comptes d'hébergement sont à votre nom. Vous restez libre, avec ou sans moi.",
+      },
     ],
-    storyHeading: "Du commerce au web",
-    storyLead: "Mon parcours explique ma méthode : j'ai vendu, étudié le marketing, conçu des produits, puis j'ai réuni tout ça dans la création de sites.",
+    storyHeading: "Ce que j'apporte à votre projet",
+    storyLead:
+      "Pas de CV : voici ce que chaque expérience m'a appris, et ce que vous y gagnez.",
     chapters: [
-      { year: "2023", place: "Glass&Bio France", logo: "/logos/glass-and-bio.png", title: "Apprendre à vendre", text: "Au développement commercial, j'ai compris ce qui décide un client à décrocher son téléphone. C'est la base de chaque site que je fais." },
-      { year: "2023 – 2026", place: "Aix Ynov Campus", logo: "", title: "Marketing et communication digitale", text: "Un bachelor pour structurer tout ça : stratégie de contenu, identité de marque, acquisition." },
-      { year: "2025", place: "Vimtails", logo: "/logos/vimtails.png", logoFill: true, title: "Concevoir un produit", text: "Designer produit UX/UI et identité de marque : penser les parcours avant de penser aux couleurs." },
-      { year: "Depuis 2025", place: "COGEBAT", logo: "/logos/cogebat.png", logoFill: true, title: "Parler aux clients du bâtiment", text: "Je crée les contenus social media d'une entreprise du BTP. Je connais les questions que se posent vos clients." },
-      { year: "Depuis 2026", place: "NULLL.CLUB", logo: "/logos/nulll-club.png", logoFill: true, title: "Cofonder un projet à Aix", text: "J'ai cofondé NULLL.CLUB à Aix-en-Provence. Lancer un projet de zéro m'a appris à avancer vite sans bâcler." },
+      {
+        place: "COGEBAT",
+        logo: "/logos/cogebat.png",
+        logoFill: true,
+        title: "Le terrain du bâtiment",
+        text: "J'accompagne une entreprise générale du bâtiment au quotidien, et j'ai conçu puis développé son logiciel de gestion, COGEDOC. Je connais vos contraintes de chantier et de relance.",
+      },
+      {
+        place: "Glass&Bio France",
+        logo: "/logos/glass-and-bio.png",
+        title: "Le sens de la vente",
+        text: "Au développement commercial, j'ai appris ce qui décide un client à décrocher son téléphone. Chaque page que je fais part de là.",
+      },
+      {
+        place: "Vimtails",
+        logo: "/logos/vimtails.png",
+        logoFill: true,
+        title: "La conception produit",
+        text: "En design produit UX/UI, j'ai appris à penser les parcours avant les couleurs. C'est ce qui rend un outil simple à prendre en main.",
+      },
+      {
+        place: "NULLL.CLUB",
+        logo: "/logos/nulll-club.png",
+        logoFill: true,
+        title: "L'esprit d'entreprise",
+        text: "J'ai cofondé un projet à Aix-en-Provence. Lancer de zéro m'a appris à avancer vite sans bâcler.",
+      },
     ] satisfies Chapter[],
-    toolsHeading: "Des outils modernes, un site qui vous appartient",
-    toolsText: "Figma pour dessiner, Next.js pour construire, Vercel pour mettre en ligne. Le résultat : un site rapide, sécurisé, livré à votre nom.",
+    toolsHeading: "Des outils modernes, un résultat qui vous appartient",
+    toolsText:
+      "Figma pour concevoir, Next.js et Supabase pour construire, Vercel pour mettre en ligne, et des outils de développement assistés par IA pour livrer plus vite. Le résultat est rapide, sécurisé et livré à votre nom.",
     workHeading: "Quelques projets récents",
     allWork: "Toutes les réalisations",
   },
   en: {
     availability: "Available for new projects",
-    heading: "I design and build websites for businesses across Provence.",
-    lead: "Trades, shops, restaurants, small companies: I handle everything from the first message to launch. One point of contact, and a website that does its job.",
-    ctaQuote: "Request a quote",
+    heading: "I design the websites and tools your teams actually want to use.",
+    lead: "I'm Tobias, based in Aix-en-Provence. I design the interface, build it and put it into production: websites, client portals and management software. You get one point of contact who understands your business before touching the screen.",
+    ctaQuote: "Start a project",
     ctaWork: "See the work",
     principlesHeading: "How I work",
     principles: [
-      { title: "A website should pay for itself.", text: "I started in sales. So every page has a clear job: reassure, explain, then make people want to call or write." },
-      { title: "You talk to one person.", text: "Design, copy, development, launch: no agency, no middleman. You deal with me directly, in writing, from start to finish." },
-      { title: "Mobile first.", text: "Most of your visitors arrive on their phone. I design for them first, then adapt to desktop." },
-      { title: "Your content, made better.", text: "I start from what you already have, then reorganise and rewrite it. Your image is modernised, not lost." },
+      {
+        title: "A tool should pay for itself.",
+        text: "I come from sales. A website should bring in clients, software should save hours. If it can't be measured, it isn't finished.",
+      },
+      {
+        title: "The trade before the screen.",
+        text: "I start by understanding who does what, with which tools, and where it hurts. The interface comes after, not the other way round.",
+      },
+      {
+        title: "You talk to one person.",
+        text: "Scoping, design, development, launch: no middleman. What you tell me is what gets built.",
+      },
+      {
+        title: "You own everything.",
+        text: "Code, data, domain name and hosting accounts are in your name. You stay free, with or without me.",
+      },
     ],
-    storyHeading: "From sales to the web",
-    storyLead: "My background explains my method: I sold, studied marketing, designed products, then brought it all together in building websites.",
+    storyHeading: "What I bring to your project",
+    storyLead:
+      "No CV: here is what each experience taught me, and what you gain from it.",
     chapters: [
-      { year: "2023", place: "Glass&Bio France", logo: "/logos/glass-and-bio.png", title: "Learning to sell", text: "In business development I learned what makes a customer pick up the phone. It's the foundation of every site I build." },
-      { year: "2023 – 2026", place: "Aix Ynov Campus", logo: "", title: "Marketing and digital communication", text: "A bachelor's degree to structure it all: content strategy, brand identity, acquisition." },
-      { year: "2025", place: "Vimtails", logo: "/logos/vimtails.png", logoFill: true, title: "Designing a product", text: "UX/UI product design and brand identity: thinking about journeys before thinking about colours." },
-      { year: "Since 2025", place: "COGEBAT", logo: "/logos/cogebat.png", logoFill: true, title: "Talking to construction clients", text: "I create social media content for a construction company. I know the questions your customers ask." },
-      { year: "Since 2026", place: "NULLL.CLUB", logo: "/logos/nulll-club.png", logoFill: true, title: "Co-founding a project in Aix", text: "I co-founded NULLL.CLUB in Aix-en-Provence. Starting from scratch taught me to move fast without cutting corners." },
+      {
+        place: "COGEBAT",
+        logo: "/logos/cogebat.png",
+        logoFill: true,
+        title: "Knowing the building trade",
+        text: "I work day to day with a general building contractor, and I designed and built its management software, COGEDOC. I know your site and follow-up constraints.",
+      },
+      {
+        place: "Glass&Bio France",
+        logo: "/logos/glass-and-bio.png",
+        title: "A sense of sales",
+        text: "In business development I learned what makes a customer pick up the phone. Every page I make starts from there.",
+      },
+      {
+        place: "Vimtails",
+        logo: "/logos/vimtails.png",
+        logoFill: true,
+        title: "Product design",
+        text: "In UX/UI product design I learned to think about journeys before colours. That's what makes a tool easy to pick up.",
+      },
+      {
+        place: "NULLL.CLUB",
+        logo: "/logos/nulll-club.png",
+        logoFill: true,
+        title: "An entrepreneurial mindset",
+        text: "I co-founded a project in Aix-en-Provence. Starting from scratch taught me to move fast without cutting corners.",
+      },
     ] satisfies Chapter[],
-    toolsHeading: "Modern tools, a website you own",
-    toolsText: "Figma to design, Next.js to build, Vercel to launch. The result: a fast, secure website delivered in your name.",
+    toolsHeading: "Modern tools, a result you own",
+    toolsText:
+      "Figma to design, Next.js and Supabase to build, Vercel to launch, and AI-assisted development tools to deliver faster. The result is fast, secure and delivered in your name.",
     workHeading: "A few recent projects",
     allWork: "All projects",
   },
