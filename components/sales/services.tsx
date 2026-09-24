@@ -94,8 +94,13 @@ export function Services(): ReactNode {
                             <span className="text-xl font-medium tracking-tight">
                               {offer.title}
                             </span>
-                            <span className="text-brand text-2xl font-medium tabular-nums">
-                              {offer.price}
+                            <span className="flex flex-col items-end">
+                              <span className="text-brand text-2xl font-medium tabular-nums">
+                                {offer.price}
+                              </span>
+                              <span className="text-foreground/55 text-xs">
+                                {offer.priceNote}
+                              </span>
                             </span>
                           </div>
                           <p className="text-foreground/65 mt-1.5 text-sm leading-relaxed">

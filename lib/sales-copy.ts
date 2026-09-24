@@ -42,6 +42,7 @@ export const salesCopy = {
             description:
               "Vos contenus et votre identité, modernisés et réorganisés.",
             badge: "Le plus demandé",
+            priceNote: "soit 3 paiements de 600 €",
             included: [
               "Nouveau design sur mesure",
               "Contenus réorganisés et réécrits",
@@ -303,6 +304,7 @@ export const salesCopy = {
             description:
               "Your content and identity, modernised and reorganised.",
             badge: "Most popular",
+            priceNote: "i.e. 3 payments of €600",
             included: [
               "New tailored design",
               "Content reorganised and rewritten",
