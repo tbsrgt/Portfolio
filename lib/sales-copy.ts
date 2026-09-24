@@ -257,6 +257,16 @@ export const salesCopy = {
     callbackTopic: "Votre besoin en un mot (facultatif)",
     callbackSend: "Me rappeler",
     callbackSuccess: "C'est noté ! Je vous rappelle au moment indiqué.",
+    clientsLabel: "Ils me font confiance",
+    guaranteesEyebrow: "Zéro mauvaise surprise",
+    guaranteesHeading: "Vous savez ce que vous achetez, et vous restez libre.",
+    guarantees: [
+      { value: 3, suffix: " mois", label: "de garantie après la mise en ligne : les anomalies sont corrigées gratuitement." },
+      { value: 24, suffix: " h", label: "de délai de réponse maximum, du premier message à la livraison." },
+      { value: 100, suffix: " %", label: "du code, des données et des comptes à votre nom. Vous partez quand vous voulez." },
+      { value: 0, suffix: " €", label: "avant le devis signé : cadrage gratuit pour un site, chiffré pour un logiciel." },
+    ],
+    guaranteesPayment: "Paiement en 3 fois : 30 % à la commande, 40 % à la validation, 30 % à la mise en ligne.",
     directEmail: "Écrire directement",
   },
   en: {
@@ -491,6 +501,16 @@ export const salesCopy = {
     callbackTopic: "What you need in a word (optional)",
     callbackSend: "Call me back",
     callbackSuccess: "Got it! I'll call you at the time you chose.",
+    clientsLabel: "They trust me",
+    guaranteesEyebrow: "No bad surprises",
+    guaranteesHeading: "You know what you're buying, and you stay free.",
+    guarantees: [
+      { value: 3, suffix: " months", label: "of warranty after launch: defects are fixed free of charge." },
+      { value: 24, suffix: " h", label: "maximum response time, from the first message to delivery." },
+      { value: 100, suffix: " %", label: "of the code, data and accounts in your name. Leave whenever you want." },
+      { value: 0, suffix: " €", label: "before the signed quote: free scoping for a website, priced for software." },
+    ],
+    guaranteesPayment: "Payment in 3 instalments: 30% on order, 40% on approval, 30% at launch.",
     directEmail: "Email me directly",
   },
 } as const satisfies Record<Locale, object>;

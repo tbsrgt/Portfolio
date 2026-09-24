@@ -8,6 +8,7 @@ import { Portrait } from "@/components/about/portrait";
 import { FadeIn } from "@/components/ui/motion-primitives";
 import { LinkedinIcon } from "@/components/ui/linkedin-icon";
 import { PixelBand } from "@/components/ui/pixel-band";
+import { SplitText } from "@/components/ui/split-text";
 import { useLanguage } from "@/lib/i18n";
 import { salesCopy } from "@/lib/sales-copy";
 import { site } from "@/lib/site";
@@ -32,8 +33,8 @@ export function Hero(): ReactNode {
           </p>
 
           <h1 className="text-foreground text-[clamp(2.3rem,6.8vw,3.9rem)] leading-[1.02] font-medium tracking-[-0.035em] text-balance">
-            <span className="block">{copy.hero.titleLine1}</span>
-            <span className="text-brand block">{copy.hero.titleLine2}</span>
+            <span className="block"><SplitText text={copy.hero.titleLine1} /></span>
+            <span className="text-brand block"><SplitText text={copy.hero.titleLine2} delay={0.25} /></span>
           </h1>
 
           <p className="text-foreground/70 max-w-[52ch] text-[18px] leading-[1.45] tracking-tight sm:text-[20px]">

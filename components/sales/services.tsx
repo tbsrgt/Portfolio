@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 
 import { FadeIn } from "@/components/ui/motion-primitives";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { useLanguage } from "@/lib/i18n";
 import { salesCopy } from "@/lib/sales-copy";
 
@@ -50,9 +51,8 @@ export function Services(): ReactNode {
                 delay={0.05 + index * 0.08}
                 className="h-full"
               >
-                <article
-                  className={`flex h-full flex-col rounded-4xl border p-6 sm:p-8 ${software ? "bg-foreground text-background border-transparent" : "border-foreground/8 bg-background/85"}`}
-                >
+                <SpotlightCard className={`flex h-full flex-col rounded-lg border p-6 sm:p-8 ${software ? "bg-foreground text-background border-transparent" : "border-foreground/8 bg-background/85"}`}>
+                <article className="flex h-full flex-col">
                   <div className="flex items-center gap-3">
                     <span
                       className={`inline-flex h-10 w-10 items-center justify-center rounded-xl border ${software ? "border-background/15" : "border-foreground/10"}`}
@@ -145,6 +145,7 @@ export function Services(): ReactNode {
                     <ArrowRight className="h-4 w-4" aria-hidden="true" />
                   </a>
                 </article>
+                </SpotlightCard>
               </FadeIn>
             );
           })}

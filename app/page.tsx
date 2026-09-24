@@ -3,7 +3,8 @@ import { Hero } from "@/components/hero/hero";
 import { Projects } from "@/components/projects/projects";
 import { Approach } from "@/components/sales/approach";
 import { Faq } from "@/components/sales/faq";
-import { ProjectMarquee } from "@/components/sales/project-marquee";
+import { ClientLogos } from "@/components/sales/client-logos";
+import { Guarantees } from "@/components/sales/guarantees";
 import { Services } from "@/components/sales/services";
 import { WhyMe } from "@/components/sales/why-me";
 import { createMetadata } from "@/lib/metadata";
@@ -22,10 +23,11 @@ export default function HomePage(): ReactNode {
     <main id="main-content" className="flex flex-1 flex-col gap-20 sm:gap-28">
       <div className="flex flex-col">
         <Hero />
-        <ProjectMarquee />
+        <ClientLogos />
       </div>
       <Services />
       <Projects variant="home" />
+      <Guarantees />
       <WhyMe />
       <Approach />
       <Faq />
