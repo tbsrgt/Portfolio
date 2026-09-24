@@ -88,7 +88,7 @@ export function ContactCard(): ReactNode {
                     className={`${detailClass} underline underline-offset-4`}
                   >
                     <Mail className="h-4 w-4" aria-hidden="true" />
-                    {site.email}
+                    {sales.directEmail}
                   </a>
                 </li>
                 <li>

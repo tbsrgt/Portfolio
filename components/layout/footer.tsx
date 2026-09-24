@@ -85,7 +85,7 @@ export function Footer(): ReactNode {
                   href={`mailto:${site.email}`}
                   className={`${linkClass} break-all`}
                 >
-                  {site.email}
+                  {copy.contact.emailLabel}
                 </a>
               </li>
               <li>

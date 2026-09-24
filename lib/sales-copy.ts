@@ -50,27 +50,28 @@ export const salesCopy = {
             ],
           },
           {
-            title: "Refonte visuelle",
-            price: "dès 500 €",
-            description:
-              "Je modernise simplement le look de votre site : mêmes pages, mêmes contenus, un rendu actuel sur mobile.",
-          },
-          {
             title: "Site vitrine",
             price: "dès 2 000 €",
             description:
               "5 à 8 pages pour présenter clairement votre activité.",
           },
           {
-            title: "Landing page",
+            title: "Site une page / landing page",
             price: "dès 900 €",
-            description: "Une page dédiée à une offre, pensée pour convertir.",
+            description:
+              "Une seule page pour présenter votre activité ou une offre, avec un formulaire de contact.",
           },
           {
             title: "Hébergement & maintenance",
             price: "dès 49 €/mois",
             description:
               "Mises à jour, sauvegardes, surveillance et petites évolutions.",
+          },
+          {
+            title: "Refonte visuelle (petit budget)",
+            price: "dès 500 €",
+            description:
+              "Mêmes pages, mêmes textes : je modernise seulement le look, avec un rendu propre sur mobile. Sans réécriture ni référencement.",
           },
         ],
         cta: "Estimer mon site",
@@ -199,6 +200,14 @@ export const salesCopy = {
         a: "Oui, comme outil de développement, pour aller plus vite. Chaque ligne est relue, testée et validée par moi. L'IA ne remplace ni le cadrage, ni la conception, ni la responsabilité : c'est moi qui m'engage.",
       },
       {
+        q: "Et si vous n'êtes plus disponible ?",
+        a: "Vous n'êtes jamais bloqué : le code source vous est remis, documenté, et tous les comptes sont à votre nom. N'importe quel développeur peut reprendre le projet. C'est écrit dans le devis.",
+      },
+      {
+        q: "Où sont hébergées les données, et sont-elles sécurisées ?",
+        a: "Dans l'Union européenne (Paris ou Francfort), sur des comptes ouverts au nom de votre entreprise. Chaque société ne voit que ses données, les fichiers sont privés, et des sauvegardes automatiques sont faites chaque jour.",
+      },
+      {
         q: "Et après la mise en ligne ?",
         a: "Une garantie couvre les anomalies pendant 3 mois. Ensuite, une formule de maintenance assure les mises à jour de sécurité, les sauvegardes et les évolutions, avec un tarif mensuel fixe.",
       },
@@ -264,7 +273,7 @@ export const salesCopy = {
       { value: 3, suffix: " mois", label: "de garantie après la mise en ligne : les anomalies sont corrigées gratuitement." },
       { value: 24, suffix: " h", label: "de délai de réponse maximum, du premier message à la livraison." },
       { value: 100, suffix: " %", label: "du code, des données et des comptes à votre nom. Vous partez quand vous voulez." },
-      { value: 0, suffix: " €", label: "avant le devis signé : cadrage gratuit pour un site, chiffré pour un logiciel." },
+      { value: 0, suffix: " €", label: "d'engagement avant le devis signé : premier échange et estimation gratuits." },
     ],
     guaranteesPayment: "Paiement en 3 fois : 30 % à la commande, 40 % à la validation, 30 % à la mise en ligne.",
     directEmail: "Écrire directement",
@@ -302,25 +311,26 @@ export const salesCopy = {
             ],
           },
           {
-            title: "Visual refresh",
-            price: "from €500",
-            description:
-              "I simply modernise the look of your website: same pages, same content, a current feel on mobile.",
-          },
-          {
             title: "Showcase website",
             price: "from €2,000",
             description: "5 to 8 pages that present your business clearly.",
           },
           {
-            title: "Landing page",
+            title: "One-page site / landing page",
             price: "from €900",
-            description: "One page for one offer, built to convert.",
+            description:
+              "A single page to present your business or an offer, with a contact form.",
           },
           {
             title: "Hosting & maintenance",
             price: "from €49/month",
             description: "Updates, backups, monitoring and small improvements.",
+          },
+          {
+            title: "Visual refresh (small budget)",
+            price: "from €500",
+            description:
+              "Same pages, same text: I only modernise the look, with a clean result on mobile. No rewriting, no SEO.",
           },
         ],
         cta: "Estimate my website",
@@ -448,6 +458,14 @@ export const salesCopy = {
         a: "Yes, as a development tool, to move faster. Every line is reviewed, tested and approved by me. AI doesn't replace scoping, design or accountability: I'm the one who commits.",
       },
       {
+        q: "What if you're no longer available?",
+        a: "You're never stuck: the source code is handed over, documented, and every account is in your name. Any developer can take over the project. It's written in the quote.",
+      },
+      {
+        q: "Where is the data hosted, and is it secure?",
+        a: "In the European Union (Paris or Frankfurt), on accounts opened in your company's name. Each company only sees its own data, files are private, and automatic backups run every day.",
+      },
+      {
         q: "What happens after launch?",
         a: "A 3-month warranty covers defects. After that, a maintenance plan handles security updates, backups and improvements at a fixed monthly price.",
       },
@@ -508,7 +526,7 @@ export const salesCopy = {
       { value: 3, suffix: " months", label: "of warranty after launch: defects are fixed free of charge." },
       { value: 24, suffix: " h", label: "maximum response time, from the first message to delivery." },
       { value: 100, suffix: " %", label: "of the code, data and accounts in your name. Leave whenever you want." },
-      { value: 0, suffix: " €", label: "before the signed quote: free scoping for a website, priced for software." },
+      { value: 0, suffix: " €", label: "of commitment before the signed quote: first conversation and estimate are free." },
     ],
     guaranteesPayment: "Payment in 3 instalments: 30% on order, 40% on approval, 30% at launch.",
     directEmail: "Email me directly",

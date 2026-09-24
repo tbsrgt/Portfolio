@@ -11,7 +11,7 @@ type Client = { name: string; src?: string };
 
 const clients: readonly Client[] = [
   { name: "COGEBAT" },
-  { name: "Adresse Privée", src: "/logos/adresse-privee.png" },
+  { name: "Adresse Privée" },
   { name: "Parentez²", src: "/logos/parentez.svg" },
   { name: "Mistral TP" },
   { name: "Vimtails" },

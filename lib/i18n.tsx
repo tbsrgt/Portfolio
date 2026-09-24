@@ -44,6 +44,7 @@ export const translations = {
       description:
         "Website, client portal or software: describe what you need in a few lines. I reply personally by email.",
       button: "Start a project",
+      emailLabel: "Send an email",
       builtWith: "Designed and built by Tobias Ringot",
       location: "Based in Aix-en-Provence",
     },
@@ -89,6 +90,7 @@ export const translations = {
       description:
         "Site, espace client ou logiciel : décrivez votre besoin en quelques lignes. Je vous réponds personnellement par e-mail.",
       button: "Démarrer un projet",
+      emailLabel: "Envoyer un e-mail",
       builtWith: "Conçu et développé par Tobias Ringot",
       location: "Basé à Aix-en-Provence",
     },
