@@ -2,7 +2,7 @@
 
 import { useState, type FormEvent, type ReactNode } from "react";
 import { useLanguage } from "@/lib/i18n";
-import { salesCopy } from "@/lib/sales-copy";
+import { salesCopy, serviceValues } from "@/lib/sales-copy";
 
 type SubmitState = "idle" | "sending" | "success" | "error";
 
@@ -66,7 +66,7 @@ export function ContactForm(): ReactNode {
         <select className={inputClass} name="service" required defaultValue="">
           <option value="" disabled>{copy.formServicePlaceholder}</option>
           {copy.formServices.map((service, index) => (
-            <option key={service} value={["redesign", "showcase", "landing", "maintenance"][index]}>{service}</option>
+            <option key={service} value={serviceValues[index]}>{service}</option>
           ))}
         </select>
       </label>

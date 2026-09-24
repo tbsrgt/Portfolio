@@ -7,13 +7,13 @@ export const contentType = "image/png";
 export default function OpenGraphImage(): ImageResponse {
   return new ImageResponse(
     <div style={{ background: "#fafafa", color: "#111", width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "70px 78px", fontFamily: "sans-serif" }}>
-      <div style={{ fontSize: 30, fontWeight: 600 }}>Tobias Ringot · Web designer à Aix-en-Provence</div>
+      <div style={{ fontSize: 30, fontWeight: 600 }}>Tobias Ringot · Designer & développeur produit</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
         <div style={{ display: "flex", flexDirection: "column", fontSize: 72, fontWeight: 600, letterSpacing: -3, lineHeight: 1.05 }}>
-          <span>Votre activité évolue.</span>
-          <span>Votre site aussi.</span>
+          <span>Des sites qui convainquent.</span>
+          <span>Des logiciels qui font gagner des heures.</span>
         </div>
-        <div style={{ fontSize: 28, color: "#555" }}>Refonte de site internet · à partir de 1 490 €</div>
+        <div style={{ fontSize: 28, color: "#555" }}>Sites web · Espaces clients · Logiciels métiers · ERP / CRM</div>
       </div>
     </div>,
     size,

@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
 
 export const metadata: Metadata = createMetadata({
   title: "À propos de Tobias Ringot",
-  description: "Tobias Ringot, web designer à Aix-en-Provence : refontes et sites vitrines pour les entreprises de Provence, du design à la mise en ligne.",
+  description: "Tobias Ringot, designer & développeur produit à Aix-en-Provence : sites web et logiciels sur mesure, du cadrage à la mise en production.",
   path: "/about",
 });
 

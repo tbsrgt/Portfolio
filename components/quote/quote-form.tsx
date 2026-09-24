@@ -141,7 +141,7 @@ export function QuoteForm(): ReactNode {
         <span className="bg-foreground text-background inline-flex h-12 w-12 items-center justify-center rounded-full">
           <Check className="h-6 w-6" aria-hidden="true" />
         </span>
-        <h1 className="text-foreground mt-8 font-serif text-[2.5rem] leading-[1.05] font-medium tracking-tight sm:text-[3.25rem]">{copy.successTitle}</h1>
+        <h1 className="text-foreground mt-8 text-[2.5rem] leading-[1.05] font-medium tracking-tight sm:text-[3.25rem]">{copy.successTitle}</h1>
         <p className="text-foreground/65 mt-5 max-w-[46ch] text-lg leading-relaxed">{copy.successText}</p>
         <div className="mt-10 flex flex-wrap gap-3">
           <Link href="/" className="focus-ring bg-foreground text-background inline-flex min-h-12 items-center rounded-full px-6 text-sm font-medium">{copy.backHome}</Link>
@@ -193,7 +193,7 @@ export function QuoteForm(): ReactNode {
                     {site.role} · {site.city}
                   </p>
                 </div>
-                <h1 ref={headingRef} tabIndex={-1} className="text-foreground mt-8 max-w-[14ch] font-serif text-[2.75rem] leading-[1] font-medium tracking-tight outline-none sm:text-[4rem]">
+                <h1 ref={headingRef} tabIndex={-1} className="text-foreground mt-8 max-w-[14ch] text-[2.75rem] leading-[1] font-medium tracking-tight outline-none sm:text-[4rem]">
                   {copy.title}
                 </h1>
                 <p className="text-foreground/65 mt-6 max-w-[44ch] text-lg leading-relaxed sm:text-xl">{copy.intro}</p>
@@ -265,7 +265,7 @@ function StepView({ step, index, answers, setAnswers, choose, headingRef, stepLa
         <span className="sr-only">{stepLabel}. </span>
         <span aria-hidden="true" className="tabular-nums">{String(index + 1).padStart(2, "0")} →</span>
       </p>
-      <h1 id="quote-question" ref={headingRef} tabIndex={-1} className="text-foreground mt-3 font-serif text-[2rem] leading-[1.1] font-medium tracking-tight text-balance outline-none sm:text-[2.75rem]">
+      <h1 id="quote-question" ref={headingRef} tabIndex={-1} className="text-foreground mt-3 text-[2rem] leading-[1.1] font-medium tracking-tight text-balance outline-none sm:text-[2.75rem]">
         {step.question[locale]}
       </h1>
       {step.help ? <p className="text-foreground/55 mt-3 text-base">{step.help[locale]}</p> : null}
@@ -345,9 +345,9 @@ function EstimateView({ answers }: { answers: QuoteAnswers }): ReactNode {
   if (estimate.kind === "custom") {
     return (
       <div className="border-foreground/10 bg-background mt-8 rounded-3xl border p-6 sm:p-8">
-        <p className="text-foreground font-serif text-[3rem] leading-none font-medium tracking-tight sm:text-[4rem]">{copy.estimateCustom}</p>
+        <p className="text-foreground text-[3rem] leading-none font-medium tracking-tight sm:text-[4rem]">{copy.estimateCustom}</p>
         <p className="text-foreground/65 mt-4 max-w-[48ch] leading-relaxed">
-          {estimate.reason === "maintenance" ? copy.estimateCustomMaintenance : copy.estimateCustomScope}
+          {estimate.reason === "maintenance" ? copy.estimateCustomMaintenance : estimate.reason === "software" ? copy.estimateCustomSoftware : copy.estimateCustomScope}
         </p>
       </div>
     );
@@ -358,7 +358,7 @@ function EstimateView({ answers }: { answers: QuoteAnswers }): ReactNode {
   return (
     <div className="border-foreground/10 bg-background mt-8 rounded-3xl border p-6 sm:p-8">
       <p className="text-foreground/55 text-sm">{copy.estimateFrom}</p>
-      <p className="text-foreground mt-1 font-serif text-[3.5rem] leading-none font-medium tracking-tight tabular-nums sm:text-[4.5rem]">
+      <p className="text-foreground mt-1 text-[3.5rem] leading-none font-medium tracking-tight tabular-nums sm:text-[4.5rem]">
         {formatPrice(estimate.amount, locale)}
       </p>
       <details className="group mt-6">

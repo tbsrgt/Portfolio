@@ -33,22 +33,22 @@ export const translations = {
     language: "Choose language",
     skip: "Skip to main content",
     hero: {
-      titleLine1: "Your business grows.",
-      titleLine2: "Your website should too.",
+      titleLine1: "Websites that convince.",
+      titleLine2: "Software that saves hours.",
       description:
-        "I redesign business websites so they build trust from the very first second, on every screen.",
+        "I design and build websites, client portals and custom business software for companies. One point of contact from scoping to production, delivered in weeks rather than months.",
       workCta: "See my work",
     },
     contact: {
-      heading: "Let's talk about your website",
+      heading: "Let's talk about your project",
       description:
-        "Tell me about your business and your current website. I reply personally by email.",
+        "Website, client portal or software: describe what you need in a few lines. I reply personally by email.",
       button: "Start a project",
       builtWith: "Designed and built by Tobias Ringot",
       location: "Based in Aix-en-Provence",
     },
     footer: {
-      tagline: "Website redesign and showcase websites in Aix-en-Provence and across Provence.",
+      tagline: "Websites and custom software for businesses, from Aix-en-Provence.",
       navigation: "Navigation",
       contact: "Contact",
       legal: "Legal notice",
@@ -78,22 +78,22 @@ export const translations = {
     language: "Choisir la langue",
     skip: "Aller au contenu principal",
     hero: {
-      titleLine1: "Votre activité évolue.",
-      titleLine2: "Votre site aussi.",
+      titleLine1: "Des sites qui convainquent.",
+      titleLine2: "Des logiciels qui font gagner des heures.",
       description:
-        "Je modernise les sites internet des entreprises pour qu'ils inspirent confiance dès la première seconde, sur tous les écrans.",
+        "Je conçois et développe des sites web, des espaces clients et des logiciels de gestion sur mesure pour les entreprises. Un seul interlocuteur, du cadrage à la mise en production, livré en semaines plutôt qu'en mois.",
       workCta: "Voir mes réalisations",
     },
     contact: {
-      heading: "Parlons de votre site",
+      heading: "Parlons de votre projet",
       description:
-        "Présentez-moi votre activité et votre site actuel. Je vous réponds personnellement par e-mail.",
+        "Site, espace client ou logiciel : décrivez votre besoin en quelques lignes. Je vous réponds personnellement par e-mail.",
       button: "Démarrer un projet",
       builtWith: "Conçu et développé par Tobias Ringot",
       location: "Basé à Aix-en-Provence",
     },
     footer: {
-      tagline: "Refonte et création de sites vitrines à Aix-en-Provence et partout en Provence.",
+      tagline: "Sites web et logiciels sur mesure pour les entreprises, depuis Aix-en-Provence.",
       navigation: "Navigation",
       contact: "Contact",
       legal: "Mentions légales",

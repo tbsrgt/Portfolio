@@ -32,7 +32,7 @@ export function Projects({ variant = "page" }: { variant?: "home" | "page" }): R
             <ScrollReveal
               as="h2"
               id="projects-heading"
-              textClassName="text-foreground font-serif text-balance text-[2.5rem] leading-[1.05] font-medium tracking-tight md:text-[3rem] lg:text-[3.5rem]"
+              textClassName="text-foreground text-balance text-[2.5rem] leading-[1.05] font-medium tracking-tight md:text-[3rem] lg:text-[3.5rem]"
             >
               {copy.projectsHeading}
             </ScrollReveal>

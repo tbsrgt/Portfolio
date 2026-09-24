@@ -28,8 +28,19 @@ export function ProjectMarquee(): ReactNode {
   const label = salesCopy[locale].marqueeLabel;
 
   return (
-    <section aria-label={label} className="border-foreground/10 mt-[74px] border-y py-6 sm:py-7">
-      <LogoLoop logos={items} speed={32} gap={20} logoHeight={120} pauseOnHover fadeOut ariaLabel={label} />
+    <section
+      aria-label={label}
+      className="border-foreground/10 mt-[74px] border-y py-6 sm:py-7"
+    >
+      <LogoLoop
+        logos={items}
+        speed={32}
+        gap={20}
+        logoHeight={120}
+        pauseOnHover
+        fadeOut
+        ariaLabel={label}
+      />
     </section>
   );
 }

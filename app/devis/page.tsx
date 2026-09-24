@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 
 export const metadata: Metadata = createMetadata({
   title: "Demande de devis",
-  description: "Décrivez votre projet de site internet en 3 minutes et recevez un devis personnalisé de Tobias Ringot, web designer à Aix-en-Provence.",
+  description: "Décrivez votre projet de site ou de logiciel en 3 minutes et recevez un devis personnalisé de Tobias Ringot, designer & développeur produit à Aix-en-Provence.",
   path: "/devis",
 });
 

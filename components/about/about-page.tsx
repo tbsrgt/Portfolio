@@ -13,7 +13,7 @@ import { useLanguage } from "@/lib/i18n";
 import { projects } from "@/lib/projects";
 import { site } from "@/lib/site";
 
-const sectionHeading = "text-foreground font-serif text-[2.25rem] leading-[1.05] font-medium tracking-tight text-balance sm:text-[3rem]";
+const sectionHeading = "text-foreground text-[2.25rem] leading-[1.05] font-medium tracking-tight text-balance sm:text-[3rem]";
 
 export function AboutPage(): ReactNode {
   const { locale, copy: i18n } = useLanguage();
@@ -41,7 +41,7 @@ export function AboutPage(): ReactNode {
         </FadeIn>
 
         <FadeIn delay={0.1}>
-          <h1 className="text-foreground mt-10 max-w-[17ch] font-serif text-[2.75rem] leading-[0.98] font-medium tracking-tight sm:text-[4.25rem] lg:text-[5.5rem]">
+          <h1 className="text-foreground mt-10 max-w-[17ch] text-[2.75rem] leading-[0.98] font-medium tracking-tight sm:text-[4.25rem] lg:text-[5.5rem]">
             {copy.heading}
           </h1>
         </FadeIn>
@@ -81,7 +81,7 @@ export function AboutPage(): ReactNode {
               <Reveal delay={index * 0.06} className="border-foreground/12 flex h-full gap-5 border-t py-8 sm:gap-8 sm:py-10">
                 <span className="text-foreground/40 pt-2 text-sm tabular-nums">{String(index + 1).padStart(2, "0")}</span>
                 <div>
-                  <h3 className="text-foreground font-serif text-[1.6rem] leading-tight font-medium tracking-tight sm:text-[1.9rem]">
+                  <h3 className="text-foreground text-[1.6rem] leading-tight font-medium tracking-tight sm:text-[1.9rem]">
                     {principle.title}
                   </h3>
                   <p className="text-foreground/65 mt-3 max-w-[44ch] text-base leading-relaxed sm:text-[17px]">{principle.text}</p>
@@ -96,7 +96,7 @@ export function AboutPage(): ReactNode {
         <div className="mx-auto grid w-full max-w-300 gap-12 px-6 sm:px-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
           <div className="lg:sticky lg:top-32 lg:self-start">
             <Reveal>
-              <h2 id="story-heading" className="font-serif text-[2.25rem] leading-[1.05] font-medium tracking-tight text-balance sm:text-[3rem]">
+              <h2 id="story-heading" className="text-[2.25rem] leading-[1.05] font-medium tracking-tight text-balance sm:text-[3rem]">
                 {copy.storyHeading}
               </h2>
               <p className="text-background/65 mt-5 max-w-[40ch] text-lg leading-relaxed">{copy.storyLead}</p>

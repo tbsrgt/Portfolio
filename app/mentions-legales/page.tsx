@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 
 export const metadata: Metadata = createMetadata({
   title: "Mentions légales",
-  description: "Mentions légales et politique de confidentialité du site de Tobias Ringot, web designer à Aix-en-Provence.",
+  description: "Mentions légales et politique de confidentialité du site de Tobias Ringot, designer & développeur produit à Aix-en-Provence.",
   path: "/mentions-legales",
 });
 
@@ -18,7 +18,7 @@ export default function LegalPage(): ReactNode {
 
   return (
     <main id="main-content" className="mx-auto w-full max-w-176 flex-1 px-6 pt-44 pb-20 sm:px-10 sm:pt-56">
-      <h1 className="text-foreground font-serif text-[2.5rem] leading-[1.05] font-medium tracking-tight md:text-[3rem]">
+      <h1 className="text-foreground text-[2.5rem] leading-[1.05] font-medium tracking-tight md:text-[3rem]">
         Mentions légales
       </h1>
 
@@ -26,7 +26,7 @@ export default function LegalPage(): ReactNode {
         <section>
           <h2>Éditeur du site</h2>
           <p>
-            {site.name}, web designer
+            {site.name}, designer & développeur produit
             <br />
             Aix-en-Provence (13), France
             <br />

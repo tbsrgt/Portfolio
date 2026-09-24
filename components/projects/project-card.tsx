@@ -40,7 +40,7 @@ export function ProjectCard({ project, index, total }: Props): ReactNode {
             </span>
           </div>
 
-          <h3 className="text-foreground mt-5 font-serif text-[2.5rem] leading-[0.95] font-medium tracking-tight sm:text-[3.25rem]">
+          <h3 className="text-foreground mt-5 text-[2.5rem] leading-[0.95] font-medium tracking-tight sm:text-[3.25rem]">
             {title}
           </h3>
           <p className="text-foreground/55 mt-2 text-sm">{project.place}</p>

@@ -17,14 +17,20 @@ export function Faq(): ReactNode {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faq" aria-labelledby="faq-heading" className="scroll-mt-24 px-6 sm:px-10">
+    <section
+      id="faq"
+      aria-labelledby="faq-heading"
+      className="scroll-mt-24 px-6 sm:px-10"
+    >
       <div className="mx-auto grid max-w-275 gap-10 md:grid-cols-[0.8fr_1.2fr] md:gap-14">
         <FadeIn>
-          <p className="text-foreground/50 mb-5 text-xs font-semibold tracking-[0.18em] uppercase">{copy.faqEyebrow}</p>
+          <p className="text-foreground/50 mb-5 text-xs font-semibold tracking-[0.18em] uppercase">
+            {copy.faqEyebrow}
+          </p>
           <ScrollReveal
             as="h2"
             id="faq-heading"
-            textClassName="text-foreground font-serif text-[2.5rem] leading-[1.05] font-medium tracking-tight md:text-[3rem]"
+            textClassName="text-foreground text-[2.5rem] leading-[1.05] font-medium tracking-tight md:text-[3rem]"
           >
             {copy.faqHeading}
           </ScrollReveal>
@@ -62,7 +68,9 @@ export function Faq(): ReactNode {
                       transition={{ duration: 0.35, ease: EASE }}
                       className="overflow-hidden"
                     >
-                      <p className="text-foreground/65 max-w-[60ch] pb-6 leading-relaxed">{item.a}</p>
+                      <p className="text-foreground/65 max-w-[60ch] pb-6 leading-relaxed">
+                        {item.a}
+                      </p>
                     </motion.div>
                   ) : null}
                 </AnimatePresence>

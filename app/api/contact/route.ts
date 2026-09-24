@@ -1,6 +1,7 @@
 import { emailPattern, getField, readJson, sendMail } from "@/lib/mailer";
+import { serviceValues } from "@/lib/sales-copy";
 
-const allowedServices = new Set(["redesign", "showcase", "landing", "maintenance"]);
+const allowedServices = new Set<string>(serviceValues);
 
 export async function POST(request: Request): Promise<Response> {
   const body = await readJson(request);

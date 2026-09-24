@@ -7,7 +7,7 @@ import type { ReactNode } from "react";
 
 export const metadata: Metadata = createMetadata({
   title: "Réalisations",
-  description: "Réalisations de Tobias Ringot, web designer à Aix-en-Provence : sites vitrines, landing pages et sites sur mesure.",
+  description: "Réalisations de Tobias Ringot, designer & développeur produit à Aix-en-Provence : sites sur mesure et outils métiers.",
   path: "/projects",
 });
 

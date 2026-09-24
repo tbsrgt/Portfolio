@@ -32,7 +32,7 @@ export function ContactCard(): ReactNode {
               <ScrollReveal
                 as="h2"
                 id="contact-heading"
-                textClassName="text-foreground font-serif text-[2.5rem] leading-[1.05] font-medium tracking-tight sm:text-[3rem]"
+                textClassName="text-foreground text-[2.5rem] leading-[1.05] font-medium tracking-tight sm:text-[3rem]"
               >
                 {copy.contact.heading}
               </ScrollReveal>
@@ -52,7 +52,7 @@ export function ContactCard(): ReactNode {
                     <ArrowUpRight className="h-5 w-5" aria-hidden="true" />
                   </span>
                 </span>
-                <span className="mt-6 font-serif text-[1.75rem] leading-tight font-medium tracking-tight">{sales.quoteCardTitle}</span>
+                <span className="mt-6 text-[1.75rem] leading-tight font-medium tracking-tight">{sales.quoteCardTitle}</span>
                 <span className="text-background/70 mt-2 text-[15px] leading-relaxed">{sales.quoteCardText}</span>
                 <span className="text-background/60 mt-5 flex flex-wrap gap-x-4 gap-y-1 text-xs">
                   {sales.quoteCardMeta.map((item) => (
