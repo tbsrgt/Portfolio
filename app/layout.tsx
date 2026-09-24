@@ -43,7 +43,7 @@ const structuredData = {
   description: siteConfig.description,
   address: { "@type": "PostalAddress", addressLocality: site.city, addressRegion: "Provence-Alpes-Côte d'Azur", addressCountry: "FR" },
   areaServed: "Provence",
-  priceRange: "À partir de 1 500 €",
+  priceRange: "À partir de 1 490 €",
   sameAs: [site.linkedin],
   founder: { "@type": "Person", name: site.name, jobTitle: site.role, sameAs: [site.linkedin] },
 };

@@ -21,6 +21,13 @@ Le formulaire envoie les demandes à `tobiasringot13@gmail.com` via l'API Resend
 
 Ne jamais commiter la clé API. La route `/api/contact` valide les champs, limite la taille du message et contient un champ piège anti-bot. Pour un trafic important, ajouter une protection anti-spam et une limitation de débit côté serveur.
 
+## Demande de devis
+
+- La page `/devis` pose ses questions une par écran (touches A, B, C… pour répondre, Entrée pour continuer), puis affiche une estimation avant de demander le nom et l'e-mail.
+- Les prix sont les champs `price` (en euros) et `factor` (coefficient du délai) de `lib/quote.ts`. Le total est arrondi à un prix en « 90 », avec un minimum de 1 090 € ; au-delà de 5 990 €, et pour la maintenance, la page affiche « Sur devis ».
+- Les questions et leurs réponses possibles sont définies une seule fois dans `lib/quote.ts` : le formulaire et la route `/api/quote` les utilisent tous les deux.
+- La demande arrive par e-mail via Resend, avec la même configuration que le formulaire de contact (`lib/mailer.ts`).
+
 ## Réalisations
 
 - Les données des projets sont dans `lib/projects.ts`, affichées dans une seule section « Réalisations » (les 4 premières sur l'accueil).

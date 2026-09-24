@@ -198,7 +198,7 @@ export function Nav(): ReactNode {
     { label: copy.nav.about, href: "/about" },
   ];
   const pathname = usePathname();
-  const contactHref = pathname === "/mentions-legales" ? "/#contact" : "#contact";
+  const contactHref = pathname === "/mentions-legales" || pathname === "/devis" ? "/#contact" : "#contact";
   const listRef = useRef<HTMLUListElement>(null);
   const itemRefs = useRef<Array<HTMLLIElement | null>>([]);
   const [pillRect, setPillRect] = useState<{
@@ -217,11 +217,11 @@ export function Nav(): ReactNode {
 
   useEffect(() => {
     const titles = {
-      fr: { home: "Refonte de site internet à Aix-en-Provence", projects: "Réalisations", about: "À propos", legal: "Mentions légales" },
-      en: { home: "Website redesign in Aix-en-Provence", projects: "Work", about: "About", legal: "Legal notice" },
+      fr: { home: "Refonte de site internet à Aix-en-Provence", projects: "Réalisations", about: "À propos", legal: "Mentions légales", quote: "Demande de devis" },
+      en: { home: "Website redesign in Aix-en-Provence", projects: "Work", about: "About", legal: "Legal notice", quote: "Quote request" },
     };
     const page =
-      pathname === "/projects" ? "projects" : pathname === "/about" ? "about" : pathname === "/mentions-legales" ? "legal" : "home";
+      pathname === "/projects" ? "projects" : pathname === "/about" ? "about" : pathname === "/mentions-legales" ? "legal" : pathname === "/devis" ? "quote" : "home";
     document.title = `${titles[locale][page]} | Tobias Ringot`;
   }, [locale, pathname]);
 

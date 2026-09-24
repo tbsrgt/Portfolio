@@ -42,7 +42,7 @@ export const translations = {
     contact: {
       heading: "Let's talk about your website",
       description:
-        "Tell me about your business and your current website. I reply personally and we can set up a 20-minute video call.",
+        "Tell me about your business and your current website. I reply personally by email.",
       button: "Start a project",
       builtWith: "Designed and built by Tobias Ringot",
       location: "Based in Aix-en-Provence",
@@ -55,45 +55,8 @@ export const translations = {
       rights: "All rights reserved.",
     },
     about: {
-      hello: "Hello! I'm",
-      intro1:
-        "I'm a web designer based in Aix-en-Provence. I design and build redesigns and showcase websites for businesses in the region: trades, industry, shops and independents.",
-      intro2:
-        "Before the web, I worked in business development. It taught me that a website's first job is to reassure and bring in enquiries, and I keep that in mind on every page.",
-      intro3:
-        "I have also worked as a UX/UI product designer, I create social media content for COGEBAT and I co-founded NULLL.CLUB in Aix-en-Provence.",
       photoAlt: "Portrait of Tobias Ringot",
-      linkedin: "See my LinkedIn profile",
-      experience: "Experience",
-      education: "Education",
-      skillsHeading: "What I bring",
-      stack: "Tools I use",
       resetStack: "Reset tools",
-      showLess: "Show less",
-      showMore: (count: number) => `Show ${count} more`,
-      roles: [
-        "Co-founder",
-        "Social Media Designer",
-        "Product Designer — UX/UI & brand identity",
-        "Business development & social media",
-      ],
-      periods: [
-        "May 2026 - Present",
-        "Nov 2025 - Present",
-        "Apr 2025 - May 2025",
-        "Nov 2023 - Aug 2024",
-      ],
-      degrees: ["Bachelor Marketing & Digital Communication"],
-      skills: [
-        "Website redesign",
-        "Showcase websites",
-        "Web design",
-        "UX/UI design",
-        "Build & launch",
-        "Brand identity",
-        "Content strategy",
-        "Business development",
-      ],
     },
   },
   fr: {
@@ -124,7 +87,7 @@ export const translations = {
     contact: {
       heading: "Parlons de votre site",
       description:
-        "Présentez-moi votre activité et votre site actuel. Je vous réponds personnellement et on peut en parler 20 minutes en visio.",
+        "Présentez-moi votre activité et votre site actuel. Je vous réponds personnellement par e-mail.",
       button: "Démarrer un projet",
       builtWith: "Conçu et développé par Tobias Ringot",
       location: "Basé à Aix-en-Provence",
@@ -137,45 +100,8 @@ export const translations = {
       rights: "Tous droits réservés.",
     },
     about: {
-      hello: "Bonjour ! Moi, c'est",
-      intro1:
-        "Je suis web designer à Aix-en-Provence. Je conçois et développe des refontes et des sites vitrines pour les entreprises de la région : artisans, industriels, commerces et indépendants.",
-      intro2:
-        "Avant le web, j'ai travaillé dans le développement commercial. J'y ai appris qu'un site sert d'abord à rassurer et à faire venir des demandes, et je garde cette idée en tête à chaque page.",
-      intro3:
-        "J'ai aussi été designer produit (UX/UI), je crée les contenus social media de COGEBAT et j'ai cofondé NULLL.CLUB à Aix-en-Provence.",
       photoAlt: "Portrait de Tobias Ringot",
-      linkedin: "Voir mon profil LinkedIn",
-      experience: "Expérience",
-      education: "Formation",
-      skillsHeading: "Ce que j'apporte",
-      stack: "Outils que j'utilise",
       resetStack: "Réinitialiser les outils",
-      showLess: "Afficher moins",
-      showMore: (count: number) => `Afficher ${count} expériences de plus`,
-      roles: [
-        "Co-fondateur",
-        "Social Media Designer",
-        "Product Designer — UX/UI & identité de marque",
-        "Développement commercial & social media",
-      ],
-      periods: [
-        "Mai 2026 - Aujourd'hui",
-        "Nov. 2025 - Aujourd'hui",
-        "Avr. 2025 - Mai 2025",
-        "Nov. 2023 - Août 2024",
-      ],
-      degrees: ["Bachelor Marketing & Communication Digitale"],
-      skills: [
-        "Refonte de site internet",
-        "Site vitrine",
-        "Web design",
-        "Design UX/UI",
-        "Développement et mise en ligne",
-        "Identité de marque",
-        "Stratégie de contenu",
-        "Développement commercial",
-      ],
     },
   },
 } as const;

@@ -12,7 +12,7 @@ import type { ReactNode } from "react";
 
 export const metadata: Metadata = createMetadata({
   title: "Refonte de site internet à Aix-en-Provence",
-  description: "Tobias Ringot, web designer à Aix-en-Provence, modernise les sites internet des entreprises de Provence. Refonte et site vitrine à partir de 1 500 €.",
+  description: "Tobias Ringot, web designer à Aix-en-Provence, modernise les sites internet des entreprises de Provence. Refonte et site vitrine à partir de 1 490 €.",
   path: "/",
 });
 

@@ -1,6 +1,7 @@
 "use client";
 
-import { Mail, MapPin } from "lucide-react";
+import { ArrowUpRight, Mail, MapPin } from "lucide-react";
+import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { ContactForm } from "./contact-form";
@@ -26,7 +27,7 @@ export function ContactCard(): ReactNode {
           <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-30 dark:opacity-15">
             <ShaderFlow scale={3} brightness={3} />
           </div>
-          <div className="relative grid gap-8 rounded-[1.6rem] p-5 sm:p-7 md:grid-cols-[0.8fr_1.2fr] md:gap-7 lg:gap-10 lg:p-8">
+          <div className="relative grid gap-8 rounded-[1.6rem] p-5 sm:p-7 md:grid-cols-2 md:gap-7 lg:gap-10 lg:p-8">
             <div className="flex flex-col items-start py-3 lg:py-5">
               <ScrollReveal
                 as="h2"
@@ -41,10 +42,30 @@ export function ContactCard(): ReactNode {
               >
                 {copy.contact.description}
               </ScrollReveal>
-              <p className="border-foreground/8 bg-background/80 text-foreground mt-6 rounded-full border px-3.5 py-1.5 text-sm font-medium backdrop-blur-md">
-                {sales.heroPrice}
-              </p>
-              <ul className="mt-6 flex flex-col">
+              <Link
+                href="/devis"
+                className="focus-ring group bg-foreground text-background mt-8 flex w-full flex-col rounded-3xl p-6 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 sm:p-7"
+              >
+                <span className="flex items-center justify-between gap-4">
+                  <span className="bg-background/12 rounded-full px-3 py-1 text-xs font-medium">{sales.quoteCardTag}</span>
+                  <span className="bg-background text-foreground inline-flex h-10 w-10 items-center justify-center rounded-full transition-transform duration-300 group-hover:rotate-45">
+                    <ArrowUpRight className="h-5 w-5" aria-hidden="true" />
+                  </span>
+                </span>
+                <span className="mt-6 font-serif text-[1.75rem] leading-tight font-medium tracking-tight">{sales.quoteCardTitle}</span>
+                <span className="text-background/70 mt-2 text-[15px] leading-relaxed">{sales.quoteCardText}</span>
+                <span className="text-background/60 mt-5 flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                  {sales.quoteCardMeta.map((item) => (
+                    <span key={item} className="inline-flex items-center gap-1.5">
+                      <span aria-hidden="true" className="bg-background/50 h-1 w-1 rounded-full" />
+                      {item}
+                    </span>
+                  ))}
+                </span>
+                <span className="sr-only">{sales.quoteCardCta}</span>
+              </Link>
+              <p className="text-foreground/60 mt-5 text-sm">{sales.heroPrice}</p>
+              <ul className="mt-4 flex flex-col">
                 <li>
                   <a href={`mailto:${site.email}`} className={`${detailClass} underline underline-offset-4`}>
                     <Mail className="h-4 w-4" aria-hidden="true" />

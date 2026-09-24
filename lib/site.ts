@@ -6,5 +6,5 @@ export const site = {
   linkedin: "https://www.linkedin.com/in/tobiasringot/",
   /** Portrait in /public (e.g. "/tobias.jpg"). Initials are shown while it is null. */
   photo: "/tobias.jpg" as string | null,
-  priceFrom: 1500,
+  priceFrom: 1490,
 } as const;

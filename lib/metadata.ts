@@ -6,7 +6,7 @@ const siteUrl = (configuredUrl || deploymentUrl || "http://localhost:3000").repl
 
 export const siteConfig = {
   name: "Tobias Ringot",
-  description: "Refonte de sites internet et création de sites vitrines à Aix-en-Provence, pour les entreprises de Provence. À partir de 1 500 €.",
+  description: "Refonte de sites internet et création de sites vitrines à Aix-en-Provence, pour les entreprises de Provence. À partir de 1 490 €.",
   url: siteUrl,
   ogImage: "/opengraph-image",
 } as const;

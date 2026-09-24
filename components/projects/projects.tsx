@@ -25,10 +25,10 @@ export function Projects({ variant = "page" }: { variant?: "home" | "page" }): R
       aria-labelledby={isHome ? "projects-heading" : undefined}
       className="relative w-full scroll-mt-24"
     >
-      <div className="mx-auto w-full max-w-275 px-6 sm:px-10">
+      <div className="mx-auto w-full max-w-300 px-4 sm:px-8">
         {isHome ? (
           <FadeIn className="flex flex-col items-center gap-5 pb-12 text-center sm:pb-16">
-            <p className="text-foreground/50 text-xs font-semibold tracking-[0.18em] uppercase">{copy.projectsEyebrow}</p>
+            <p className="text-foreground/50 text-sm font-medium">{copy.projectsEyebrow}</p>
             <ScrollReveal
               as="h2"
               id="projects-heading"
@@ -42,13 +42,13 @@ export function Projects({ variant = "page" }: { variant?: "home" | "page" }): R
           </FadeIn>
         ) : null}
 
-        <div className="grid gap-6 md:grid-cols-2 md:gap-7">
+        <ol className="flex flex-col gap-5 lg:gap-8">
           {items.map((project, index) => (
-            <FadeIn key={project.slug} delay={Math.min(index * 0.06, 0.18)}>
-              <ProjectCard project={project} />
-            </FadeIn>
+            <li key={project.slug} className="project-stack-item" style={{ top: `calc(6rem + ${index} * 1.25rem)` }}>
+              <ProjectCard project={project} index={index} total={items.length} />
+            </li>
           ))}
-        </div>
+        </ol>
 
         {isHome && projects.length > HOME_PROJECT_COUNT ? (
           <FadeIn className="mt-12 flex justify-center">

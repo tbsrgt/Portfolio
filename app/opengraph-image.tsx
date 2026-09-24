@@ -13,7 +13,7 @@ export default function OpenGraphImage(): ImageResponse {
           <span>Votre activité évolue.</span>
           <span>Votre site aussi.</span>
         </div>
-        <div style={{ fontSize: 28, color: "#555" }}>Refonte de site internet · à partir de 1 500 €</div>
+        <div style={{ fontSize: 28, color: "#555" }}>Refonte de site internet · à partir de 1 490 €</div>
       </div>
     </div>,
     size,
