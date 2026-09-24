@@ -4,7 +4,6 @@ import { MapPin, Tag } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { HeroCtas } from "./hero-ctas";
-import { ProductDemo } from "@/components/demo/product-demo";
 import { FadeIn } from "@/components/ui/motion-primitives";
 import { LinkedinIcon } from "@/components/ui/linkedin-icon";
 import { useLanguage } from "@/lib/i18n";
@@ -66,26 +65,7 @@ export function Hero(): ReactNode {
           </ul>
         </FadeIn>
 
-        <FadeIn delay={0.15} className="mt-16 sm:mt-20">
-          <div id="demo" className="scroll-mt-28">
-            <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-10">
-              <div>
-                <p className="text-brand text-sm font-medium">
-                  {sales.demoEyebrow}
-                </p>
-                <h2 className="text-foreground mt-1 text-2xl font-medium tracking-tight sm:text-[1.75rem]">
-                  {sales.demoHeading}
-                </h2>
-              </div>
-              <p className="text-foreground/55 max-w-[46ch] text-sm leading-relaxed sm:text-[15px]">
-                {sales.demoDescription}
-              </p>
-            </div>
-            <ProductDemo />
-          </div>
-        </FadeIn>
-
-        <p className="text-foreground/50 mt-6 text-sm">{sales.heroNote}</p>
+        <p className="text-foreground/50 mt-5 text-sm">{sales.heroNote}</p>
       </div>
     </section>
   );

@@ -3,6 +3,7 @@ import type { Locale } from "@/lib/i18n";
 /** Values sent by the contact form, in the same order as `formServices`. */
 export const serviceValues = [
   "redesign",
+  "visual-refresh",
   "showcase",
   "landing",
   "maintenance",
@@ -16,13 +17,8 @@ export const salesCopy = {
     heroKicker: "Designer & développeur produit · Aix-en-Provence",
     heroNote:
       "Pour les PME, artisans, industriels et réseaux B2B qui veulent un outil à leur mesure.",
-    heroPrice: "Sites dès 900 € · Logiciels dès 8 000 € HT",
-    heroDemoCta: "Essayer la démo",
+    heroPrice: "Sites dès 500 € · Logiciels dès 8 000 € HT",
     marqueeLabel: "Aperçu des réalisations",
-    demoEyebrow: "Démo",
-    demoHeading: "Voilà le genre d'outil que je livre.",
-    demoDescription:
-      "Faites avancer une opportunité, acceptez un devis puis facturez-le, recevez du stock : tout se recalcule, jusqu'au tableau de bord. Données fictives, interface réelle.",
     servicesEyebrow: "Offres",
     servicesHeading: "Deux métiers, un seul interlocuteur.",
     servicesDescription:
@@ -42,6 +38,19 @@ export const salesCopy = {
             price: "dès 1 800 €",
             description:
               "Vos contenus et votre identité, modernisés et réorganisés.",
+            badge: "Le plus demandé",
+            included: [
+              "Nouveau design sur mesure",
+              "Contenus réorganisés et réécrits",
+              "Pensé d'abord pour le téléphone",
+              "Référencement Google de base",
+            ],
+          },
+          {
+            title: "Refonte visuelle",
+            price: "dès 500 €",
+            description:
+              "Je modernise simplement le look de votre site : mêmes pages, mêmes contenus, un rendu actuel sur mobile.",
           },
           {
             title: "Site vitrine",
@@ -214,6 +223,7 @@ export const salesCopy = {
     formServicePlaceholder: "Choisir un besoin",
     formServices: [
       "Refonte de site",
+      "Refonte visuelle",
       "Site vitrine",
       "Landing page",
       "Maintenance",
@@ -235,13 +245,8 @@ export const salesCopy = {
     heroKicker: "Product designer & developer · Aix-en-Provence",
     heroNote:
       "For SMEs, trades, manufacturers and B2B networks that want tools built around them.",
-    heroPrice: "Websites from €900 · Software from €8,000 excl. VAT",
-    heroDemoCta: "Try the demo",
+    heroPrice: "Websites from €500 · Software from €8,000 excl. VAT",
     marqueeLabel: "Work preview",
-    demoEyebrow: "Demo",
-    demoHeading: "This is the kind of tool I deliver.",
-    demoDescription:
-      "Move a deal forward, accept a quote then invoice it, receive stock: everything updates, all the way to the dashboard. Sample data, real interface.",
     servicesEyebrow: "Services",
     servicesHeading: "Two crafts, one point of contact.",
     servicesDescription:
@@ -260,6 +265,19 @@ export const salesCopy = {
             price: "from €1,800",
             description:
               "Your content and identity, modernised and reorganised.",
+            badge: "Most popular",
+            included: [
+              "New tailored design",
+              "Content reorganised and rewritten",
+              "Mobile-first",
+              "Basic Google SEO",
+            ],
+          },
+          {
+            title: "Visual refresh",
+            price: "from €500",
+            description:
+              "I simply modernise the look of your website: same pages, same content, a current feel on mobile.",
           },
           {
             title: "Showcase website",
@@ -424,6 +442,7 @@ export const salesCopy = {
     formServicePlaceholder: "Choose a need",
     formServices: [
       "Website redesign",
+      "Visual refresh",
       "Showcase website",
       "Landing page",
       "Maintenance",

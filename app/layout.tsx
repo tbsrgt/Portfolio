@@ -39,7 +39,7 @@ const structuredData = {
     addressCountry: "FR",
   },
   areaServed: "Provence",
-  priceRange: "À partir de 900 €",
+  priceRange: "À partir de 500 €",
   sameAs: [site.linkedin],
   founder: {
     "@type": "Person",

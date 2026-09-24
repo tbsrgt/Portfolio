@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Boxes, Globe } from "lucide-react";
+import { ArrowRight, Boxes, Check, Globe, Star } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { FadeIn } from "@/components/ui/motion-primitives";
@@ -77,24 +77,64 @@ export function Services(): ReactNode {
                   <ul
                     className={`mt-8 flex flex-col border-t ${software ? "border-background/12" : "border-foreground/8"}`}
                   >
-                    {track.offers.map((offer) => (
-                      <li
-                        key={offer.title}
-                        className={`grid grid-cols-[1fr_auto] gap-x-6 gap-y-1 border-b py-4 ${software ? "border-background/12" : "border-foreground/8"}`}
-                      >
-                        <span className="font-medium tracking-tight">
-                          {offer.title}
-                        </span>
-                        <span className="text-right font-medium tabular-nums">
-                          {offer.price}
-                        </span>
-                        <span
-                          className={`col-span-2 text-sm leading-relaxed ${software ? "text-background/55" : "text-foreground/55"}`}
+                    {track.offers.map((offer) =>
+                      "badge" in offer ? (
+                        <li
+                          key={offer.title}
+                          className="border-brand/35 bg-brand-soft relative my-4 rounded-2xl border p-5 sm:p-6"
                         >
-                          {offer.description}
-                        </span>
-                      </li>
-                    ))}
+                          <span className="bg-brand absolute -top-3 left-5 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold text-white">
+                            <Star
+                              className="h-3 w-3 fill-current"
+                              aria-hidden="true"
+                            />
+                            {offer.badge}
+                          </span>
+                          <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+                            <span className="text-xl font-medium tracking-tight">
+                              {offer.title}
+                            </span>
+                            <span className="text-brand text-2xl font-medium tabular-nums">
+                              {offer.price}
+                            </span>
+                          </div>
+                          <p className="text-foreground/65 mt-1.5 text-sm leading-relaxed">
+                            {offer.description}
+                          </p>
+                          <ul className="mt-4 grid gap-x-4 gap-y-2 sm:grid-cols-2">
+                            {offer.included.map((item) => (
+                              <li
+                                key={item}
+                                className="text-foreground/80 flex items-center gap-2 text-sm"
+                              >
+                                <Check
+                                  className="text-brand h-4 w-4 shrink-0"
+                                  aria-hidden="true"
+                                />
+                                {item}
+                              </li>
+                            ))}
+                          </ul>
+                        </li>
+                      ) : (
+                        <li
+                          key={offer.title}
+                          className={`grid grid-cols-[1fr_auto] gap-x-6 gap-y-1 border-b py-4 ${software ? "border-background/12" : "border-foreground/8"}`}
+                        >
+                          <span className="font-medium tracking-tight">
+                            {offer.title}
+                          </span>
+                          <span className="text-right font-medium tabular-nums">
+                            {offer.price}
+                          </span>
+                          <span
+                            className={`col-span-2 text-sm leading-relaxed ${software ? "text-background/55" : "text-foreground/55"}`}
+                          >
+                            {offer.description}
+                          </span>
+                        </li>
+                      )
+                    )}
                   </ul>
 
                   <a

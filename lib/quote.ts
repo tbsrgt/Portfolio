@@ -35,7 +35,7 @@ export type QuoteStep =
   | (StepBase & { kind: "fields"; fields: readonly QuoteField[] })
   | (StepBase & { kind: "estimate" });
 
-export const QUOTE_MIN = 900;
+export const QUOTE_MIN = 500;
 export const QUOTE_MAX = 7990;
 
 const o = (
@@ -48,7 +48,7 @@ const o = (
 const isBuild = (answers: QuoteAnswers): boolean =>
   answers.need !== "maintenance" && answers.need !== "software";
 const hasPages = (answers: QuoteAnswers): boolean =>
-  isBuild(answers) && answers.need !== "landing";
+  isBuild(answers) && answers.need !== "landing" && answers.need !== "visual";
 
 export const quoteSteps: readonly QuoteStep[] = [
   {
@@ -61,6 +61,12 @@ export const quoteSteps: readonly QuoteStep[] = [
         "Refonte de mon site actuel",
         "A redesign of my current website",
         { price: 1800 }
+      ),
+      o(
+        "visual",
+        "Une refonte visuelle simple (mêmes pages, look modernisé)",
+        "A simple visual refresh (same pages, modern look)",
+        { price: 500 }
       ),
       o("showcase", "Un premier site vitrine", "A first showcase website", {
         price: 2000,
