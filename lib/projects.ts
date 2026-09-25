@@ -30,12 +30,14 @@ export const projects: readonly Project[] = [
     },
     highlights: {
       fr: [
+        "1 logiciel au lieu de 3 : plusieurs centaines d'euros économisés chaque mois",
         "Un tableau de bord qui dit quoi traiter en premier",
         "Consultations, offres client et marchés reliés, sans ressaisie",
         "Relances fournisseurs et démarchage des architectes automatisés",
         "Données isolées par entreprise, documents privés et sécurisés",
       ],
       en: [
+        "1 tool instead of 3: several hundred euros saved every month",
         "A dashboard that tells you what to handle first",
         "Tenders, client offers and contracts linked, with no re-typing",
         "Automated supplier reminders and architect prospecting",
