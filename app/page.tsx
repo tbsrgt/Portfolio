@@ -7,6 +7,7 @@ import { Letter } from "@/components/desk/letter";
 import { Pains } from "@/components/desk/pains";
 import { QuoteSheet } from "@/components/desk/quote-sheet";
 import { Receipt } from "@/components/desk/receipt";
+import { SiteAudit } from "@/components/desk/site-audit";
 import { Testimonials } from "@/components/desk/testimonials";
 import { WorkFolder } from "@/components/desk/work-folder";
 import { createMetadata } from "@/lib/metadata";
@@ -25,6 +26,7 @@ export default function HomePage(): ReactNode {
   return (
     <main id="main-content" className="flex flex-1 flex-col">
       <DeskHero />
+      <SiteAudit />
       <BusinessCards />
       <Testimonials />
       <Pains />
