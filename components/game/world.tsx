@@ -1,10 +1,13 @@
 "use client";
 
 import { Text, useTexture } from "@react-three/drei";
-import { CuboidCollider, CylinderCollider, RigidBody, type CollisionPayload } from "@react-three/rapier";
+import { CuboidCollider, CylinderCollider, RigidBody, type CollisionPayload, type RapierRigidBody } from "@react-three/rapier";
 import { useEffect, useMemo, useRef, type ReactNode } from "react";
+import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
+import { audio } from "./audio";
+import { wind } from "./fx";
 import { Model, useModelFootprint } from "./models";
 import { game } from "./store";
 import type { MissionId } from "@/lib/game";
@@ -67,11 +70,19 @@ export function Desk(): ReactNode {
 /** A real desk lamp model with the scene's key light in its head. */
 export function Lamp(): ReactNode {
   const light = useRef<THREE.SpotLight>(null);
+  const cone = useRef<THREE.Mesh>(null);
   const target = useMemo(() => new THREE.Object3D(), []);
   useEffect(() => {
     target.position.set(0, 0, 0);
     if (light.current) light.current.target = target;
+    cone.current?.lookAt(target.position);
   }, [target]);
+  useFrame(({ clock }) => {
+    const t = clock.elapsedTime;
+    const flicker = 1 + Math.sin(t * 17) * 0.012 + Math.sin(t * 3.3) * 0.02 + (Math.random() - 0.5) * 0.01;
+    if (light.current) light.current.intensity = 420 * flicker;
+    if (cone.current) (cone.current.material as THREE.MeshBasicMaterial).opacity = 0.07 * flicker;
+  });
   return (
     <group position={[-13, 0, -8.5]}>
       <RigidBody type="fixed" colliders={false}>
@@ -80,6 +91,11 @@ export function Lamp(): ReactNode {
       </RigidBody>
       <spotLight ref={light} position={[3.2, 7.5, 2.6]} angle={0.95} penumbra={0.55} intensity={420} distance={45} color="#fff1cf" castShadow shadow-mapSize={[2048, 2048]} shadow-bias={-0.0004} />
       <primitive object={target} />
+      {/* Faint light cone in the dust */}
+      <mesh ref={cone} position={[3.2, 7.5, 2.6]}>
+        <coneGeometry args={[9, 13, 40, 1, true]} />
+        <meshBasicMaterial color="#ffe9b8" transparent opacity={0.07} depthWrite={false} side={THREE.DoubleSide} blending={THREE.AdditiveBlending} toneMapped={false} />
+      </mesh>
     </group>
   );
 }
@@ -266,8 +282,14 @@ export function PaperBall({ seed }: { seed: number }): ReactNode {
     g.computeVertexNormals();
     return g;
   }, [seed]);
+  const body = useRef<RapierRigidBody>(null);
+  useFrame((_, delta) => {
+    const rb = body.current;
+    if (!rb || wind.gust < 0.2) return;
+    rb.applyImpulse({ x: wind.x * 0.12 * delta, y: 0, z: wind.z * 0.12 * delta }, true);
+  });
   return (
-    <RigidBody colliders="ball" position={[-3, 1, 7]} mass={0.15} linearDamping={0.5} angularDamping={0.6} restitution={0.3} userData={{ kind: "ball" }}>
+    <RigidBody ref={body} colliders="ball" position={[-3, 1, 7]} mass={0.15} linearDamping={0.5} angularDamping={0.6} restitution={0.3} userData={{ kind: "ball" }} onCollisionEnter={() => audio.rustle()}>
       <mesh castShadow receiveShadow geometry={geometry}>
         <meshStandardMaterial color={C.paper} roughness={1} flatShading />
       </mesh>
@@ -277,9 +299,20 @@ export function PaperBall({ seed }: { seed: number }): ReactNode {
 
 /** Sticky notes lying around as light obstacles you can push. */
 export function PostIt({ text, position, rotation = 0 }: { text: string; position: [number, number, number]; rotation?: number }): ReactNode {
+  const body = useRef<RapierRigidBody>(null);
+  const sheet = useRef<THREE.Mesh>(null);
+  useFrame(({ clock }, delta) => {
+    const rb = body.current;
+    if (rb && wind.gust > 0.5) rb.applyImpulse({ x: wind.x * 0.05 * delta, y: 0, z: wind.z * 0.05 * delta }, true);
+    if (sheet.current) {
+      const flutter = wind.gust * 0.12 * Math.sin(clock.elapsedTime * 9 + position[0]);
+      sheet.current.rotation.x = flutter;
+      sheet.current.rotation.z = flutter * 0.6;
+    }
+  });
   return (
-    <RigidBody colliders="cuboid" position={position} rotation={[0, rotation, 0]} mass={0.1} linearDamping={1.5} angularDamping={1.5}>
-      <mesh castShadow receiveShadow>
+    <RigidBody ref={body} colliders="cuboid" position={position} rotation={[0, rotation, 0]} mass={0.1} linearDamping={1.5} angularDamping={1.5}>
+      <mesh ref={sheet} castShadow receiveShadow>
         <boxGeometry args={[2, 0.04, 2]} />
         <meshStandardMaterial color={C.postit} roughness={1} />
       </mesh>

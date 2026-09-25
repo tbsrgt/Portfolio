@@ -3,9 +3,11 @@
 import { Text } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { CuboidCollider, RigidBody, type RapierRigidBody } from "@react-three/rapier";
-import { useEffect, useMemo, useRef, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useRef, type ReactNode } from "react";
 import * as THREE from "three";
 
+import { audio } from "./audio";
+import { dust, shake } from "./fx";
 import { Model, useModelFootprint } from "./models";
 import { game, input, readAxis, useGame } from "./store";
 import { FONT_DISPLAY } from "./world";
@@ -30,6 +32,7 @@ export function Player(): ReactNode {
   const heading = useRef(0);
   const actionHeld = useRef(false);
   const walkPhase = useRef(0);
+  const lastStep = useRef(0);
 
   useFrame((_, delta) => {
     const rb = body.current;
@@ -44,6 +47,7 @@ export function Player(): ReactNode {
         const side = new THREE.Vector3(Math.cos(actors.vanHeading), 0, -Math.sin(actors.vanHeading)).multiplyScalar(2.4);
         rb.setTranslation({ x: actors.van.x + side.x, y: 0.8, z: actors.van.z + side.z }, true);
         game.setMode("walk");
+        audio.door();
       }
       if (!input.action) actionHeld.current = false;
       return;
@@ -62,6 +66,14 @@ export function Player(): ReactNode {
       visual.current.rotation.y += (heading.current - visual.current.rotation.y) * 0.2;
       walkPhase.current += moving ? delta * 14 : 0;
       visual.current.position.y = moving ? Math.abs(Math.sin(walkPhase.current)) * 0.12 : 0;
+      visual.current.rotation.x = moving ? 0.12 : 0;
+      // One footstep per bob: a puff of dust and a soft tap.
+      const step = Math.floor(walkPhase.current / Math.PI);
+      if (moving && step !== lastStep.current) {
+        lastStep.current = step;
+        dust.emit(t.x, t.z, 2, { speed: 0.5, size: 0.22, dirX: axis.x * 0.4, dirZ: axis.y * 0.4 });
+        audio.footstep();
+      }
     }
 
     const near = actors.player.distanceTo(actors.van) < ENTER_DISTANCE;
@@ -69,6 +81,7 @@ export function Player(): ReactNode {
     if (near && input.action && !actionHeld.current) {
       actionHeld.current = true;
       game.setMode("drive");
+      audio.door();
     }
     if (!input.action) actionHeld.current = false;
   });
@@ -124,6 +137,14 @@ export function Van(): ReactNode {
   const [w, h, d] = useModelFootprint("van", 3.4);
   const forward = useMemo(() => new THREE.Vector3(), []);
   const { gl } = useThree();
+  const wheels = useRef<{ front: THREE.Object3D | null; rear: THREE.Object3D | null }>({ front: null, rear: null });
+  const bodyVisual = useRef<THREE.Group>(null);
+  const steerRef = useRef(0);
+  const prevSpeed = useRef(0);
+  const dustClock = useRef(0);
+  const onObject = useCallback((object: THREE.Group) => {
+    wheels.current = { front: object.getObjectByName("Front Wheels") ?? null, rear: object.getObjectByName("Rear Wheels") ?? null };
+  }, []);
 
   useEffect(() => {
     gl.domElement.style.touchAction = "none";
@@ -140,6 +161,7 @@ export function Van(): ReactNode {
     actors.van.set(t.x, t.y, t.z);
     actors.vanHeading = heading;
 
+    audio.engine(speed.current, mode === "drive");
     if (mode !== "drive") {
       speed.current *= 0.9;
       return;
@@ -153,12 +175,64 @@ export function Van(): ReactNode {
     const v = rb.linvel();
     rb.setLinvel({ x: forward.x * speed.current, y: v.y, z: forward.z * speed.current }, true);
     rb.setAngvel({ x: 0, y: steer, z: 0 }, true);
+
+    // Visual polish: wheels spin and steer, body leans in bends and squats on throttle.
+    steerRef.current += (-axis.x * 0.45 - steerRef.current) * 0.15;
+    const spin = (speed.current * delta) / 0.35;
+    if (wheels.current.front) {
+      wheels.current.front.rotation.x += spin;
+      wheels.current.front.rotation.y = steerRef.current;
+    }
+    if (wheels.current.rear) wheels.current.rear.rotation.x += spin;
+    if (bodyVisual.current) {
+      const accel = (speed.current - prevSpeed.current) / Math.max(delta, 1 / 120);
+      bodyVisual.current.rotation.z += (steer * 0.045 - bodyVisual.current.rotation.z) * 0.1;
+      bodyVisual.current.rotation.x += (THREE.MathUtils.clamp(-accel * 0.004, -0.06, 0.06) - bodyVisual.current.rotation.x) * 0.1;
+    }
+    prevSpeed.current = speed.current;
+
+    // Dust from the rear wheels when moving fast or drifting.
+    dustClock.current += delta;
+    const drifting = Math.abs(steer) > 1.2 && Math.abs(speed.current) > 6;
+    if (Math.abs(speed.current) > 3 && dustClock.current > (drifting ? 0.03 : 0.08)) {
+      dustClock.current = 0;
+      const back = forward.clone().multiplyScalar(-d / 2 + 0.2);
+      const side = new THREE.Vector3(forward.z, 0, -forward.x).multiplyScalar(w / 2 - 0.2);
+      for (const sign of [1, -1]) {
+        dust.emit(t.x + back.x + side.x * sign, t.z + back.z + side.z * sign, drifting ? 2 : 1, { speed: 0.5 + Math.abs(speed.current) * 0.06, size: drifting ? 0.45 : 0.3, dirX: forward.x, dirZ: forward.z });
+      }
+    }
   });
 
+  const onHit = useCallback((payload: { totalForceMagnitude?: number }) => {
+    const force = payload.totalForceMagnitude ?? 0;
+    if (force < 40) return;
+    const strength = Math.min(1, force / 400);
+    shake.add(0.25 + strength * 0.6);
+    dust.emit(actors.van.x, actors.van.z, 6 + Math.round(strength * 10), { speed: 1.5, size: 0.5, y: 0.3 });
+    audio.thud(0.5 + strength);
+  }, []);
+
   return (
-    <RigidBody ref={body} position={[3.5, 0.6, 6]} rotation={[0, Math.PI, 0]} colliders={false} enabledRotations={[false, true, false]} mass={4} linearDamping={0.5} angularDamping={3} friction={0.6} userData={{ kind: "van" }}>
+    <RigidBody ref={body} position={[3.5, 0.6, 6]} rotation={[0, Math.PI, 0]} colliders={false} enabledRotations={[false, true, false]} mass={4} linearDamping={0.5} angularDamping={3} friction={0.6} userData={{ kind: "van" }} onContactForce={onHit}>
       <CuboidCollider args={[w / 2, h / 2, d / 2]} position={[0, h / 2 - 0.05, 0]} />
-      <Model name="van" size={3.4} />
+      <group ref={bodyVisual}>
+        <Model name="van" size={3.4} onObject={onObject} />
+        {/* Headlights, on while driving */}
+        {mode === "drive" ? (
+          <>
+            {[-0.42, 0.42].map((x) => (
+              <group key={x} position={[x, h * 0.45, d / 2 + 0.02]}>
+                <mesh>
+                  <sphereGeometry args={[0.07, 10, 10]} />
+                  <meshStandardMaterial color="#fff6d5" emissive="#ffe9a8" emissiveIntensity={4} toneMapped={false} />
+                </mesh>
+                <spotLight position={[0, 0, 0.05]} angle={0.55} penumbra={0.7} intensity={40} distance={14} color="#fff1c4" target-position={[x, -0.5, 8]} />
+              </group>
+            ))}
+          </>
+        ) : null}
+      </group>
       <Text font={FONT_DISPLAY} fontSize={0.22} color="#171412" anchorX="center" anchorY="middle" position={[w / 2 + 0.01, h * 0.55, 0.1]} rotation={[0, Math.PI / 2, 0]} maxWidth={2.6}>
         TOBIAS RINGOT · SITES & LOGICIELS
       </Text>
@@ -191,6 +265,12 @@ export function FollowCamera(): ReactNode {
     goal.set(target.x, target.y + up, target.z + back);
     camera.position.lerp(goal, 0.06);
     look.lerp(new THREE.Vector3(target.x, target.y + 0.5, target.z), 0.1);
+    if (shake.amount > 0.001) {
+      const s = shake.amount;
+      camera.position.x += (Math.random() - 0.5) * s * 0.5;
+      camera.position.y += (Math.random() - 0.5) * s * 0.35;
+      shake.amount *= 0.86;
+    }
     camera.lookAt(look);
   });
   return null;

@@ -3,9 +3,11 @@
 import { Environment, Preload } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
-import { Suspense, useEffect, useState, type ReactNode } from "react";
+import { Suspense, useEffect, useRef, useState, type ReactNode } from "react";
 
 import { FollowCamera, Player, Van } from "./actors";
+import { audio } from "./audio";
+import { Dust, Effects, Motes, WindSystem } from "./fx";
 import { bindKeyboard, game, useGame } from "./store";
 import { Adresse, Bin, Cogebat, Desk, Lamp, PaperBall, PostIt, Props, Racines } from "./world";
 import { ContentZones } from "./zones";
@@ -20,6 +22,25 @@ export function GameScene({ locale, onReady }: { locale: Locale; onReady: () => 
   const basketDone = done.includes("basket");
 
   useEffect(() => bindKeyboard(), []);
+  useEffect(() => {
+    audio.init();
+    const unlock = (): void => audio.unlock();
+    window.addEventListener("pointerdown", unlock);
+    window.addEventListener("keydown", unlock);
+    return () => {
+      window.removeEventListener("pointerdown", unlock);
+      window.removeEventListener("keydown", unlock);
+    };
+  }, []);
+  const doneCount = done.length;
+  const seen = useRef(0);
+  useEffect(() => {
+    if (doneCount > seen.current && seen.current > 0) {
+      audio.mission();
+      window.setTimeout(() => audio.stamp(), 500);
+    }
+    seen.current = doneCount;
+  }, [doneCount]);
   useEffect(() => {
     if (basketDone) {
       const id = window.setTimeout(() => setBallSeed((s) => s + 1), 1200);
@@ -53,7 +74,11 @@ export function GameScene({ locale, onReady }: { locale: Locale; onReady: () => 
           <Player />
           <Van />
         </Physics>
+        <Dust />
+        <Motes />
+        <WindSystem />
         <FollowCamera />
+        <Effects />
         <Preload all />
         <Ready onReady={onReady} />
       </Suspense>

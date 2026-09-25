@@ -21,7 +21,7 @@ export type ModelName = keyof typeof MODEL;
  * A glTF model scaled so its largest footprint side equals `size`, resting on y = 0.
  * Models come from Poly Haven and pmndrs/market-assets (CC0).
  */
-export function Model({ name, size, rotation = [0, 0, 0], position = [0, 0, 0], shadows = true }: { name: ModelName; size: number; rotation?: [number, number, number]; position?: [number, number, number]; shadows?: boolean }): ReactNode {
+export function Model({ name, size, rotation = [0, 0, 0], position = [0, 0, 0], shadows = true, onObject }: { name: ModelName; size: number; rotation?: [number, number, number]; position?: [number, number, number]; shadows?: boolean; onObject?: ((object: THREE.Group) => void) | undefined }): ReactNode {
   const { scene } = useGLTF(MODEL[name]);
   const object = useMemo(() => scene.clone(true), [scene]);
 
@@ -37,13 +37,14 @@ export function Model({ name, size, rotation = [0, 0, 0], position = [0, 0, 0], 
   }, [object, size]);
 
   useLayoutEffect(() => {
+    onObject?.(object);
     object.traverse((child) => {
       if (child instanceof THREE.Mesh) {
         child.castShadow = shadows;
         child.receiveShadow = shadows;
       }
     });
-  }, [object, shadows]);
+  }, [object, shadows, onObject]);
 
   return (
     <group position={position} rotation={rotation}>

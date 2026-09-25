@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { useEffect, useRef, useState, type PointerEvent, type ReactNode } from "react";
 
+import { audio } from "./audio";
 import { game, input, joystick, useGame } from "./store";
 import { ArrowRight, Check } from "@/components/ui/pixel-icon";
 import { MAX_DISCOUNT, missions, zones } from "@/lib/game";
@@ -23,6 +24,8 @@ const HUD_COPY = {
     max: "Remise maximale atteinte !",
     reset: "Recommencer",
     explore: "Explorer le bureau",
+    sound: "Son",
+    muted: "Muet",
   },
   en: {
     missions: "Missions",
@@ -37,6 +40,8 @@ const HUD_COPY = {
     max: "Maximum discount reached!",
     reset: "Start over",
     explore: "Explore the desk",
+    sound: "Sound",
+    muted: "Muted",
   },
 } as const;
 
@@ -95,6 +100,8 @@ export function Hud({ locale }: { locale: Locale }): ReactNode {
   const [touch, setTouch] = useState(false);
   const [toast, setToast] = useState<typeof lastEvent>(null);
   const [explore, setExplore] = useState(false);
+  const [muted, setMuted] = useState(false);
+  useEffect(() => setMuted(audio.muted), []);
 
   useEffect(() => {
     setTouch(window.matchMedia("(pointer: coarse)").matches);
@@ -135,9 +142,23 @@ export function Hud({ locale }: { locale: Locale }): ReactNode {
 
       {/* Explorer: every part of the site, one tap away */}
       <div className="pointer-events-auto absolute top-20 right-3 z-10 sm:top-24 sm:right-6">
-        <button type="button" onClick={() => setExplore((v) => !v)} className="dymo dymo-blue cursor-pointer text-[10px]" aria-expanded={explore}>
-          {t.explore} {explore ? "−" : "+"}
-        </button>
+        <div className="flex justify-end gap-2">
+          <button
+            type="button"
+            onClick={() => {
+              audio.unlock();
+              audio.setMuted(!muted);
+              setMuted(!muted);
+            }}
+            className="dymo cursor-pointer text-[10px]"
+            aria-pressed={muted}
+          >
+            {muted ? t.muted : t.sound} {muted ? "×" : "♪"}
+          </button>
+          <button type="button" onClick={() => setExplore((v) => !v)} className="dymo dymo-blue cursor-pointer text-[10px]" aria-expanded={explore}>
+            {t.explore} {explore ? "−" : "+"}
+          </button>
+        </div>
         <AnimatePresence>
           {explore ? (
             <motion.ul initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} className="sheet mt-2 w-[200px] rotate-[1deg] p-3">
