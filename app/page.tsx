@@ -1,7 +1,7 @@
 import { BusinessCards } from "@/components/desk/business-cards";
 import { Checklist } from "@/components/desk/checklist";
 import { ContactDesk } from "@/components/desk/contact-desk";
-import { DeskHero } from "@/components/desk/desk-hero";
+import { Desk3DHero } from "@/components/desk3d/desk-3d-hero";
 import { IndexCards } from "@/components/desk/index-cards";
 import { Letter } from "@/components/desk/letter";
 import { Pains } from "@/components/desk/pains";
@@ -22,7 +22,7 @@ export const metadata: Metadata = createMetadata({
 export default function HomePage(): ReactNode {
   return (
     <main id="main-content" className="flex flex-1 flex-col">
-      <DeskHero />
+      <Desk3DHero />
       <BusinessCards />
       <Pains />
       <QuoteSheet />

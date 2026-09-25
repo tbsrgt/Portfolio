@@ -7,7 +7,6 @@ import {
 import {
   useMemo,
   useRef,
-  type ElementType,
   type ReactNode,
 } from "react";
 
@@ -15,7 +14,7 @@ import { useReducedMotion } from "@/lib/motion";
 
 type ScrollRevealProps = {
   children: string;
-  as?: ElementType;
+  as?: "p" | "h1" | "h2" | "h3" | "span";
   id?: string;
   enableBlur?: boolean;
   baseOpacity?: number;
@@ -63,7 +62,7 @@ function splitText(text: string): string[] {
 
 export function ScrollReveal({
   children,
-  as: Tag = "p",
+  as = "p",
   id,
   enableBlur = true,
   baseOpacity = 0.16,
@@ -72,6 +71,7 @@ export function ScrollReveal({
   containerClassName,
   textClassName,
 }: ScrollRevealProps): ReactNode {
+  const Tag = as;
   const containerRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
   const isVisible = useInView(containerRef, { amount: 0.15, once: true });
