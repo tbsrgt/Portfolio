@@ -108,6 +108,11 @@ export const audio = {
     audio.tone(880, 0.22, 0.18, "triangle", 0.14);
     audio.tone(1320, 0.4, 0.14, "triangle", 0.28);
   },
+  horn(): void {
+    audio.tone(392, 0.45, 0.22, "square");
+    audio.tone(494, 0.45, 0.18, "square");
+    audio.tone(196, 0.45, 0.1, "sawtooth");
+  },
   stamp(): void {
     audio.noise(0.1, 300, 0.35, "lowpass");
     audio.tone(110, 0.12, 0.25, "sine");

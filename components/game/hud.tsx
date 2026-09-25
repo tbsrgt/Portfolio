@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState, type PointerEvent, type ReactNode } from "react";
 
 import { audio } from "./audio";
+import { wind } from "./fx";
 import { game, input, joystick, useGame } from "./store";
 import { ArrowRight, Check } from "@/components/ui/pixel-icon";
 import { MAX_DISCOUNT, missions, zones } from "@/lib/game";
@@ -26,6 +27,11 @@ const HUD_COPY = {
     explore: "Explorer le bureau",
     sound: "Son",
     muted: "Muet",
+    night: "Nuit",
+    day: "Jour",
+    horn: "Klaxon",
+    time: "Temps",
+    best: "Record",
   },
   en: {
     missions: "Missions",
@@ -42,6 +48,11 @@ const HUD_COPY = {
     explore: "Explore the desk",
     sound: "Sound",
     muted: "Muted",
+    night: "Night",
+    day: "Day",
+    horn: "Horn",
+    time: "Time",
+    best: "Best",
   },
 } as const;
 
@@ -96,7 +107,15 @@ function Joystick(): ReactNode {
 
 export function Hud({ locale }: { locale: Locale }): ReactNode {
   const t = HUD_COPY[locale];
-  const { mode, done, discount, code, nearVan, lastEvent, started } = useGame();
+  const { mode, done, discount, code, nearVan, lastEvent, started, night, startedAt, finishedAt, best } = useGame();
+  const [now, setNow] = useState(0);
+  useEffect(() => {
+    if (startedAt === null || finishedAt !== null) return;
+    const id = window.setInterval(() => setNow(Date.now()), 250);
+    return () => window.clearInterval(id);
+  }, [startedAt, finishedAt]);
+  const elapsed = startedAt === null ? null : (finishedAt ?? now) - startedAt;
+  const fmt = (ms: number): string => `${Math.floor(ms / 60000)}:${String(Math.floor((ms % 60000) / 1000)).padStart(2, "0")}`;
   const [touch, setTouch] = useState(false);
   const [toast, setToast] = useState<typeof lastEvent>(null);
   const [explore, setExplore] = useState(false);
@@ -122,7 +141,15 @@ export function Hud({ locale }: { locale: Locale }): ReactNode {
       {/* Mission post-it */}
       <div className="pointer-events-none absolute right-3 bottom-24 z-10 w-[168px] sm:top-36 sm:right-6 sm:bottom-auto sm:w-[240px]">
         <div className="postit hand rotate-[3deg] p-3 text-[1rem] leading-tight sm:p-4 sm:text-[1.35rem]">
-          <p className="typed relative mb-2 text-[10px] font-bold">{t.missions}</p>
+          <p className="typed relative mb-2 flex items-center justify-between text-[10px] font-bold">
+            <span>{t.missions}</span>
+            {elapsed !== null && elapsed > 0 ? (
+              <span className="font-mono tabular-nums">
+                {fmt(elapsed)}
+                {best !== null ? ` · ${t.best} ${fmt(best)}` : ""}
+              </span>
+            ) : null}
+          </p>
           <ul className="relative flex flex-col gap-1">
             {missions.map((m) => {
               const isDone = done.includes(m.id);
@@ -136,13 +163,36 @@ export function Hud({ locale }: { locale: Locale }): ReactNode {
               );
             })}
           </ul>
-          {next ? <p className="pen relative mt-2 hidden text-[1.1rem] leading-tight sm:block">{next.brief[locale]}</p> : <p className="pen relative mt-2">{t.max}</p>}
+          {next ? (
+            <p className="pen relative mt-2 hidden text-[1.1rem] leading-tight sm:block">{next.brief[locale]}</p>
+          ) : (
+            <p className="pen relative mt-2 flex items-center justify-between gap-2">
+              <span>{t.max}</span>
+              <button type="button" onClick={() => game.reset()} className="dymo pointer-events-auto cursor-pointer text-[9px]">
+                {t.reset}
+              </button>
+            </p>
+          )}
         </div>
       </div>
 
       {/* Explorer: every part of the site, one tap away */}
       <div className="pointer-events-auto absolute top-20 right-3 z-10 sm:top-24 sm:right-6">
-        <div className="flex justify-end gap-2">
+        <div className="flex flex-wrap justify-end gap-2">
+          <button type="button" onClick={() => game.toggleNight()} className="dymo cursor-pointer text-[10px]" aria-pressed={night}>
+            {night ? t.day : t.night} {night ? "☀" : "☾"}
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              audio.unlock();
+              audio.horn();
+              wind.burst = 1;
+            }}
+            className="dymo dymo-red cursor-pointer text-[10px]"
+          >
+            {t.horn} · H
+          </button>
           <button
             type="button"
             onClick={() => {

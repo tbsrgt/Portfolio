@@ -7,7 +7,7 @@ import { useCallback, useEffect, useMemo, useRef, type ReactNode } from "react";
 import * as THREE from "three";
 
 import { audio } from "./audio";
-import { dust, shake } from "./fx";
+import { dust, shake, skid } from "./fx";
 import { Model, useModelFootprint } from "./models";
 import { game, input, readAxis, useGame } from "./store";
 import { FONT_DISPLAY } from "./world";
@@ -199,6 +199,7 @@ export function Van(): ReactNode {
       const back = forward.clone().multiplyScalar(-d / 2 + 0.2);
       const side = new THREE.Vector3(forward.z, 0, -forward.x).multiplyScalar(w / 2 - 0.2);
       for (const sign of [1, -1]) {
+        if (drifting || Math.abs(speed.current - prevSpeed.current) > 0.5) skid.mark(t.x + back.x + side.x * sign, t.z + back.z + side.z * sign, heading);
         dust.emit(t.x + back.x + side.x * sign, t.z + back.z + side.z * sign, drifting ? 2 : 1, { speed: 0.5 + Math.abs(speed.current) * 0.06, size: drifting ? 0.45 : 0.3, dirX: forward.x, dirZ: forward.z });
       }
     }

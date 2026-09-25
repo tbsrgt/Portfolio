@@ -79,9 +79,13 @@ type GameState = {
   started: boolean;
   zone: ZoneId | null;
   panel: ZoneId | null;
+  night: boolean;
+  startedAt: number | null;
+  finishedAt: number | null;
+  best: number | null;
 };
 
-let state: GameState = { mode: "walk", done: [], discount: 0, code: null, nearVan: false, lastEvent: null, started: false, zone: null, panel: null };
+let state: GameState = { mode: "walk", done: [], discount: 0, code: null, nearVan: false, lastEvent: null, started: false, zone: null, panel: null, night: false, startedAt: null, finishedAt: null, best: null };
 const listeners = new Set<() => void>();
 
 function emit(next: Partial<GameState>): void {
@@ -94,7 +98,14 @@ export const game = {
   hydrate(): void {
     const done = loadMissions();
     const discount = discountFor(done);
-    emit({ done, discount, code: codeFor(discount) });
+    let best: number | null = null;
+    try {
+      const raw = window.localStorage.getItem("tournee-best");
+      best = raw ? Number(raw) : null;
+    } catch {
+      /* ignore */
+    }
+    emit({ done, discount, code: codeFor(discount), best, finishedAt: done.length >= 4 ? 0 : null });
   },
   setMode(mode: Mode): void {
     if (state.mode !== mode) emit({ mode, started: true });
@@ -104,13 +115,31 @@ export const game = {
   },
   start(): void {
     if (!state.started) emit({ started: true });
+    if (state.startedAt === null && state.done.length < 4) emit({ startedAt: Date.now() });
+  },
+  toggleNight(): void {
+    emit({ night: !state.night });
   },
   complete(id: MissionId): void {
     if (state.done.includes(id)) return;
     const done = [...state.done, id];
     const discount = discountFor(done);
     saveMissions(done);
-    emit({ done, discount, code: codeFor(discount), lastEvent: { id, at: Date.now() } });
+    let finishedAt: number | null = null;
+    let best = state.best;
+    if (done.length >= 4 && state.startedAt !== null) {
+      finishedAt = Date.now();
+      const elapsed = finishedAt - state.startedAt;
+      if (best === null || elapsed < best) {
+        best = elapsed;
+        try {
+          window.localStorage.setItem("tournee-best", String(best));
+        } catch {
+          /* ignore */
+        }
+      }
+    }
+    emit({ done, discount, code: codeFor(discount), lastEvent: { id, at: Date.now() }, finishedAt, best });
   },
   enterZone(id: ZoneId): void {
     emit({ zone: id, panel: id, started: true });
@@ -126,7 +155,7 @@ export const game = {
   },
   reset(): void {
     saveMissions([]);
-    emit({ done: [], discount: 0, code: null, lastEvent: null });
+    emit({ done: [], discount: 0, code: null, lastEvent: null, startedAt: null, finishedAt: null });
   },
 };
 

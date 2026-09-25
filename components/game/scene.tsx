@@ -1,13 +1,14 @@
 "use client";
 
 import { Environment, Preload } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
+import * as THREE from "three";
 import { Physics } from "@react-three/rapier";
-import { Suspense, useEffect, useRef, useState, type ReactNode } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 
 import { FollowCamera, Player, Van } from "./actors";
 import { audio } from "./audio";
-import { Dust, Effects, Motes, WindSystem } from "./fx";
+import { Dust, Effects, FlyingPapers, Motes, Skids, WindSystem, wind } from "./fx";
 import { bindKeyboard, game, useGame } from "./store";
 import { Adresse, Bin, Cogebat, Desk, Lamp, PaperBall, PostIt, Props, Racines } from "./world";
 import { ContentZones } from "./zones";
@@ -17,11 +18,23 @@ import type { Locale } from "@/lib/i18n";
 /** The whole game: Tobias's desk as a world, physics, a figure and a van. */
 export function GameScene({ locale, onReady }: { locale: Locale; onReady: () => void }): ReactNode {
   const copy = deskCopy[locale];
-  const { done } = useGame();
+  const { done, night } = useGame();
   const [ballSeed, setBallSeed] = useState(1);
   const basketDone = done.includes("basket");
 
   useEffect(() => bindKeyboard(), []);
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent): void => {
+      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) return;
+      if (event.code === "KeyH") {
+        audio.horn();
+        wind.burst = 1;
+      }
+      if (event.code === "KeyN") game.toggleNight();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
   useEffect(() => {
     audio.init();
     const unlock = (): void => audio.unlock();
@@ -52,11 +65,7 @@ export function GameScene({ locale, onReady }: { locale: Locale; onReady: () => 
 
   return (
     <Canvas shadows dpr={[1, 1.5]} camera={{ position: [0, 7, 12], fov: 40, near: 0.3, far: 90 }} gl={{ antialias: true, powerPreference: "high-performance" }} style={{ touchAction: "none" }}>
-      <color attach="background" args={["#0f2a22"]} />
-      <fog attach="fog" args={["#0f2a22", 26, 48]} />
-      <hemisphereLight args={["#e8f0e6", "#0d1f19", 0.5]} />
-      <ambientLight intensity={0.3} />
-      <directionalLight position={[8, 14, 6]} intensity={0.5} castShadow shadow-mapSize={[1024, 1024]} shadow-camera-left={-20} shadow-camera-right={20} shadow-camera-top={20} shadow-camera-bottom={-20} />
+      <DayNight night={night} />
       <Suspense fallback={null}>
         <Environment files="/hdri/studio_small_03_1k.hdr" environmentIntensity={0.35} />
         <Physics gravity={[0, -16, 0]}>
@@ -75,14 +84,43 @@ export function GameScene({ locale, onReady }: { locale: Locale; onReady: () => 
           <Van />
         </Physics>
         <Dust />
+        <Skids />
         <Motes />
         <WindSystem />
+        <FlyingPapers />
         <FollowCamera />
         <Effects />
         <Preload all />
         <Ready onReady={onReady} />
       </Suspense>
     </Canvas>
+  );
+}
+
+/** Ambient lighting that eases between day and night (the lamp and headlights stay on). */
+function DayNight({ night }: { night: boolean }): ReactNode {
+  const hemi = useRef<THREE.HemisphereLight>(null);
+  const ambient = useRef<THREE.AmbientLight>(null);
+  const sun = useRef<THREE.DirectionalLight>(null);
+  const bg = useMemo(() => new THREE.Color("#0f2a22"), []);
+  const target = useMemo(() => new THREE.Color(), []);
+  useFrame(({ scene }) => {
+    const k = night ? 0.12 : 1;
+    if (hemi.current) hemi.current.intensity += (0.5 * k - hemi.current.intensity) * 0.05;
+    if (ambient.current) ambient.current.intensity += (0.3 * k - ambient.current.intensity) * 0.05;
+    if (sun.current) sun.current.intensity += (0.5 * k - sun.current.intensity) * 0.05;
+    target.set(night ? "#050d0a" : "#0f2a22");
+    bg.lerp(target, 0.05);
+    scene.background = bg;
+    if (scene.fog instanceof THREE.Fog) scene.fog.color.copy(bg);
+  });
+  return (
+    <>
+      <fog attach="fog" args={["#0f2a22", 26, 48]} />
+      <hemisphereLight ref={hemi} args={["#e8f0e6", "#0d1f19", 0.5]} />
+      <ambientLight ref={ambient} intensity={0.3} />
+      <directionalLight ref={sun} position={[8, 14, 6]} intensity={0.5} castShadow shadow-mapSize={[1024, 1024]} shadow-camera-left={-20} shadow-camera-right={20} shadow-camera-top={20} shadow-camera-bottom={-20} />
+    </>
   );
 }
 

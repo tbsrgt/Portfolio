@@ -36,7 +36,7 @@ export const dust = {
 export const shake = { amount: 0, add(v: number) { shake.amount = Math.min(1.2, shake.amount + v); } };
 
 /** Slowly turning wind with gusts, read by papers and streaks. */
-export const wind = { x: 0, z: 0, gust: 0, t: 0 };
+export const wind = { x: 0, z: 0, gust: 0, t: 0, burst: 0 };
 
 function softCircleTexture(): THREE.Texture {
   const size = 64;
@@ -176,7 +176,8 @@ export function WindSystem({ area = [34, 24] }: { area?: [number, number] }): Re
     const angle = t * 0.07 + Math.sin(t * 0.21) * 1.5;
     // Gusts every ~9 s, each lasting ~2.5 s.
     const cycle = t % 9;
-    const gust = cycle < 2.5 ? Math.sin((cycle / 2.5) * Math.PI) : 0;
+    wind.burst = Math.max(0, wind.burst - delta * 1.6);
+    const gust = Math.max(cycle < 2.5 ? Math.sin((cycle / 2.5) * Math.PI) : 0, wind.burst);
     wind.gust = gust;
     const strength = 0.25 + gust * 2.2;
     wind.x = Math.cos(angle) * strength;
@@ -228,5 +229,118 @@ export function Effects(): ReactNode {
       <Noise opacity={0.045} />
       <Vignette eskil={false} offset={0.2} darkness={0.55} />
     </EffectComposer>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Tyre marks left on the blotter                                      */
+/* ------------------------------------------------------------------ */
+
+type Mark = { x: number; z: number; angle: number; life: number };
+const markQueue: Mark[] = [];
+const SKID_COUNT = 420;
+
+export const skid = {
+  mark(x: number, z: number, angle: number): void {
+    markQueue.push({ x, z, angle, life: 1 });
+  },
+};
+
+export function Skids(): ReactNode {
+  const mesh = useRef<THREE.InstancedMesh>(null);
+  const pool = useMemo<Mark[]>(() => Array.from({ length: SKID_COUNT }, () => ({ x: 0, z: 0, angle: 0, life: 0 })), []);
+  const dummy = useMemo(() => new THREE.Object3D(), []);
+  const color = useMemo(() => new THREE.Color(), []);
+  const next = useRef(0);
+
+  useFrame((_, delta) => {
+    const m = mesh.current;
+    if (!m) return;
+    while (markQueue.length) {
+      const mk = markQueue.pop();
+      if (!mk) break;
+      const slot = pool[next.current];
+      if (slot) Object.assign(slot, mk);
+      next.current = (next.current + 1) % SKID_COUNT;
+    }
+    for (let i = 0; i < SKID_COUNT; i += 1) {
+      const mk = pool[i];
+      if (!mk) continue;
+      if (mk.life <= 0) {
+        dummy.scale.setScalar(0.0001);
+        dummy.position.set(0, -10, 0);
+      } else {
+        mk.life -= delta * 0.045;
+        dummy.position.set(mk.x, 0.012, mk.z);
+        dummy.rotation.set(-Math.PI / 2, 0, -mk.angle);
+        dummy.scale.set(0.18, 0.5, 1);
+        color.setRGB(0.05, 0.05, 0.04);
+        m.setColorAt(i, color);
+      }
+      dummy.updateMatrix();
+      m.setMatrixAt(i, dummy.matrix);
+    }
+    m.instanceMatrix.needsUpdate = true;
+    if (m.instanceColor) m.instanceColor.needsUpdate = true;
+  });
+
+  return (
+    <instancedMesh ref={mesh} args={[undefined, undefined, SKID_COUNT]} frustumCulled={false}>
+      <planeGeometry args={[1, 1]} />
+      <meshBasicMaterial color="#111" transparent opacity={0.45} depthWrite={false} toneMapped={false} />
+    </instancedMesh>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Loose sheets that take off in a gust and tumble across the desk     */
+/* ------------------------------------------------------------------ */
+
+const PAPER_COUNT = 7;
+
+export function FlyingPapers({ area = [34, 24] }: { area?: [number, number] }): ReactNode {
+  const group = useRef<THREE.Group>(null);
+  const papers = useMemo(() => Array.from({ length: PAPER_COUNT }, (_, i) => ({ x: (Math.random() - 0.5) * area[0], z: (Math.random() - 0.5) * area[1], y: 0.03, phase: i * 1.3, air: 0, spin: Math.random() * Math.PI })), [area]);
+
+  useFrame((_, delta) => {
+    const g = group.current;
+    if (!g) return;
+    papers.forEach((p, i) => {
+      const mesh = g.children[i];
+      if (!mesh) return;
+      // A strong gust lifts a sheet; it drifts with the wind, tumbles, then settles.
+      if (p.air <= 0 && wind.gust > 0.75 && Math.random() < delta * 0.9) p.air = 2.5 + Math.random() * 2;
+      if (p.air > 0) {
+        p.air -= delta;
+        const lift = Math.min(1, p.air / 1.2);
+        p.y += (0.9 + Math.sin(wind.t * 6 + p.phase) * 0.9) * delta * lift - (p.air < 1 ? delta * 1.2 : 0);
+        p.y = Math.max(0.03, Math.min(3.2, p.y));
+        p.x += wind.x * delta * 2.2;
+        p.z += wind.z * delta * 2.2;
+        p.spin += delta * (2 + wind.gust * 3);
+        if (Math.abs(p.x) > area[0] / 2 - 1 || Math.abs(p.z) > area[1] / 2 - 1) {
+          p.x = (Math.random() - 0.5) * area[0] * 0.8;
+          p.z = (Math.random() - 0.5) * area[1] * 0.8;
+          p.y = 0.03;
+          p.air = 0;
+        }
+      } else if (p.y > 0.03) {
+        p.y = Math.max(0.03, p.y - delta * 1.5);
+      }
+      mesh.position.set(p.x, p.y, p.z);
+      const flying = p.y > 0.05;
+      mesh.rotation.set(-Math.PI / 2 + (flying ? Math.sin(p.spin) * 0.9 : 0), flying ? Math.cos(p.spin * 0.7) * 0.6 : 0, p.spin * 0.3);
+    });
+  });
+
+  return (
+    <group ref={group}>
+      {papers.map((p, i) => (
+        <mesh key={i} castShadow position={[p.x, p.y, p.z]}>
+          <planeGeometry args={[1.1, 1.5]} />
+          <meshStandardMaterial color="#f5f0e6" roughness={1} side={THREE.DoubleSide} />
+        </mesh>
+      ))}
+    </group>
   );
 }
