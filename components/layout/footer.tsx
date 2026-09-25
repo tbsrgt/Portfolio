@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
 import { deskCopy } from "@/lib/desk-copy";
@@ -14,8 +13,6 @@ const linkClass = "focus-ring text-paper/70 hover:text-paper transition-colors";
 export function Footer(): ReactNode {
   const { copy, locale } = useLanguage();
   const desk = deskCopy[locale];
-  const pathname = usePathname();
-  if (pathname === "/") return null;
 
   return (
     <footer className="bg-desk-deep relative z-[1] border-t-4 border-black/30">
@@ -27,9 +24,8 @@ export function Footer(): ReactNode {
         <nav aria-label={copy.footer.navigation}>
           <span className="dymo">{copy.footer.navigation}</span>
           <ul className="mt-4 flex flex-col gap-2 text-sm">
-            <li><Link href="/" className={linkClass}>{locale === "fr" ? "Le bureau 3D" : "The 3D desk"}</Link></li>
-            <li><Link href="/site" className={linkClass}>{copy.nav.home}</Link></li>
-            <li><Link href="/site#offres" className={linkClass}>{copy.nav.services}</Link></li>
+            <li><Link href="/" className={linkClass}>{copy.nav.home}</Link></li>
+            <li><Link href="/#offres" className={linkClass}>{copy.nav.services}</Link></li>
             <li><Link href="/projects" className={linkClass}>{copy.nav.projects}</Link></li>
             <li><Link href="/about" className={linkClass}>{copy.nav.about}</Link></li>
           </ul>

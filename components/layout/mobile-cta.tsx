@@ -23,8 +23,8 @@ export function MobileCta(): ReactNode {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  if (pathname === "/devis" || pathname === "/") return null;
-  const contactHref = pathname === "/site" ? "#contact" : "/site#contact";
+  if (pathname === "/devis") return null;
+  const contactHref = pathname === "/" ? "#contact" : "/#contact";
 
   return (
     <AnimatePresence>

@@ -15,16 +15,12 @@ export function Nav(): ReactNode {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  const onGame = pathname === "/";
-  const switchLabel = onGame ? (locale === "fr" ? "Site classique" : "Classic site") : locale === "fr" ? "Le bureau 3D" : "The 3D desk";
-  const switchHref = onGame ? "/site" : "/";
   const items = [
-    { label: switchLabel, href: switchHref },
-    { label: copy.nav.home, href: "/site" },
-    { label: copy.nav.services, href: "/site#offres" },
+    { label: copy.nav.home, href: "/" },
+    { label: copy.nav.services, href: "/#offres" },
     { label: copy.nav.projects, href: "/projects" },
     { label: copy.nav.about, href: "/about" },
-    { label: copy.nav.contact, href: "/site#contact" },
+    { label: copy.nav.contact, href: pathname === "/" ? "#contact" : "/#contact" },
   ];
 
   useEffect(() => {
@@ -61,9 +57,6 @@ export function Nav(): ReactNode {
           >
             {locale === "fr" ? "EN" : "FR"}
           </button>
-          <Link href={switchHref} className="btn btn-paper hidden h-10 px-4 text-sm md:inline-flex">
-            {switchLabel}
-          </Link>
           <Link href="/devis" className="btn btn-stamp hidden h-10 px-4 text-sm sm:inline-flex">
             {locale === "fr" ? "Devis" : "Quote"}
             <ArrowUpRight className="h-4 w-4" />
