@@ -1,3 +1,4 @@
+import { discountFromCode } from "@/lib/game";
 import { emailPattern, getField, readJson, sendMail } from "@/lib/mailer";
 import { estimateQuote, formatPrice, visibleSteps, type QuoteAnswers } from "@/lib/quote";
 
@@ -36,8 +37,11 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   const estimate = estimateQuote(answers);
-  const estimateLine = estimate.kind === "price" ? formatPrice(estimate.amount, "fr") : "Sur devis";
-  const text = ["Nouvelle demande de devis", `Estimation affichée : ${estimateLine}`, "", ...lines].join("\n");
+  const code = typeof body.code === "string" ? body.code.trim().toUpperCase().slice(0, 20) : "";
+  const discount = discountFromCode(code);
+  const shown = estimate.kind === "price" ? Math.round((estimate.amount * (100 - discount)) / 100) : null;
+  const estimateLine = shown !== null ? formatPrice(shown, "fr") : "Sur devis";
+  const text = ["Nouvelle demande de devis", `Estimation affichée : ${estimateLine}`, discount > 0 ? `Remise tournée : −${discount} % (code ${code})` : "", "", ...lines].join("\n");
 
   return sendMail({
     subject: `Demande de devis (${estimateLine}) — ${answers.company as string}`,

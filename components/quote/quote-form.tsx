@@ -7,7 +7,14 @@ import { useCallback, useEffect, useRef, useState, type FormEvent, type ReactNod
 
 import { Portrait } from "@/components/about/portrait";
 import { useLanguage } from "@/lib/i18n";
+import { discountFromCode } from "@/lib/game";
 import { estimateQuote, formatPrice, quoteCopy, visibleSteps, type QuoteAnswers, type QuoteStep } from "@/lib/quote";
+
+/** Discount code earned in the desk game, passed as ?code=. */
+function readCode(): string {
+  if (typeof window === "undefined") return "";
+  return new URLSearchParams(window.location.search).get("code") ?? "";
+}
 import { site } from "@/lib/site";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -70,7 +77,7 @@ export function QuoteForm(): ReactNode {
       const response = await fetch("/api/quote", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...answers, locale, website_check: honeypot.current?.value ?? "" }),
+        body: JSON.stringify({ ...answers, locale, code: readCode(), website_check: honeypot.current?.value ?? "" }),
       });
       if (!response.ok) throw new Error("Quote delivery failed");
       setStatus("success");
@@ -354,12 +361,20 @@ function EstimateView({ answers }: { answers: QuoteAnswers }): ReactNode {
   }
 
   const surcharge = Math.round((estimate.factor - 1) * 100);
+  const discount = discountFromCode(readCode());
+  const discounted = discount > 0 ? Math.round((estimate.amount * (100 - discount)) / 100) : estimate.amount;
 
   return (
     <div className="border-foreground/10 bg-background mt-8 rounded-3xl border p-6 sm:p-8">
       <p className="text-foreground/55 text-sm">{copy.estimateFrom}</p>
+      {discount > 0 ? (
+        <p className="mt-1 flex flex-wrap items-center gap-3">
+          <span className="text-foreground/45 text-2xl line-through tabular-nums">{formatPrice(estimate.amount, locale)}</span>
+          <span className="stamp text-base">−{discount} % · {readCode().toUpperCase()}</span>
+        </p>
+      ) : null}
       <p className="text-foreground mt-1 text-[3.5rem] leading-none font-medium tracking-tight tabular-nums sm:text-[4.5rem]">
-        {formatPrice(estimate.amount, locale)}
+        {formatPrice(discounted, locale)}
       </p>
       <details className="group mt-6">
         <summary className="focus-ring text-foreground/70 hover:text-foreground cursor-pointer rounded text-sm font-medium">{copy.estimateBreakdown}</summary>
