@@ -1,13 +1,13 @@
-import { ContactCard } from "@/components/contact/contact-card";
-import { Hero } from "@/components/hero/hero";
-import { Projects } from "@/components/projects/projects";
-import { AboutTeaser } from "@/components/sales/about-teaser";
-import { Approach } from "@/components/sales/approach";
-import { ClientLogos } from "@/components/sales/client-logos";
-import { Faq } from "@/components/sales/faq";
-import { Guarantees } from "@/components/sales/guarantees";
-import { Services } from "@/components/sales/services";
-import { WordTicker } from "@/components/sales/word-ticker";
+import { BusinessCards } from "@/components/desk/business-cards";
+import { Checklist } from "@/components/desk/checklist";
+import { ContactDesk } from "@/components/desk/contact-desk";
+import { DeskHero } from "@/components/desk/desk-hero";
+import { IndexCards } from "@/components/desk/index-cards";
+import { Letter } from "@/components/desk/letter";
+import { Pains } from "@/components/desk/pains";
+import { QuoteSheet } from "@/components/desk/quote-sheet";
+import { Receipt } from "@/components/desk/receipt";
+import { WorkFolder } from "@/components/desk/work-folder";
 import { createMetadata } from "@/lib/metadata";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
@@ -22,16 +22,16 @@ export const metadata: Metadata = createMetadata({
 export default function HomePage(): ReactNode {
   return (
     <main id="main-content" className="flex flex-1 flex-col">
-      <Hero />
-      <ClientLogos />
-      <Services />
-      <Projects variant="home" />
-      <WordTicker />
-      <Guarantees />
-      <Approach />
-      <AboutTeaser />
-      <Faq />
-      <ContactCard />
+      <DeskHero />
+      <BusinessCards />
+      <Pains />
+      <QuoteSheet />
+      <WorkFolder />
+      <Checklist />
+      <Receipt />
+      <Letter />
+      <IndexCards />
+      <ContactDesk />
     </main>
   );
 }

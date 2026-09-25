@@ -12,9 +12,9 @@ export const metadata: Metadata = createMetadata({
 export default function QuotePage(): ReactNode {
   return (
     <main id="main-content" className="flex flex-1 flex-col">
-      <section className="mx-auto w-full max-w-190 px-6 pt-36 pb-24 sm:px-10 sm:pt-44 sm:pb-32">
+      <section className="mx-auto w-full max-w-190 px-4 pt-24 pb-24 sm:px-10 sm:pt-28 sm:pb-32"><div className="sheet on-paper rotate-[0.4deg] p-5 sm:p-10">
         <QuoteForm />
-      </section>
+      </div></section>
     </main>
   );
 }

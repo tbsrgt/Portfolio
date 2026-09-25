@@ -23,7 +23,7 @@ export function AboutPage(): ReactNode {
 
   return (
     <>
-      <section className="mx-auto w-full max-w-300 px-6 pt-40 pb-20 sm:px-10 sm:pt-52 sm:pb-28">
+      <section className="container-x pt-10 pb-16 sm:pt-14 sm:pb-20">
         <FadeIn className="flex flex-wrap items-end gap-5 sm:gap-7">
           <div className="relative">
             <span

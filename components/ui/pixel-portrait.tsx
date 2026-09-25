@@ -47,6 +47,7 @@ export function PixelPortrait({
     tiny.height = cells;
     const tctx = tiny.getContext("2d");
     if (!tctx) return;
+    tctx.filter = "brightness(1.35) contrast(1.15)";
     const side = Math.min(img.naturalWidth, img.naturalHeight);
     const sx = (img.naturalWidth - side) / 2;
     const sy = (img.naturalHeight - side) / 2;
