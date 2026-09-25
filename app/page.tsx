@@ -1,13 +1,4 @@
-import { BusinessCards } from "@/components/desk/business-cards";
-import { Checklist } from "@/components/desk/checklist";
-import { ContactDesk } from "@/components/desk/contact-desk";
 import { GameHero } from "@/components/game/game-hero";
-import { IndexCards } from "@/components/desk/index-cards";
-import { Letter } from "@/components/desk/letter";
-import { Pains } from "@/components/desk/pains";
-import { QuoteSheet } from "@/components/desk/quote-sheet";
-import { Receipt } from "@/components/desk/receipt";
-import { WorkFolder } from "@/components/desk/work-folder";
 import { createMetadata } from "@/lib/metadata";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
@@ -19,19 +10,11 @@ export const metadata: Metadata = createMetadata({
   path: "/",
 });
 
+/** The 3D desk fills the screen; every part of the site lives inside it. */
 export default function HomePage(): ReactNode {
   return (
-    <main id="main-content" className="flex flex-1 flex-col">
+    <main id="main-content" className="h-[100svh] overflow-hidden">
       <GameHero />
-      <BusinessCards />
-      <Pains />
-      <QuoteSheet />
-      <WorkFolder />
-      <Checklist />
-      <Receipt />
-      <Letter />
-      <IndexCards />
-      <ContactDesk />
     </main>
   );
 }

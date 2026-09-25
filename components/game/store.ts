@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 
-import { codeFor, discountFor, loadMissions, saveMissions, type MissionId } from "@/lib/game";
+import { codeFor, discountFor, loadMissions, saveMissions, type MissionId, type ZoneId } from "@/lib/game";
 
 /* ---------- Input: keyboard + touch joystick, read every frame ---------- */
 
@@ -37,7 +37,7 @@ export function readAxis(): { x: number; y: number } {
 
 export function bindKeyboard(): () => void {
   const down = (event: KeyboardEvent): void => {
-    if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) return;
+    if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLSelectElement) return;
     if (KEY_AXES[event.code]) {
       input.keys.add(event.code);
       event.preventDefault();
@@ -77,9 +77,11 @@ type GameState = {
   nearVan: boolean;
   lastEvent: { id: MissionId; at: number } | null;
   started: boolean;
+  zone: ZoneId | null;
+  panel: ZoneId | null;
 };
 
-let state: GameState = { mode: "walk", done: [], discount: 0, code: null, nearVan: false, lastEvent: null, started: false };
+let state: GameState = { mode: "walk", done: [], discount: 0, code: null, nearVan: false, lastEvent: null, started: false, zone: null, panel: null };
 const listeners = new Set<() => void>();
 
 function emit(next: Partial<GameState>): void {
@@ -109,6 +111,18 @@ export const game = {
     const discount = discountFor(done);
     saveMissions(done);
     emit({ done, discount, code: codeFor(discount), lastEvent: { id, at: Date.now() } });
+  },
+  enterZone(id: ZoneId): void {
+    emit({ zone: id, panel: id, started: true });
+  },
+  leaveZone(id: ZoneId): void {
+    if (state.zone === id) emit({ zone: null, panel: state.panel === id ? null : state.panel });
+  },
+  openPanel(id: ZoneId): void {
+    emit({ panel: id });
+  },
+  closePanel(): void {
+    emit({ panel: null });
   },
   reset(): void {
     saveMissions([]);

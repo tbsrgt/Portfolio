@@ -8,6 +8,7 @@ import { Suspense, useEffect, useState, type ReactNode } from "react";
 import { FollowCamera, Player, Van } from "./actors";
 import { bindKeyboard, game, useGame } from "./store";
 import { Adresse, Bin, Cogebat, Desk, Lamp, PaperBall, PostIt, Props, Racines } from "./world";
+import { ContentZones } from "./zones";
 import { deskCopy } from "@/lib/desk-copy";
 import type { Locale } from "@/lib/i18n";
 
@@ -45,9 +46,10 @@ export function GameScene({ locale, onReady }: { locale: Locale; onReady: () => 
           <Cogebat />
           <Adresse />
           <Bin />
+          <ContentZones locale={locale} />
           <PaperBall key={ballSeed} seed={ballSeed} />
-          <PostIt text={copy.postitAvailable} position={[-4, 0.3, -4]} rotation={0.3} />
-          <PostIt text={copy.postitCoffee} position={[4.5, 0.3, 2]} rotation={-0.4} />
+          <PostIt text={copy.postitAvailable} position={[-9, 0.3, -6]} rotation={0.3} />
+          <PostIt text={copy.postitCoffee} position={[6, 0.3, 2.5]} rotation={-0.4} />
           <Player />
           <Van />
         </Physics>

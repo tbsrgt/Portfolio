@@ -100,10 +100,10 @@ export function Props(): ReactNode {
     <>
       <Prop name="laptop" size={7} position={[9.5, 0, -8.5]} rotation={[0, -0.5, 0]} />
       <Prop name="plant" size={3.2} position={[14, 0, 8]} collider="cylinder" />
-      <Prop name="mug" size={1.8} position={[-11, 0, 4]} collider="cylinder" />
-      <Prop name="stapler" size={3} position={[-3, 0, -9.5]} rotation={[0, 0.4, 0]} />
-      <Prop name="notebook" size={5} position={[2, 0, -9]} rotation={[0, -0.2, 0]} />
-      <Prop name="tape" size={1.6} position={[12, 0, 2]} rotation={[0, 0.9, 0]} collider="cylinder" />
+      <Prop name="mug" size={1.8} position={[-12.5, 0, 1]} collider="cylinder" />
+      <Prop name="stapler" size={3} position={[-1, 0, -9.5]} rotation={[0, 0.4, 0]} />
+      <Prop name="notebook" size={5} position={[4.5, 0, -9.5]} rotation={[0, -0.2, 0]} />
+      <Prop name="tape" size={1.6} position={[10, 0, 1.5]} rotation={[0, 0.9, 0]} collider="cylinder" />
     </>
   );
 }

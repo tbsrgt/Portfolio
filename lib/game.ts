@@ -80,3 +80,24 @@ export function saveMissions(done: readonly MissionId[]): void {
     /* storage unavailable */
   }
 }
+
+/** Parts of the site laid out on the desk. */
+export type ZoneId = "offers" | "work" | "about" | "method" | "guarantees" | "faq" | "contact" | "pains";
+
+export type Zone = {
+  id: ZoneId;
+  tone: "paper" | "kraft" | "postit" | "stamp";
+  title: Record<Locale, string>;
+  subtitle: Record<Locale, string>;
+};
+
+export const zones: readonly Zone[] = [
+  { id: "offers", tone: "paper", title: { fr: "Devis & prix", en: "Quote & prices" }, subtitle: { fr: "les prix, noir sur blanc", en: "prices in black and white" } },
+  { id: "work", tone: "kraft", title: { fr: "Réalisations", en: "Work" }, subtitle: { fr: "7 projets dedans", en: "7 projects inside" } },
+  { id: "about", tone: "paper", title: { fr: "Moi, c'est Tobias", en: "I'm Tobias" }, subtitle: { fr: "la lettre et la photo", en: "the letter and the photo" } },
+  { id: "method", tone: "paper", title: { fr: "Méthode", en: "Method" }, subtitle: { fr: "comment ça se passe", en: "how it goes" } },
+  { id: "guarantees", tone: "paper", title: { fr: "Garanties", en: "Guarantees" }, subtitle: { fr: "le ticket de caisse", en: "the receipt" } },
+  { id: "faq", tone: "paper", title: { fr: "Questions", en: "Questions" }, subtitle: { fr: "les fiches", en: "the cards" } },
+  { id: "contact", tone: "stamp", title: { fr: "Contact", en: "Contact" }, subtitle: { fr: "on en parle ?", en: "shall we talk?" } },
+  { id: "pains", tone: "postit", title: { fr: "Vos galères", en: "Your headaches" }, subtitle: { fr: "et ceux qui bossent avec moi", en: "and who works with me" } },
+];

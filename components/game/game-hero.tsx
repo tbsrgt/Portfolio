@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useEffect, useState, type ReactNode } from "react";
 
 import { Hud } from "./hud";
+import { ZonePanel } from "./panel";
 import { useGame } from "./store";
 import { DeskHero } from "@/components/desk/desk-hero";
 import { ArrowRight, Phone } from "@/components/ui/pixel-icon";
@@ -69,14 +70,15 @@ export function GameHero(): ReactNode {
               {copy.ctaCall}
             </a>
           </div>
-          <p className="hand pen mt-3 text-[1.15rem] leading-tight">{gameLabel} ↓</p>
-          <button type="button" onClick={() => setFolded((f) => !f)} className="dymo absolute -top-3 -right-2 cursor-pointer text-[9px]" aria-expanded={!folded}>
+          <p className="hand pen mt-3 text-[1.15rem] leading-tight">{locale === "fr" ? "Faites le tour : chaque feuille sur le bureau est une partie du site. Le van vous fait gagner jusqu'à −25 %." : "Walk around: every sheet on the desk is a part of the site. The van earns you up to −25%."}</p>
+          <button type="button" onClick={() => setFolded((f) => !f)} className="dymo absolute -top-3 left-2 cursor-pointer text-[9px]" aria-expanded={!folded}>
             {folded ? (locale === "fr" ? "Ouvrir" : "Open") : locale === "fr" ? "Replier" : "Fold"}
           </button>
         </div>
       </div>
 
       {ready ? <Hud locale={locale} /> : null}
+      <ZonePanel locale={locale} />
 
       <AnimatePresence>
         {!ready ? (

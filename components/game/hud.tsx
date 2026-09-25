@@ -4,9 +4,9 @@ import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { useEffect, useRef, useState, type PointerEvent, type ReactNode } from "react";
 
-import { input, joystick, useGame } from "./store";
+import { game, input, joystick, useGame } from "./store";
 import { ArrowRight, Check } from "@/components/ui/pixel-icon";
-import { MAX_DISCOUNT, missions } from "@/lib/game";
+import { MAX_DISCOUNT, missions, zones } from "@/lib/game";
 import type { Locale } from "@/lib/i18n";
 
 const HUD_COPY = {
@@ -22,6 +22,7 @@ const HUD_COPY = {
     touch: "Joystick pour bouger · bouton pour monter/descendre",
     max: "Remise maximale atteinte !",
     reset: "Recommencer",
+    explore: "Explorer le bureau",
   },
   en: {
     missions: "Missions",
@@ -35,6 +36,7 @@ const HUD_COPY = {
     touch: "Joystick to move · button to get in/out",
     max: "Maximum discount reached!",
     reset: "Start over",
+    explore: "Explore the desk",
   },
 } as const;
 
@@ -92,6 +94,7 @@ export function Hud({ locale }: { locale: Locale }): ReactNode {
   const { mode, done, discount, code, nearVan, lastEvent, started } = useGame();
   const [touch, setTouch] = useState(false);
   const [toast, setToast] = useState<typeof lastEvent>(null);
+  const [explore, setExplore] = useState(false);
 
   useEffect(() => {
     setTouch(window.matchMedia("(pointer: coarse)").matches);
@@ -110,7 +113,7 @@ export function Hud({ locale }: { locale: Locale }): ReactNode {
   return (
     <>
       {/* Mission post-it */}
-      <div className="pointer-events-none absolute right-3 bottom-24 z-10 w-[168px] sm:top-24 sm:right-6 sm:bottom-auto sm:w-[240px]">
+      <div className="pointer-events-none absolute right-3 bottom-24 z-10 w-[168px] sm:top-36 sm:right-6 sm:bottom-auto sm:w-[240px]">
         <div className="postit hand rotate-[3deg] p-3 text-[1rem] leading-tight sm:p-4 sm:text-[1.35rem]">
           <p className="typed relative mb-2 text-[10px] font-bold">{t.missions}</p>
           <ul className="relative flex flex-col gap-1">
@@ -128,6 +131,33 @@ export function Hud({ locale }: { locale: Locale }): ReactNode {
           </ul>
           {next ? <p className="pen relative mt-2 hidden text-[1.1rem] leading-tight sm:block">{next.brief[locale]}</p> : <p className="pen relative mt-2">{t.max}</p>}
         </div>
+      </div>
+
+      {/* Explorer: every part of the site, one tap away */}
+      <div className="pointer-events-auto absolute top-20 right-3 z-10 sm:top-24 sm:right-6">
+        <button type="button" onClick={() => setExplore((v) => !v)} className="dymo dymo-blue cursor-pointer text-[10px]" aria-expanded={explore}>
+          {t.explore} {explore ? "−" : "+"}
+        </button>
+        <AnimatePresence>
+          {explore ? (
+            <motion.ul initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} className="sheet mt-2 w-[200px] rotate-[1deg] p-3">
+              {zones.map((z) => (
+                <li key={z.id}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      game.openPanel(z.id);
+                      setExplore(false);
+                    }}
+                    className="focus-ring hand pen flex w-full cursor-pointer items-center justify-between text-left text-[1.35rem] leading-8"
+                  >
+                    {z.title[locale]} <span aria-hidden="true">→</span>
+                  </button>
+                </li>
+              ))}
+            </motion.ul>
+          ) : null}
+        </AnimatePresence>
       </div>
 
       {/* Discount stamp + code */}
