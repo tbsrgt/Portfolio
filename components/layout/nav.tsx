@@ -1,224 +1,33 @@
 "use client";
 
-import { Globe2, Menu, Moon, Sun, X } from "lucide-react";
+import { ArrowUpRight, Menu, X } from "@/components/ui/pixel-icon";
 import { AnimatePresence, motion } from "motion/react";
-import { useTheme } from "next-themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { flushSync } from "react-dom";
-import {
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-  useSyncExternalStore,
-  type ReactNode,
-} from "react";
+import { useEffect, useState, type ReactNode } from "react";
+
 import { useLanguage } from "@/lib/i18n";
+import { site } from "@/lib/site";
 
-type NavItem = {
-  label: string;
-  href: string;
-};
-
-function useIsMounted(): boolean {
-  return useSyncExternalStore(
-    () => () => {},
-    () => true,
-    () => false
-  );
-}
-
-function runCircularViewTransition(
-  event: React.MouseEvent<HTMLButtonElement>,
-  update: () => void
-): void {
-  const prefersReducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
-  ).matches;
-
-  if (!document.startViewTransition || prefersReducedMotion) {
-    update();
-    return;
-  }
-
-  const rect = event.currentTarget.getBoundingClientRect();
-  const cx = rect.left + rect.width / 2;
-  const cy = rect.top + rect.height / 2;
-  const radius = Math.hypot(
-    Math.max(cx, window.innerWidth - cx),
-    Math.max(cy, window.innerHeight - cy)
-  );
-  const root = document.documentElement;
-  root.style.setProperty("--theme-cx", `${cx}px`);
-  root.style.setProperty("--theme-cy", `${cy}px`);
-  root.style.setProperty("--theme-r", `${radius}px`);
-  root.dataset.themeAnim = "1";
-
-  // React state updates are normally deferred. The view transition must see
-  // the new language before taking its second snapshot.
-  const transition = document.startViewTransition(() => {
-    flushSync(update);
-  });
-  transition.finished.finally(() => {
-    delete root.dataset.themeAnim;
-  });
-}
-
-function NavThemeToggle(): ReactNode {
-  const mounted = useIsMounted();
-  const { setTheme, resolvedTheme } = useTheme();
-  const { copy } = useLanguage();
-  const isDark = mounted && resolvedTheme === "dark";
-
-  const toggleTheme = (event: React.MouseEvent<HTMLButtonElement>): void => {
-    const next = isDark ? "light" : "dark";
-    runCircularViewTransition(event, () => setTheme(next));
-  };
-
-  return (
-    <button
-      type="button"
-      onClick={toggleTheme}
-      aria-label={
-        mounted
-          ? isDark
-            ? copy.theme.light
-            : copy.theme.dark
-          : copy.theme.toggle
-      }
-      aria-pressed={mounted ? isDark : undefined}
-      className="focus-ring bg-background ring-foreground/8 relative inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-full ring-1 transition-colors sm:h-8 sm:w-8"
-    >
-      <span aria-hidden="true" className="relative h-4 w-4">
-        <Sun
-          className={`text-foreground absolute inset-0 h-4 w-4 transition-all duration-300 ${
-            mounted && isDark
-              ? "scale-100 rotate-0 opacity-100"
-              : "scale-0 -rotate-90 opacity-0"
-          }`}
-        />
-        <Moon
-          className={`text-foreground absolute inset-0 h-4 w-4 transition-all duration-300 ${
-            mounted && !isDark
-              ? "scale-100 rotate-0 opacity-100"
-              : "scale-0 rotate-90 opacity-0"
-          }`}
-        />
-      </span>
-    </button>
-  );
-}
-
-function LanguageSwitcher(): ReactNode {
-  const { locale, copy, setLocale } = useLanguage();
-  const [isOpen, setIsOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const closeMenu = (event: MouseEvent): void => {
-      if (!menuRef.current?.contains(event.target as Node)) setIsOpen(false);
-    };
-    const closeOnEscape = (event: KeyboardEvent): void => {
-      if (event.key === "Escape") setIsOpen(false);
-    };
-    document.addEventListener("mousedown", closeMenu);
-    document.addEventListener("keydown", closeOnEscape);
-    return () => {
-      document.removeEventListener("mousedown", closeMenu);
-      document.removeEventListener("keydown", closeOnEscape);
-    };
-  }, []);
-
-  const languages = [
-    { code: "fr", label: "FR", name: "Français" },
-    { code: "en", label: "EN", name: "English" },
-  ] as const;
-
-  return (
-    <div
-      ref={menuRef}
-      className="border-foreground/8 bg-background flex h-10 items-center overflow-hidden rounded-full border shadow-sm sm:h-11"
-    >
-      <button
-        type="button"
-        onClick={() => setIsOpen((open) => !open)}
-        aria-label={copy.language}
-        aria-expanded={isOpen}
-        aria-controls="language-menu"
-        className="focus-ring text-foreground inline-flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full transition-transform duration-200 hover:scale-[1.04] active:scale-[0.96] sm:h-11 sm:w-11"
-      >
-        <Globe2 aria-hidden="true" className="h-4 w-4" />
-      </button>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            id="language-menu"
-            initial={{ opacity: 0, width: 0 }}
-            animate={{ opacity: 1, width: 80 }}
-            exit={{ opacity: 0, width: 0 }}
-            transition={{ type: "spring", stiffness: 420, damping: 30 }}
-            className="flex h-full shrink-0 items-center gap-1 overflow-hidden pr-1.5"
-          >
-            {languages.map((language) => {
-              const isSelected = locale === language.code;
-              return (
-                <button
-                  key={language.code}
-                  type="button"
-                  onClick={() => {
-                    setLocale(language.code);
-                    setIsOpen(false);
-                  }}
-                  aria-pressed={isSelected}
-                  title={language.name}
-                  className={`focus-ring inline-flex h-7 min-w-7 cursor-pointer items-center justify-center rounded-full px-2 text-[11px] font-semibold transition-colors duration-200 sm:h-8 sm:min-w-8 ${
-                    isSelected
-                      ? "bg-foreground text-background"
-                      : "text-foreground/60 hover:bg-foreground/5 hover:text-foreground"
-                  }`}
-                >
-                  {language.label}
-                </button>
-              );
-            })}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 export function Nav(): ReactNode {
-  const { locale, copy } = useLanguage();
-  const navItems: readonly NavItem[] = [
-    { label: copy.nav.home, href: "/" },
+  const { locale, copy, setLocale } = useLanguage();
+  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  const items = [
     { label: copy.nav.services, href: "/#services" },
     { label: copy.nav.projects, href: "/projects" },
     { label: copy.nav.about, href: "/about" },
   ];
-  const pathname = usePathname();
-  const contactHref = pathname === "/mentions-legales" || pathname === "/devis" ? "/#contact" : "#contact";
-  const listRef = useRef<HTMLUListElement>(null);
-  const itemRefs = useRef<Array<HTMLLIElement | null>>([]);
-  const [pillRect, setPillRect] = useState<{
-    x: number;
-    width: number;
-  } | null>(null);
-  const [hasMeasured, setHasMeasured] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const mobileMenuRef = useRef<HTMLDivElement>(null);
-
-  const activeIndex = navItems.findIndex((item) =>
-    item.href === "/"
-      ? pathname === "/"
-      : pathname === item.href || pathname.startsWith(`${item.href}/`)
-  );
+  const contactHref = pathname === "/" ? "#contact" : "/#contact";
 
   useEffect(() => {
     const titles = {
-      fr: { home: "Refonte de site internet à Aix-en-Provence", projects: "Réalisations", about: "À propos", legal: "Mentions légales", quote: "Demande de devis" },
-      en: { home: "Website redesign in Aix-en-Provence", projects: "Work", about: "About", legal: "Legal notice", quote: "Quote request" },
+      fr: { home: "Sites web et logiciels sur mesure à Aix-en-Provence", projects: "Réalisations", about: "À propos", legal: "Mentions légales", quote: "Demande de devis" },
+      en: { home: "Websites and custom software in Aix-en-Provence", projects: "Work", about: "About", legal: "Legal notice", quote: "Quote request" },
     };
     const page =
       pathname === "/projects" ? "projects" : pathname === "/about" ? "about" : pathname === "/mentions-legales" ? "legal" : pathname === "/devis" ? "quote" : "home";
@@ -226,176 +35,122 @@ export function Nav(): ReactNode {
   }, [locale, pathname]);
 
   useEffect(() => {
-    const closeOnOutsideClick = (event: MouseEvent): void => {
-      if (!mobileMenuRef.current?.contains(event.target as Node)) {
-        setMobileMenuOpen(false);
-      }
-    };
-    const closeOnEscape = (event: KeyboardEvent): void => {
-      if (event.key === "Escape") setMobileMenuOpen(false);
-    };
-    document.addEventListener("mousedown", closeOnOutsideClick);
-    document.addEventListener("keydown", closeOnEscape);
-    return () => {
-      document.removeEventListener("mousedown", closeOnOutsideClick);
-      document.removeEventListener("keydown", closeOnEscape);
-    };
+    const onScroll = (): void => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useLayoutEffect(() => {
-    const id = requestAnimationFrame(() => {
-      const list = listRef.current;
-      const activeEl = activeIndex >= 0 ? itemRefs.current[activeIndex] : null;
-      if (!list || !activeEl) {
-        setPillRect(null);
-        return;
-      }
-      const listRect = list.getBoundingClientRect();
-      const itemRect = activeEl.getBoundingClientRect();
-      setPillRect({
-        x: itemRect.left - listRect.left,
-        width: itemRect.width,
-      });
-    });
-
-    return () => cancelAnimationFrame(id);
-  }, [activeIndex, locale, pathname]);
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
-    if (!pillRect) return;
-    const id = requestAnimationFrame(() => setHasMeasured(true));
-    return () => cancelAnimationFrame(id);
-  }, [pillRect]);
-
-  const contactButtonClass =
-    "focus-ring bg-foreground text-background inline-flex h-11 cursor-pointer items-center justify-center rounded-full px-4 text-sm font-medium shadow-sm transition-transform duration-200 hover:-translate-y-0.5 active:scale-95";
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
   return (
-    <nav
-      aria-label={copy.nav.primary}
-      className="fixed top-3 right-3 z-50 max-w-[calc(100vw-1.5rem)] sm:top-6 sm:right-auto sm:left-1/2 sm:-translate-x-1/2"
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
+        scrolled || open ? "bg-ink/92 backdrop-blur-md" : "bg-ink"
+      }`}
     >
-      <div className="flex items-center gap-2 sm:hidden">
-        <a href={contactHref} className={contactButtonClass}>
-          {copy.nav.contact}
-        </a>
-        <div ref={mobileMenuRef} className="relative">
+      <nav aria-label={copy.nav.primary} className="on-ink container-x flex h-16 items-center justify-between gap-4">
+        <Link href="/" className="focus-ring flex items-center gap-3">
+          <span aria-hidden="true" className="bg-brand h-3 w-3" />
+          <span className="text-paper font-display text-lg font-bold tracking-tight whitespace-nowrap">
+            {site.name}
+          </span>
+          <span className="text-paper/50 font-mono hidden text-[11px] tracking-[0.14em] uppercase md:inline">
+            {site.city}
+          </span>
+        </Link>
+
+        <ul className="hidden items-center gap-7 md:flex">
+          {items.map((item) => (
+            <li key={item.href}>
+              <Link
+                href={item.href}
+                className="focus-ring text-paper/75 hover:text-paper text-sm font-medium transition-colors"
+              >
+                {item.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        <div className="flex items-center gap-2">
           <button
             type="button"
-            onClick={() => setMobileMenuOpen((open) => !open)}
-            aria-label={mobileMenuOpen ? copy.nav.closeMenu : copy.nav.openMenu}
-            aria-expanded={mobileMenuOpen}
-            aria-controls="mobile-navigation"
-            className="focus-ring border-foreground/8 bg-background text-foreground inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border shadow-sm transition-transform duration-200 active:scale-95"
+            onClick={() => setLocale(locale === "fr" ? "en" : "fr")}
+            aria-label={copy.language}
+            className="focus-ring text-paper/60 hover:text-paper font-mono h-10 px-2 text-xs tracking-[0.14em] uppercase transition-colors"
           >
-            <motion.span
-              initial={false}
-              animate={{ rotate: mobileMenuOpen ? 90 : 0 }}
-              transition={{ duration: 0.2 }}
-              className="inline-flex"
-            >
-              {mobileMenuOpen ? (
-                <X aria-hidden="true" className="h-5 w-5" />
-              ) : (
-                <Menu aria-hidden="true" className="h-5 w-5" />
-              )}
-            </motion.span>
+            {locale === "fr" ? "EN" : "FR"}
           </button>
-
-          <AnimatePresence>
-            {mobileMenuOpen && (
-              <motion.div
-                id="mobile-navigation"
-                initial={{ opacity: 0, y: -8, scale: 0.96 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -8, scale: 0.96 }}
-                transition={{ type: "spring", stiffness: 430, damping: 32 }}
-                className="border-foreground/8 bg-background absolute top-full right-0 mt-2 w-56 overflow-hidden rounded-3xl border p-2 shadow-lg"
-              >
-                <ul className="flex flex-col gap-1">
-                  {navItems.map((item, index) => {
-                    const isActive = index === activeIndex;
-                    return (
-                      <li key={`mobile-${item.href}`}>
-                        <Link
-                          href={item.href}
-                          aria-current={isActive ? "page" : undefined}
-                          onClick={() => setMobileMenuOpen(false)}
-                          className={`focus-ring flex min-h-11 items-center rounded-2xl px-4 text-[15px] font-medium transition-colors ${
-                            isActive
-                              ? "bg-foreground text-background"
-                              : "text-foreground/70 hover:bg-foreground/5 hover:text-foreground"
-                          }`}
-                        >
-                          {item.label}
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
-                <div className="border-foreground/8 mt-2 flex items-center justify-between border-t pt-2">
-                  <NavThemeToggle />
-                  <LanguageSwitcher />
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <a href={contactHref} className="btn btn-primary hidden h-10 px-4 text-sm md:inline-flex">
+            {copy.nav.contact}
+            <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+          </a>
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-label={open ? copy.nav.closeMenu : copy.nav.openMenu}
+            aria-expanded={open}
+            aria-controls="mobile-navigation"
+            className="focus-ring text-paper inline-flex h-10 w-10 items-center justify-center md:hidden"
+          >
+            {open ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
+          </button>
         </div>
-      </div>
+      </nav>
 
-      <div className="hidden items-center gap-2 sm:flex">
-        <div className="bg-background border-foreground/8 flex items-center gap-0.5 rounded-full border p-1 shadow-sm sm:gap-1 sm:p-1.5">
-          <ul ref={listRef} className="relative flex items-center gap-0.5 sm:gap-1">
-            {pillRect && (
-              <motion.span
-                aria-hidden="true"
-                initial={false}
-                animate={{ x: pillRect.x, width: pillRect.width }}
-                transition={
-                  hasMeasured
-                    ? { type: "spring", stiffness: 380, damping: 32 }
-                    : { duration: 0 }
-                }
-                style={{ left: 0, top: 0, bottom: 0 }}
-                className="bg-foreground/5 ring-foreground/8 absolute rounded-full ring-1"
-              />
-            )}
-            {navItems.map((item, index) => {
-              const isActive = index === activeIndex;
-              return (
-                <li
-                  key={item.href}
-                  ref={(el) => {
-                    itemRefs.current[index] = el;
-                  }}
-                  className="relative"
-                >
-                  <Link
-                    href={item.href}
-                    aria-current={isActive ? "page" : undefined}
-                    className="focus-ring relative inline-flex cursor-pointer items-center justify-center rounded-full px-2.5 py-1.5 text-[11px] font-medium whitespace-nowrap transition-colors duration-300 sm:px-4 sm:text-sm"
+      <AnimatePresence>
+        {open ? (
+          <motion.div
+            id="mobile-navigation"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.3, ease: EASE }}
+            className="on-ink bg-ink border-paper/10 fixed inset-x-0 top-16 bottom-0 border-t md:hidden"
+          >
+            <div className="container-x flex h-full flex-col py-8">
+              <ul className="flex flex-col">
+                {[{ label: copy.nav.home, href: "/" }, ...items].map((item, index) => (
+                  <motion.li
+                    key={item.href}
+                    initial={{ opacity: 0, x: -12 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.05 + index * 0.05, duration: 0.4, ease: EASE }}
+                    className="border-paper/10 border-b"
                   >
-                    <span
-                      className={
-                        isActive
-                          ? "text-foreground relative z-10"
-                          : "text-foreground/60 hover:text-foreground relative z-10"
-                      }
+                    <Link
+                      href={item.href}
+                      onClick={() => setOpen(false)}
+                      className="focus-ring text-paper display flex items-center justify-between py-5 text-4xl"
                     >
                       {item.label}
-                    </span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-          <NavThemeToggle />
-        </div>
-        <LanguageSwitcher />
-        <a href={contactHref} className={`${contactButtonClass} hidden md:inline-flex`}>
-          {copy.nav.contact}
-        </a>
-      </div>
-    </nav>
+                      <ArrowUpRight className="text-brand h-6 w-6" aria-hidden="true" />
+                    </Link>
+                  </motion.li>
+                ))}
+              </ul>
+              <div className="mt-auto flex flex-col gap-3">
+                <a href={contactHref} onClick={() => setOpen(false)} className="btn btn-primary w-full">
+                  {copy.nav.contact}
+                </a>
+                <a href={`mailto:${site.email}`} className="text-paper/60 font-mono text-center text-xs tracking-[0.12em] uppercase">
+                  {site.email}
+                </a>
+              </div>
+            </div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+    </header>
   );
 }

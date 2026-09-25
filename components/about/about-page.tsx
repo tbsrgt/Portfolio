@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "@/components/ui/pixel-icon";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -43,15 +43,15 @@ export function AboutPage(): ReactNode {
           </div>
           <p className="border-foreground/10 text-foreground/70 inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs sm:ml-4">
             <span aria-hidden="true" className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-60 motion-reduce:animate-none" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sun opacity-60 motion-reduce:animate-none" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-sun" />
             </span>
             {copy.availability}
           </p>
         </FadeIn>
 
         <FadeIn delay={0.1}>
-          <h1 className="text-foreground mt-10 max-w-[17ch] text-[2.75rem] leading-[0.98] font-medium tracking-tight sm:text-[4.25rem] lg:text-[5.5rem]">
+          <h1 className="text-foreground mt-10 max-w-[17ch] text-[2.75rem] display sm:text-[4.25rem] lg:text-[5.5rem]">
             {copy.heading}
           </h1>
         </FadeIn>
@@ -71,7 +71,7 @@ export function AboutPage(): ReactNode {
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 href="/devis"
-                className="focus-ring group bg-foreground text-background inline-flex min-h-12 items-center gap-2 rounded-full px-6 text-sm font-medium transition-opacity hover:opacity-85"
+                className="focus-ring group bg-foreground text-background inline-flex min-h-12 items-center gap-2 notch px-6 text-sm font-medium transition-opacity hover:opacity-85"
               >
                 {copy.ctaQuote}
                 <ArrowRight
@@ -81,7 +81,7 @@ export function AboutPage(): ReactNode {
               </Link>
               <Link
                 href="/projects"
-                className="focus-ring border-foreground/15 text-foreground hover:bg-foreground/4 inline-flex min-h-12 items-center rounded-full border px-6 text-sm font-medium transition-colors"
+                className="focus-ring border-foreground/15 text-foreground hover:bg-foreground/4 inline-flex min-h-12 items-center notch border px-6 text-sm font-medium transition-colors"
               >
                 {copy.ctaWork}
               </Link>
@@ -110,7 +110,7 @@ export function AboutPage(): ReactNode {
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <div>
-                  <h3 className="text-foreground text-[1.6rem] leading-tight font-medium tracking-tight sm:text-[1.9rem]">
+                  <h3 className="text-foreground text-[1.6rem] display-md sm:text-[1.9rem]">
                     {principle.title}
                   </h3>
                   <p className="text-foreground/65 mt-3 max-w-[44ch] text-base leading-relaxed sm:text-[17px]">
@@ -158,7 +158,7 @@ export function AboutPage(): ReactNode {
                       />
                       {chapter.place}
                     </p>
-                    <h3 className="mt-4 text-2xl font-medium tracking-tight sm:text-[1.75rem]">
+                    <h3 className="mt-4 text-2xl display-md sm:text-[1.75rem]">
                       {chapter.title}
                     </h3>
                     <p className="text-background/65 mt-2 max-w-[52ch] leading-relaxed">

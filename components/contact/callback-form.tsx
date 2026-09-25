@@ -1,6 +1,6 @@
 "use client";
 
-import { PhoneCall } from "lucide-react";
+import { PhoneCall } from "@/components/ui/pixel-icon";
 import { useState, type FormEvent, type ReactNode } from "react";
 
 import { useLanguage } from "@/lib/i18n";

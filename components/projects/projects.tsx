@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight } from "lucide-react";
+import { ArrowRight } from "@/components/ui/pixel-icon";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
@@ -27,18 +27,18 @@ export function Projects({
     <section
       id={isHome ? "realisations" : undefined}
       aria-labelledby={isHome ? "projects-heading" : undefined}
-      className="relative w-full scroll-mt-24"
+      className="relative w-full scroll-mt-24 py-16 sm:py-24"
     >
       <div className="mx-auto w-full max-w-300 px-4 sm:px-8">
         {isHome ? (
-          <FadeIn className="flex flex-col items-center gap-5 pb-12 text-center sm:pb-16">
-            <p className="text-foreground/50 text-sm font-medium">
+          <FadeIn className="flex max-w-[40rem] flex-col items-start gap-5 pb-12 sm:pb-16">
+            <p className="label">
               {copy.projectsEyebrow}
             </p>
             <ScrollReveal
               as="h2"
               id="projects-heading"
-              textClassName="text-foreground text-balance text-[2.5rem] leading-[1.05] font-medium tracking-tight md:text-[3rem] lg:text-[3.5rem]"
+              textClassName="display text-4xl sm:text-6xl"
             >
               {copy.projectsHeading}
             </ScrollReveal>
@@ -65,10 +65,10 @@ export function Projects({
         </ol>
 
         {isHome && projects.length > HOME_PROJECT_COUNT ? (
-          <FadeIn className="mt-12 flex justify-center">
+          <FadeIn className="mt-10 flex">
             <Link
               href="/projects"
-              className="focus-ring group border-foreground/8 bg-background text-foreground hover:bg-foreground/4 inline-flex min-h-11 items-center gap-2 rounded-xl border px-5 py-2.5 text-sm font-medium shadow-2xl transition-colors"
+              className="btn btn-ink"
             >
               {copy.allProjects}
               <ArrowRight

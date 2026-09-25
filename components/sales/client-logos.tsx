@@ -27,10 +27,10 @@ const items = clients.map((client) => ({
       alt={client.name}
       width={160}
       height={40}
-      className="h-7 w-auto max-w-[140px] object-contain opacity-75 transition-opacity hover:opacity-100 sm:h-8 dark:invert"
+      className="h-6 w-auto max-w-[130px] object-contain opacity-70 transition-opacity hover:opacity-100 sm:h-7"
     />
   ) : (
-    <span className="text-foreground/70 text-base font-semibold tracking-tight whitespace-nowrap uppercase sm:text-lg">{client.name}</span>
+    <span className="font-display text-foreground/70 text-lg font-bold tracking-tight whitespace-nowrap sm:text-xl">{client.name}</span>
   ),
 }));
 
@@ -39,10 +39,10 @@ export function ClientLogos(): ReactNode {
   const label = salesCopy[locale].clientsLabel;
 
   return (
-    <section aria-label={label} className="border-foreground/10 border-b py-7 sm:py-8">
-      <div className="mx-auto flex w-full max-w-275 flex-col gap-5 px-5 sm:flex-row sm:items-center sm:gap-10 sm:px-10">
-        <p className="text-foreground/55 shrink-0 text-xs font-semibold tracking-[0.18em] uppercase">{label}</p>
-        <LogoLoop logos={items} speed={40} gap={56} logoHeight={36} pauseOnHover fadeOut fadeOutColor="var(--background)" ariaLabel={label} className="min-w-0 flex-1" />
+    <section aria-label={label} className="hairline border-b py-6 sm:py-7">
+      <div className="container-x flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-10">
+        <p className="label shrink-0">{label}</p>
+        <LogoLoop logos={items} speed={36} gap={52} logoHeight={32} pauseOnHover fadeOut fadeOutColor="var(--paper)" ariaLabel={label} className="min-w-0 flex-1" />
       </div>
     </section>
   );

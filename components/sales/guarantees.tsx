@@ -1,5 +1,7 @@
 "use client";
 
+import { ArrowRight } from "@/components/ui/pixel-icon";
+import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { CountUp } from "@/components/ui/count-up";
@@ -12,27 +14,36 @@ export function Guarantees(): ReactNode {
   const copy = salesCopy[locale];
 
   return (
-    <section aria-labelledby="guarantees-heading" className="px-5 sm:px-10">
-      <div className="border-foreground/10 bg-background mx-auto max-w-275 border">
-        <FadeIn className="border-foreground/10 border-b p-6 sm:p-8">
-          <p className="text-brand mb-3 text-sm font-medium">{copy.guaranteesEyebrow}</p>
-          <h2 id="guarantees-heading" className="text-foreground max-w-3xl text-[1.9rem] leading-[1.08] font-medium tracking-[-0.03em] text-balance sm:text-[2.5rem]">
+    <section aria-labelledby="guarantees-heading" className="on-ink bg-ink text-paper relative overflow-hidden">
+      <div aria-hidden="true" className="grid-ink absolute inset-0" />
+      <div className="container-x relative py-16 sm:py-24">
+        <FadeIn className="max-w-[40rem]">
+          <p className="label">{copy.guaranteesEyebrow}</p>
+          <h2 id="guarantees-heading" className="display mt-4 text-4xl sm:text-6xl">
             {copy.guaranteesHeading}
           </h2>
         </FadeIn>
-        <ul className="divide-foreground/10 grid divide-y sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-4">
+
+        <ul className="mt-10 grid gap-3 sm:mt-14 sm:grid-cols-2 lg:grid-cols-4">
           {copy.guarantees.map((item, index) => (
-            <li key={item.label} className={`p-6 sm:p-8 ${index > 0 ? "lg:border-l" : ""} ${index % 2 === 1 ? "sm:border-l lg:border-l" : ""} border-foreground/10`}>
-              <FadeIn delay={index * 0.06}>
-                <p className="text-foreground text-[2.6rem] leading-none font-medium tracking-[-0.03em] tabular-nums">
+            <FadeIn key={item.label} delay={index * 0.08}>
+              <li className="brackets border-paper/12 bg-ink-2/60 flex h-full flex-col border p-5 sm:p-6">
+                <span className="display text-brand text-5xl sm:text-6xl">
                   <CountUp to={item.value} suffix={item.suffix} />
-                </p>
-                <p className="text-foreground/65 mt-4 text-sm leading-relaxed sm:text-[15px]">{item.label}</p>
-              </FadeIn>
-            </li>
+                </span>
+                <p className="text-paper/70 mt-4 text-sm leading-relaxed">{item.label}</p>
+              </li>
+            </FadeIn>
           ))}
         </ul>
-        <p className="text-foreground/60 border-foreground/10 border-t px-6 py-4 text-sm sm:px-8">{copy.guaranteesPayment}</p>
+
+        <FadeIn className="mt-8 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-paper/60 font-mono max-w-[60ch] text-xs leading-relaxed">{copy.guaranteesPayment}</p>
+          <Link href="/devis" className="btn btn-primary w-full sm:w-auto">
+            {copy.quoteCardCta}
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </Link>
+        </FadeIn>
       </div>
     </section>
   );

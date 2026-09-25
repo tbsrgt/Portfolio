@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight } from "lucide-react";
+import { ArrowRight } from "@/components/ui/pixel-icon";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { useLanguage } from "@/lib/i18n";

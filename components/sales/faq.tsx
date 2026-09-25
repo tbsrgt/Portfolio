@@ -1,6 +1,6 @@
 "use client";
 
-import { Plus } from "lucide-react";
+import { Plus } from "@/components/ui/pixel-icon";
 import { AnimatePresence, motion } from "motion/react";
 import { useState, type ReactNode } from "react";
 
@@ -20,17 +20,17 @@ export function Faq(): ReactNode {
     <section
       id="faq"
       aria-labelledby="faq-heading"
-      className="scroll-mt-24 px-6 sm:px-10"
+      className="container-x scroll-mt-24 py-16 sm:py-24"
     >
-      <div className="mx-auto grid max-w-275 gap-10 md:grid-cols-[0.8fr_1.2fr] md:gap-14">
+      <div className="grid gap-10 md:grid-cols-[0.8fr_1.2fr] md:gap-14">
         <FadeIn>
-          <p className="text-foreground/50 mb-5 text-xs font-semibold tracking-[0.18em] uppercase">
+          <p className="label mb-5">
             {copy.faqEyebrow}
           </p>
           <ScrollReveal
             as="h2"
             id="faq-heading"
-            textClassName="text-foreground text-[2.5rem] leading-[1.05] font-medium tracking-tight md:text-[3rem]"
+            textClassName="display text-4xl sm:text-6xl"
           >
             {copy.faqHeading}
           </ScrollReveal>
@@ -48,7 +48,7 @@ export function Faq(): ReactNode {
                     aria-expanded={isOpen}
                     aria-controls={panelId}
                     onClick={() => setOpenIndex(isOpen ? null : index)}
-                    className="focus-ring text-foreground flex min-h-11 w-full cursor-pointer items-center justify-between gap-6 rounded-lg py-5 text-left text-lg font-medium tracking-tight"
+                    className="focus-ring text-foreground flex min-h-11 w-full cursor-pointer items-center justify-between gap-6 rounded-lg py-5 text-left font-display text-lg font-bold tracking-tight"
                   >
                     {item.q}
                     <Plus

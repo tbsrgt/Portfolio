@@ -12,7 +12,7 @@ export function ProjectsPageIntro(): ReactNode {
 
   return (
     <FadeIn className="flex flex-col items-center gap-5 text-center">
-      <h1 className="text-foreground text-[2.75rem] leading-[1.05] font-medium tracking-tight md:text-[3.25rem] lg:text-[3.75rem]">
+      <h1 className="text-foreground text-[2.75rem] display md:text-[3.25rem] lg:text-[3.75rem]">
         {copy.projectsPageHeading}
       </h1>
       <p className="text-foreground/65 max-w-[33ch] text-[20px] leading-[1.4] tracking-tight sm:text-[22px]">

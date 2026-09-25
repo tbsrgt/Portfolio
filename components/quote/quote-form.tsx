@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, ArrowRight, Check, CornerDownLeft } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, CornerDownLeft } from "@/components/ui/pixel-icon";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, type FormEvent, type ReactNode, type RefObject } from "react";
@@ -141,11 +141,11 @@ export function QuoteForm(): ReactNode {
         <span className="bg-foreground text-background inline-flex h-12 w-12 items-center justify-center rounded-full">
           <Check className="h-6 w-6" aria-hidden="true" />
         </span>
-        <h1 className="text-foreground mt-8 text-[2.5rem] leading-[1.05] font-medium tracking-tight sm:text-[3.25rem]">{copy.successTitle}</h1>
+        <h1 className="text-foreground mt-8 text-[2.5rem] display sm:text-[3.25rem]">{copy.successTitle}</h1>
         <p className="text-foreground/65 mt-5 max-w-[46ch] text-lg leading-relaxed">{copy.successText}</p>
         <div className="mt-10 flex flex-wrap gap-3">
-          <Link href="/" className="focus-ring bg-foreground text-background inline-flex min-h-12 items-center rounded-full px-6 text-sm font-medium">{copy.backHome}</Link>
-          <Link href="/projects" className="focus-ring border-foreground/15 text-foreground hover:bg-foreground/4 inline-flex min-h-12 items-center rounded-full border px-6 text-sm font-medium transition-colors">{copy.seeWork}</Link>
+          <Link href="/" className="focus-ring bg-foreground text-background inline-flex min-h-12 items-center notch px-6 text-sm font-medium">{copy.backHome}</Link>
+          <Link href="/projects" className="focus-ring border-foreground/15 text-foreground hover:bg-foreground/4 inline-flex min-h-12 items-center notch border px-6 text-sm font-medium transition-colors">{copy.seeWork}</Link>
         </div>
       </motion.div>
     );
@@ -193,7 +193,7 @@ export function QuoteForm(): ReactNode {
                     {site.role} · {site.city}
                   </p>
                 </div>
-                <h1 ref={headingRef} tabIndex={-1} className="text-foreground mt-8 max-w-[14ch] text-[2.75rem] leading-[1] font-medium tracking-tight outline-none sm:text-[4rem]">
+                <h1 ref={headingRef} tabIndex={-1} className="text-foreground mt-8 max-w-[14ch] text-[2.75rem] display outline-none sm:text-[4rem]">
                   {copy.title}
                 </h1>
                 <p className="text-foreground/65 mt-6 max-w-[44ch] text-lg leading-relaxed sm:text-xl">{copy.intro}</p>
@@ -223,13 +223,13 @@ export function QuoteForm(): ReactNode {
 
       <div className="mt-6 flex flex-wrap items-center gap-4">
         {index >= 0 ? (
-          <button type="button" onClick={() => go(index - 1)} className="focus-ring border-foreground/15 text-foreground hover:bg-foreground/4 inline-flex min-h-12 cursor-pointer items-center gap-2 rounded-full border px-5 text-sm font-medium transition-colors">
+          <button type="button" onClick={() => go(index - 1)} className="focus-ring border-foreground/15 text-foreground hover:bg-foreground/4 inline-flex min-h-12 cursor-pointer items-center gap-2 notch border px-5 text-sm font-medium transition-colors">
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             {copy.back}
           </button>
         ) : null}
         {step?.kind !== "single" ? (
-          <button type="submit" disabled={status === "sending"} className="focus-ring bg-foreground text-background group inline-flex min-h-12 cursor-pointer items-center gap-2 rounded-full px-6 text-sm font-medium transition-opacity hover:opacity-85 disabled:cursor-wait disabled:opacity-50">
+          <button type="submit" disabled={status === "sending"} className="focus-ring bg-foreground text-background group inline-flex min-h-12 cursor-pointer items-center gap-2 notch px-6 text-sm font-medium transition-opacity hover:opacity-85 disabled:cursor-wait disabled:opacity-50">
             {submitLabel}
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
           </button>
@@ -265,7 +265,7 @@ function StepView({ step, index, answers, setAnswers, choose, headingRef, stepLa
         <span className="sr-only">{stepLabel}. </span>
         <span aria-hidden="true" className="tabular-nums">{String(index + 1).padStart(2, "0")} →</span>
       </p>
-      <h1 id="quote-question" ref={headingRef} tabIndex={-1} className="text-foreground mt-3 text-[2rem] leading-[1.1] font-medium tracking-tight text-balance outline-none sm:text-[2.75rem]">
+      <h1 id="quote-question" ref={headingRef} tabIndex={-1} className="text-foreground mt-3 text-[2rem] display text-balance outline-none sm:text-[2.75rem]">
         {step.question[locale]}
       </h1>
       {step.help ? <p className="text-foreground/55 mt-3 text-base">{step.help[locale]}</p> : null}

@@ -1,117 +1,79 @@
 "use client";
 
-import { ArrowUpRight, Mail, MapPin } from "lucide-react";
+import { ArrowUpRight, Mail } from "@/components/ui/pixel-icon";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { CallbackForm } from "./callback-form";
 import { ContactForm } from "./contact-form";
 import { FadeIn } from "@/components/ui/motion-primitives";
-import { LinkedinIcon } from "@/components/ui/linkedin-icon";
-import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { Linkedin as LinkedinIcon } from "@/components/ui/pixel-icon";
 import { useLanguage } from "@/lib/i18n";
 import { salesCopy } from "@/lib/sales-copy";
 import { site } from "@/lib/site";
-
-const detailClass =
-  "focus-ring text-foreground/70 hover:text-foreground inline-flex min-h-11 items-center gap-2.5 rounded-lg text-sm transition-colors";
 
 export function ContactCard(): ReactNode {
   const { copy, locale } = useLanguage();
   const sales = salesCopy[locale];
 
   return (
-    <section
-      id="contact"
-      aria-labelledby="contact-heading"
-      className="mx-auto my-12 w-full max-w-275 scroll-mt-24 px-6 sm:my-20 sm:px-10"
-    >
-      <FadeIn>
-        <div className="border-foreground/8 bg-background relative overflow-hidden rounded-4xl border p-1.5 shadow-sm">
-          <div className="relative grid gap-8 rounded-lg p-5 sm:p-7 md:grid-cols-2 md:gap-7 lg:gap-10 lg:p-8">
-            <div className="flex flex-col items-start py-3 lg:py-5">
-              <ScrollReveal
-                as="h2"
-                id="contact-heading"
-                textClassName="text-foreground text-[2.5rem] leading-[1.05] font-medium tracking-tight sm:text-[3rem]"
-              >
-                {copy.contact.heading}
-              </ScrollReveal>
-              <ScrollReveal
-                containerClassName="mt-5"
-                textClassName="text-foreground/65 max-w-[34ch] text-lg leading-relaxed"
-              >
-                {copy.contact.description}
-              </ScrollReveal>
+    <section id="contact" aria-labelledby="contact-heading" className="on-ink bg-ink text-paper relative scroll-mt-16 overflow-hidden">
+      <div aria-hidden="true" className="grid-ink absolute inset-0" />
+      <div className="container-x relative py-16 sm:py-24">
+        <FadeIn className="max-w-[44rem]">
+          <p className="label">{copy.nav.contact}</p>
+          <h2 id="contact-heading" className="display mt-4 text-4xl sm:text-6xl">
+            {copy.contact.heading}
+          </h2>
+          <p className="text-paper/70 mt-5 text-lg leading-relaxed">{copy.contact.description}</p>
+        </FadeIn>
+
+        <div className="mt-10 grid gap-4 sm:mt-14 lg:grid-cols-2 lg:gap-6">
+          <div className="flex flex-col gap-4">
+            <FadeIn>
               <Link
                 href="/devis"
-                className="focus-ring group bg-foreground text-background mt-8 flex w-full flex-col rounded-3xl p-6 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 sm:p-7"
+                className="focus-ring group bg-paper text-ink brackets flex flex-col p-6 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 sm:p-7"
               >
                 <span className="flex items-center justify-between gap-4">
-                  <span className="bg-background/12 rounded-full px-3 py-1 text-xs font-medium">
-                    {sales.quoteCardTag}
-                  </span>
-                  <span className="bg-background text-foreground inline-flex h-10 w-10 items-center justify-center rounded-full transition-transform duration-300 group-hover:rotate-45">
+                  <span className="bg-brand px-2 py-0.5 font-mono text-[10px] tracking-[0.14em] text-white uppercase">{sales.quoteCardTag}</span>
+                  <span className="bg-ink text-paper inline-flex h-10 w-10 items-center justify-center transition-transform duration-300 group-hover:rotate-45">
                     <ArrowUpRight className="h-5 w-5" aria-hidden="true" />
                   </span>
                 </span>
-                <span className="mt-6 text-[1.75rem] leading-tight font-medium tracking-tight">
-                  {sales.quoteCardTitle}
-                </span>
-                <span className="text-background/70 mt-2 text-[15px] leading-relaxed">
-                  {sales.quoteCardText}
-                </span>
-                <span className="text-background/60 mt-5 flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                <span className="display-md mt-6 text-3xl">{sales.quoteCardTitle}</span>
+                <span className="text-ink/70 mt-3 text-[15px] leading-relaxed">{sales.quoteCardText}</span>
+                <span className="text-ink/60 font-mono mt-5 flex flex-wrap gap-x-4 gap-y-1 text-[11px] tracking-[0.08em] uppercase">
                   {sales.quoteCardMeta.map((item) => (
-                    <span
-                      key={item}
-                      className="inline-flex items-center gap-1.5"
-                    >
-                      <span
-                        aria-hidden="true"
-                        className="bg-background/50 h-1 w-1 rounded-full"
-                      />
+                    <span key={item} className="inline-flex items-center gap-1.5">
+                      <span aria-hidden="true" className="bg-brand h-1.5 w-1.5" />
                       {item}
                     </span>
                   ))}
                 </span>
                 <span className="sr-only">{sales.quoteCardCta}</span>
               </Link>
+            </FadeIn>
+            <FadeIn delay={0.08}>
               <CallbackForm />
-              <p className="text-foreground/60 mt-5 text-sm">
-                {sales.heroPrice}
-              </p>
-              <ul className="mt-4 flex flex-col">
-                <li>
-                  <a
-                    href={`mailto:${site.email}`}
-                    className={`${detailClass} underline underline-offset-4`}
-                  >
-                    <Mail className="h-4 w-4" aria-hidden="true" />
-                    {sales.directEmail}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={site.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={detailClass}
-                  >
-                    <LinkedinIcon className="h-4 w-4" />
-                    LinkedIn
-                  </a>
-                </li>
-                <li className="text-foreground/70 inline-flex min-h-11 items-center gap-2.5 text-sm">
-                  <MapPin className="h-4 w-4" aria-hidden="true" />
-                  {copy.contact.location}
-                </li>
-              </ul>
-            </div>
-            <ContactForm />
+            </FadeIn>
+            <FadeIn delay={0.12} className="flex flex-wrap gap-x-6 gap-y-2 pt-2">
+              <a href={`mailto:${site.email}`} className="focus-ring text-paper/75 hover:text-paper inline-flex min-h-11 items-center gap-2 text-sm underline underline-offset-4">
+                <Mail className="h-4 w-4" aria-hidden="true" />
+                {sales.directEmail}
+              </a>
+              <a href={site.linkedin} target="_blank" rel="noopener noreferrer" className="focus-ring text-paper/75 hover:text-paper inline-flex min-h-11 items-center gap-2 text-sm">
+                <LinkedinIcon className="h-4 w-4" />
+                LinkedIn
+              </a>
+              <span className="text-paper/55 font-mono inline-flex min-h-11 items-center text-xs tracking-[0.1em] uppercase">{copy.contact.location}</span>
+            </FadeIn>
           </div>
+          <FadeIn delay={0.1}>
+            <ContactForm />
+          </FadeIn>
         </div>
-      </FadeIn>
+      </div>
     </section>
   );
 }

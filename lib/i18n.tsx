@@ -33,7 +33,7 @@ export const translations = {
     language: "Choose language",
     skip: "Skip to main content",
     hero: {
-      titleLine1: "Websites that convince.",
+      titleLine1: "Websites that sell.",
       titleLine2: "Software that saves hours.",
       description:
         "I design and build websites, client portals and custom business software for companies. One point of contact from scoping to production, delivered in weeks rather than months.",
@@ -79,7 +79,7 @@ export const translations = {
     language: "Choisir la langue",
     skip: "Aller au contenu principal",
     hero: {
-      titleLine1: "Des sites qui convainquent.",
+      titleLine1: "Des sites qui vendent.",
       titleLine2: "Des logiciels qui font gagner des heures.",
       description:
         "Je conçois et développe des sites web, des espaces clients et des logiciels de gestion sur mesure pour les entreprises. Un seul interlocuteur, du cadrage à la mise en production, livré en semaines plutôt qu'en mois.",
