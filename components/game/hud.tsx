@@ -32,6 +32,7 @@ const HUD_COPY = {
     horn: "Klaxon",
     time: "Temps",
     best: "Record",
+    open: "E · ouvrir",
   },
   en: {
     missions: "Missions",
@@ -53,6 +54,7 @@ const HUD_COPY = {
     horn: "Horn",
     time: "Time",
     best: "Best",
+    open: "E · open",
   },
 } as const;
 
@@ -107,7 +109,8 @@ function Joystick(): ReactNode {
 
 export function Hud({ locale }: { locale: Locale }): ReactNode {
   const t = HUD_COPY[locale];
-  const { mode, done, discount, code, nearVan, lastEvent, started, night, startedAt, finishedAt, best } = useGame();
+  const { mode, done, discount, code, nearVan, lastEvent, started, night, startedAt, finishedAt, best, zone, panel } = useGame();
+  const zoneHere = zone && !panel ? zones.find((z) => z.id === zone) : null;
   const [now, setNow] = useState(0);
   useEffect(() => {
     if (startedAt === null || finishedAt !== null) return;
@@ -284,14 +287,18 @@ export function Hud({ locale }: { locale: Locale }): ReactNode {
             onPointerCancel={() => {
               input.action = false;
             }}
-            className={`btn pointer-events-auto h-16 w-16 rounded-full text-xl ${nearVan || mode === "drive" ? "btn-stamp" : "btn-paper opacity-70"}`}
+            className={`btn pointer-events-auto h-16 w-16 rounded-full text-xl ${nearVan || mode === "drive" || zoneHere ? "btn-stamp" : "btn-paper opacity-70"}`}
             aria-label={mode === "drive" ? t.exit : t.enter}
           >
             E
           </button>
         ) : (
           <AnimatePresence>
-            {nearVan && mode === "walk" ? (
+            {zoneHere && !(nearVan && mode === "walk") ? (
+              <motion.span key={`zone-${zoneHere.id}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="dymo dymo-blue">
+                {t.open} {zoneHere.title[locale]}
+              </motion.span>
+            ) : nearVan && mode === "walk" ? (
               <motion.span key="enter" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="dymo dymo-red">
                 {t.enter}
               </motion.span>

@@ -5,7 +5,7 @@ import { CylinderCollider, RigidBody, type CollisionPayload } from "@react-three
 import type { ReactNode } from "react";
 
 import { game } from "./store";
-import { FONT_DISPLAY, FONT_HAND } from "./world";
+import { cardboardTexture, FONT_DISPLAY, FONT_HAND, paperTexture } from "./world";
 import { zones, type ZoneId } from "@/lib/game";
 import type { Locale } from "@/lib/i18n";
 
@@ -20,7 +20,7 @@ function isActor(payload: CollisionPayload): boolean {
 function ContentZone({ id, locale, position, rotation = 0 }: { id: ZoneId; locale: Locale; position: [number, number, number]; rotation?: number }): ReactNode {
   const zone = zones.find((z) => z.id === id);
   if (!zone) return null;
-  const radius = 2.3;
+  const radius = 2.7;
   return (
     <group position={position} rotation={[0, rotation, 0]}>
       <RigidBody type="fixed" colliders={false}>
@@ -34,8 +34,8 @@ function ContentZone({ id, locale, position, rotation = 0 }: { id: ZoneId; local
       </RigidBody>
       {/* The sheet */}
       <mesh receiveShadow castShadow position={[0, 0.03, 0]}>
-        <boxGeometry args={[3.6, 0.06, 2.6]} />
-        <meshStandardMaterial color={zone.tone === "kraft" ? C.kraft : zone.tone === "postit" ? C.postit : C.paper} roughness={1} />
+        <boxGeometry args={[4.2, 0.06, 3]} />
+        <meshStandardMaterial map={zone.tone === "kraft" ? cardboardTexture() : paperTexture()} color={zone.tone === "kraft" ? "#ffffff" : zone.tone === "postit" ? C.postit : "#e6dfd0"} roughness={1} />
       </mesh>
       <Text font={FONT_DISPLAY} fontSize={0.52} color={zone.tone === "stamp" ? C.stamp : C.ink} anchorX="center" anchorY="middle" maxWidth={3.2} position={[0, 0.07, -0.35]} rotation={[-Math.PI / 2, 0, 0]}>
         {zone.title[locale].toUpperCase()}
@@ -65,14 +65,14 @@ function ContentZone({ id, locale, position, rotation = 0 }: { id: ZoneId; local
 export function ContentZones({ locale }: { locale: Locale }): ReactNode {
   return (
     <>
-      <ContentZone id="offers" locale={locale} position={[-4.5, 0, -4.5]} rotation={0.08} />
-      <ContentZone id="work" locale={locale} position={[4.5, 0, -4.5]} rotation={-0.06} />
-      <ContentZone id="about" locale={locale} position={[0, 0, -0.5]} rotation={0.03} />
-      <ContentZone id="method" locale={locale} position={[-8.5, 0, 3.5]} rotation={-0.1} />
-      <ContentZone id="guarantees" locale={locale} position={[0.5, 0, 10]} rotation={0.05} />
-      <ContentZone id="faq" locale={locale} position={[13, 0, 5]} rotation={0.12} />
-      <ContentZone id="contact" locale={locale} position={[-13.5, 0, 8.5]} rotation={-0.15} />
-      <ContentZone id="pains" locale={locale} position={[13.5, 0, -5]} rotation={-0.08} />
+      <ContentZone id="offers" locale={locale} position={[-6, 0, -7]} rotation={0.08} />
+      <ContentZone id="work" locale={locale} position={[6, 0, -7]} rotation={-0.06} />
+      <ContentZone id="about" locale={locale} position={[0, 0, -1]} rotation={0.03} />
+      <ContentZone id="method" locale={locale} position={[-12, 0, 5]} rotation={-0.1} />
+      <ContentZone id="guarantees" locale={locale} position={[1, 0, 14]} rotation={0.05} />
+      <ContentZone id="faq" locale={locale} position={[19, 0, 5]} rotation={0.12} />
+      <ContentZone id="contact" locale={locale} position={[-19, 0, 11]} rotation={-0.15} />
+      <ContentZone id="pains" locale={locale} position={[20, 0, -8]} rotation={-0.08} />
     </>
   );
 }

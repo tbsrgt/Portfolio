@@ -64,7 +64,7 @@ export function GameScene({ locale, onReady }: { locale: Locale; onReady: () => 
   useEffect(() => game.hydrate(), []);
 
   return (
-    <Canvas shadows dpr={[1, 1.5]} camera={{ position: [0, 7, 12], fov: 40, near: 0.3, far: 90 }} gl={{ antialias: true, powerPreference: "high-performance" }} style={{ touchAction: "none" }}>
+    <Canvas shadows dpr={[1, 1.5]} camera={{ position: [0, 10, 16], fov: 46, near: 0.3, far: 120 }} gl={{ antialias: true, powerPreference: "high-performance" }} style={{ touchAction: "none" }}>
       <DayNight night={night} />
       <Suspense fallback={null}>
         <Environment files="/hdri/studio_small_03_1k.hdr" environmentIntensity={0.35} />
@@ -78,16 +78,16 @@ export function GameScene({ locale, onReady }: { locale: Locale; onReady: () => 
           <Bin />
           <ContentZones locale={locale} />
           <PaperBall key={ballSeed} seed={ballSeed} />
-          <PostIt text={copy.postitAvailable} position={[-9, 0.3, -6]} rotation={0.3} />
-          <PostIt text={copy.postitCoffee} position={[6, 0.3, 2.5]} rotation={-0.4} />
+          <PostIt text={copy.postitAvailable} position={[-13, 0.3, -9]} rotation={0.3} />
+          <PostIt text={copy.postitCoffee} position={[8, 0.3, 3]} rotation={-0.4} />
           <Player />
           <Van />
         </Physics>
         <Dust />
         <Skids />
-        <Motes />
-        <WindSystem />
-        <FlyingPapers />
+        <Motes center={[-10, 3, -8]} radius={14} />
+        <WindSystem area={[50, 36]} />
+        <FlyingPapers area={[50, 36]} />
         <FollowCamera />
         <Effects />
         <Preload all />
@@ -116,10 +116,10 @@ function DayNight({ night }: { night: boolean }): ReactNode {
   });
   return (
     <>
-      <fog attach="fog" args={["#0f2a22", 26, 48]} />
+      <fog attach="fog" args={["#0f2a22", 34, 64]} />
       <hemisphereLight ref={hemi} args={["#e8f0e6", "#0d1f19", 0.5]} />
       <ambientLight ref={ambient} intensity={0.3} />
-      <directionalLight ref={sun} position={[8, 14, 6]} intensity={0.5} castShadow shadow-mapSize={[1024, 1024]} shadow-camera-left={-20} shadow-camera-right={20} shadow-camera-top={20} shadow-camera-bottom={-20} />
+      <directionalLight ref={sun} position={[8, 14, 6]} intensity={0.5} castShadow shadow-mapSize={[1024, 1024]} shadow-camera-left={-28} shadow-camera-right={28} shadow-camera-top={28} shadow-camera-bottom={-28} />
     </>
   );
 }

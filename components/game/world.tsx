@@ -12,7 +12,44 @@ import { Model, useModelFootprint } from "./models";
 import { game } from "./store";
 import type { MissionId } from "@/lib/game";
 
-export const DESK = { w: 34, d: 24 };
+export const DESK = { w: 50, d: 36 };
+
+function noiseCanvas(base: string, grain: number, stripes = 0): THREE.CanvasTexture {
+  const size = 256;
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext("2d");
+  if (ctx) {
+    ctx.fillStyle = base;
+    ctx.fillRect(0, 0, size, size);
+    const img = ctx.getImageData(0, 0, size, size);
+    for (let i = 0; i < img.data.length; i += 4) {
+      const y = Math.floor(i / 4 / size);
+      const n = (Math.random() - 0.5) * grain + (stripes ? Math.sin(y * stripes) * 6 : 0);
+      img.data[i] = Math.max(0, Math.min(255, (img.data[i] ?? 0) + n));
+      img.data[i + 1] = Math.max(0, Math.min(255, (img.data[i + 1] ?? 0) + n));
+      img.data[i + 2] = Math.max(0, Math.min(255, (img.data[i + 2] ?? 0) + n));
+    }
+    ctx.putImageData(img, 0, 0);
+  }
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return texture;
+}
+
+let paperTex: THREE.CanvasTexture | null = null;
+let cardboardTex: THREE.CanvasTexture | null = null;
+/** Grainy paper and corrugated cardboard, generated once. */
+export function paperTexture(): THREE.CanvasTexture {
+  paperTex ??= noiseCanvas("#f5f0e6", 22);
+  return paperTex;
+}
+export function cardboardTexture(): THREE.CanvasTexture {
+  cardboardTex ??= noiseCanvas("#c9a06b", 30, 0.9);
+  return cardboardTex;
+}
 export const FONT_DISPLAY = "/fonts/Bricolage.ttf";
 export const FONT_HAND = "/fonts/Caveat.ttf";
 
@@ -37,12 +74,12 @@ export function Desk(): ReactNode {
     for (const t of [diff, nor, rough]) {
       if (!t) continue;
       t.wrapS = t.wrapT = THREE.RepeatWrapping;
-      t.repeat.set(7, 5);
+      t.repeat.set(10, 7);
     }
     for (const t of [wood, woodNor]) {
       if (!t) continue;
       t.wrapS = t.wrapT = THREE.RepeatWrapping;
-      t.repeat.set(4, 3);
+      t.repeat.set(6, 4);
     }
     if (diff) diff.colorSpace = THREE.SRGBColorSpace;
     if (wood) wood.colorSpace = THREE.SRGBColorSpace;
@@ -84,16 +121,16 @@ export function Lamp(): ReactNode {
     if (cone.current) (cone.current.material as THREE.MeshBasicMaterial).opacity = 0.07 * flicker;
   });
   return (
-    <group position={[-13, 0, -8.5]}>
+    <group position={[-19, 0, -13]}>
       <RigidBody type="fixed" colliders={false}>
-        <Model name="lamp" size={7} rotation={[0, 0.7, 0]} />
+        <Model name="lamp" size={8} rotation={[0, 0.7, 0]} />
         <CylinderCollider args={[0.4, 2.4]} position={[0, 0.4, 0]} />
       </RigidBody>
-      <spotLight ref={light} position={[3.2, 7.5, 2.6]} angle={0.95} penumbra={0.55} intensity={420} distance={45} color="#fff1cf" castShadow shadow-mapSize={[2048, 2048]} shadow-bias={-0.0004} />
+      <spotLight ref={light} position={[3.2, 7.5, 2.6]} angle={1.05} penumbra={0.6} intensity={520} distance={60} color="#fff1cf" castShadow shadow-mapSize={[2048, 2048]} shadow-bias={-0.0004} />
       <primitive object={target} />
       {/* Faint light cone in the dust */}
       <mesh ref={cone} position={[3.2, 7.5, 2.6]}>
-        <coneGeometry args={[9, 13, 40, 1, true]} />
+        <coneGeometry args={[12, 16, 40, 1, true]} />
         <meshBasicMaterial color="#ffe9b8" transparent opacity={0.07} depthWrite={false} side={THREE.DoubleSide} blending={THREE.AdditiveBlending} toneMapped={false} />
       </mesh>
     </group>
@@ -114,12 +151,12 @@ function Prop({ name, size, position, rotation, collider }: { name: Parameters<t
 export function Props(): ReactNode {
   return (
     <>
-      <Prop name="laptop" size={7} position={[9.5, 0, -8.5]} rotation={[0, -0.5, 0]} />
-      <Prop name="plant" size={3.2} position={[14, 0, 8]} collider="cylinder" />
-      <Prop name="mug" size={1.8} position={[-12.5, 0, 1]} collider="cylinder" />
-      <Prop name="stapler" size={3} position={[-1, 0, -9.5]} rotation={[0, 0.4, 0]} />
-      <Prop name="notebook" size={5} position={[4.5, 0, -9.5]} rotation={[0, -0.2, 0]} />
-      <Prop name="tape" size={1.6} position={[10, 0, 1.5]} rotation={[0, 0.9, 0]} collider="cylinder" />
+      <Prop name="laptop" size={7} position={[14, 0, -13]} rotation={[0, -0.5, 0]} />
+      <Prop name="plant" size={3.6} position={[20, 0, 12]} collider="cylinder" />
+      <Prop name="mug" size={1.9} position={[-18, 0, 2]} collider="cylinder" />
+      <Prop name="stapler" size={3} position={[-2, 0, -14]} rotation={[0, 0.4, 0]} />
+      <Prop name="notebook" size={5} position={[6, 0, -14]} rotation={[0, -0.2, 0]} />
+      <Prop name="tape" size={1.6} position={[14, 0, 3]} rotation={[0, 0.9, 0]} collider="cylinder" />
     </>
   );
 }
@@ -166,11 +203,11 @@ function Zone({ id, position, radius = 2.4 }: { id: MissionId; position: [number
 
 export function Racines(): ReactNode {
   return (
-    <group position={[-10.5, 0, -1.5]}>
+    <group position={[-15, 0, -3]}>
       <RigidBody type="fixed" colliders="cuboid">
         <mesh castShadow receiveShadow position={[0, 1.2, 0]}>
           <boxGeometry args={[4.2, 2.4, 3]} />
-          <meshStandardMaterial color={C.kraft} roughness={1} />
+          <meshStandardMaterial map={cardboardTexture()} roughness={1} />
         </mesh>
       </RigidBody>
       <mesh castShadow position={[0, 1.9, 1.9]} rotation={[0.35, 0, 0]}>
@@ -188,11 +225,11 @@ export function Racines(): ReactNode {
 
 export function Cogebat(): ReactNode {
   return (
-    <group position={[10.5, 0, -1.5]}>
+    <group position={[15, 0, -3]}>
       <RigidBody type="fixed" colliders="cuboid">
         <mesh castShadow receiveShadow position={[0, 0.9, 0]}>
           <boxGeometry args={[4.6, 1.8, 3.2]} />
-          <meshStandardMaterial color="#d8d2c4" roughness={1} />
+          <meshStandardMaterial map={paperTexture()} color="#d8d2c4" roughness={1} />
         </mesh>
       </RigidBody>
       {/* Crane */}
@@ -221,11 +258,11 @@ export function Cogebat(): ReactNode {
 
 export function Adresse(): ReactNode {
   return (
-    <group position={[8, 0, 7.5]}>
+    <group position={[11, 0, 11]}>
       <RigidBody type="fixed" colliders="cuboid">
         <mesh castShadow receiveShadow position={[0, 0.8, 0]}>
           <boxGeometry args={[4.4, 1.6, 2.6]} />
-          <meshStandardMaterial color={C.villa} roughness={0.9} />
+          <meshStandardMaterial map={paperTexture()} color={C.villa} roughness={0.9} />
         </mesh>
       </RigidBody>
       <mesh position={[3.4, 0.03, 0]} rotation={[-Math.PI / 2, 0, 0]}>
@@ -250,7 +287,7 @@ export function Bin(): ReactNode {
     if (kind === "ball") game.complete("basket");
   };
   return (
-    <group position={[-6, 0, 8]}>
+    <group position={[-9, 0, 12]}>
       <RigidBody type="fixed" colliders={false}>
         {walls.map((angle) => (
           <CuboidCollider key={angle} args={[0.32, 1.1, 0.05]} position={[Math.cos(angle) * radius, 1.1, Math.sin(angle) * radius]} rotation={[0, -angle + Math.PI / 2, 0]} />
@@ -289,7 +326,7 @@ export function PaperBall({ seed }: { seed: number }): ReactNode {
     rb.applyImpulse({ x: wind.x * 0.12 * delta, y: 0, z: wind.z * 0.12 * delta }, true);
   });
   return (
-    <RigidBody ref={body} colliders="ball" position={[-3, 1, 7]} mass={0.15} linearDamping={0.5} angularDamping={0.6} restitution={0.3} userData={{ kind: "ball" }} onCollisionEnter={() => audio.rustle()}>
+    <RigidBody ref={body} colliders="ball" position={[-4, 1, 9]} mass={0.15} linearDamping={0.5} angularDamping={0.6} restitution={0.3} userData={{ kind: "ball" }} onCollisionEnter={() => audio.rustle()}>
       <mesh castShadow receiveShadow geometry={geometry}>
         <meshStandardMaterial color={C.paper} roughness={1} flatShading />
       </mesh>
@@ -314,7 +351,7 @@ export function PostIt({ text, position, rotation = 0 }: { text: string; positio
     <RigidBody ref={body} colliders="cuboid" position={position} rotation={[0, rotation, 0]} mass={0.1} linearDamping={1.5} angularDamping={1.5}>
       <mesh ref={sheet} castShadow receiveShadow>
         <boxGeometry args={[2, 0.04, 2]} />
-        <meshStandardMaterial color={C.postit} roughness={1} />
+        <meshStandardMaterial map={paperTexture()} color={C.postit} roughness={1} />
       </mesh>
       <Text font={FONT_HAND} fontSize={0.36} color={C.ink} anchorX="center" anchorY="middle" maxWidth={1.7} lineHeight={1.05} position={[0, 0.03, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         {text}

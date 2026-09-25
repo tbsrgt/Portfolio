@@ -142,7 +142,10 @@ export const game = {
     emit({ done, discount, code: codeFor(discount), lastEvent: { id, at: Date.now() }, finishedAt, best });
   },
   enterZone(id: ZoneId): void {
-    emit({ zone: id, panel: id, started: true });
+    emit({ zone: id, started: true });
+  },
+  openZone(): void {
+    if (state.zone) emit({ panel: state.zone });
   },
   leaveZone(id: ZoneId): void {
     if (state.zone === id) emit({ zone: null, panel: state.panel === id ? null : state.panel });

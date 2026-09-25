@@ -12,14 +12,14 @@ import { Model, useModelFootprint } from "./models";
 import { game, input, readAxis, useGame } from "./store";
 import { FONT_DISPLAY } from "./world";
 
-const WALK_SPEED = 5.5;
-const VAN_MAX = 13;
+const WALK_SPEED = 6.5;
+const VAN_MAX = 15;
 const ENTER_DISTANCE = 2.6;
 
 /** Positions shared between actors and the camera, updated every frame. */
 export const actors = {
-  player: new THREE.Vector3(-1, 0.6, 5),
-  van: new THREE.Vector3(3.5, 0.5, 6),
+  player: new THREE.Vector3(-1, 0.6, 6),
+  van: new THREE.Vector3(4, 0.5, 7),
   vanHeading: 0,
 };
 
@@ -28,6 +28,10 @@ export const actors = {
 export function Player(): ReactNode {
   const body = useRef<RapierRigidBody>(null);
   const visual = useRef<THREE.Group>(null);
+  const legL = useRef<THREE.Group>(null);
+  const legR = useRef<THREE.Group>(null);
+  const armL = useRef<THREE.Group>(null);
+  const armR = useRef<THREE.Group>(null);
   const { mode } = useGame();
   const heading = useRef(0);
   const actionHeld = useRef(false);
@@ -44,10 +48,15 @@ export function Player(): ReactNode {
       rb.setLinvel({ x: 0, y: 0, z: 0 }, false);
       if (input.action && !actionHeld.current) {
         actionHeld.current = true;
-        const side = new THREE.Vector3(Math.cos(actors.vanHeading), 0, -Math.sin(actors.vanHeading)).multiplyScalar(2.4);
-        rb.setTranslation({ x: actors.van.x + side.x, y: 0.8, z: actors.van.z + side.z }, true);
-        game.setMode("walk");
-        audio.door();
+        if (game.get().zone && !game.get().panel) {
+          game.openZone();
+          audio.rustle();
+        } else {
+          const side = new THREE.Vector3(Math.cos(actors.vanHeading), 0, -Math.sin(actors.vanHeading)).multiplyScalar(2.6);
+          rb.setTranslation({ x: actors.van.x + side.x, y: 0.8, z: actors.van.z + side.z }, true);
+          game.setMode("walk");
+          audio.door();
+        }
       }
       if (!input.action) actionHeld.current = false;
       return;
@@ -63,10 +72,17 @@ export function Player(): ReactNode {
     actors.player.set(t.x, t.y, t.z);
 
     if (visual.current) {
-      visual.current.rotation.y += (heading.current - visual.current.rotation.y) * 0.2;
-      walkPhase.current += moving ? delta * 14 : 0;
-      visual.current.position.y = moving ? Math.abs(Math.sin(walkPhase.current)) * 0.12 : 0;
-      visual.current.rotation.x = moving ? 0.12 : 0;
+      let dy = heading.current - visual.current.rotation.y;
+      dy = Math.atan2(Math.sin(dy), Math.cos(dy));
+      visual.current.rotation.y += dy * 0.2;
+      walkPhase.current += moving ? delta * 11 : 0;
+      visual.current.position.y = 0.62 + (moving ? Math.abs(Math.sin(walkPhase.current)) * 0.06 : 0);
+      visual.current.rotation.x = moving ? 0.08 : 0;
+      const swing = moving ? Math.sin(walkPhase.current) * 0.75 : 0;
+      if (legL.current) legL.current.rotation.x = swing;
+      if (legR.current) legR.current.rotation.x = -swing;
+      if (armL.current) armL.current.rotation.x = -swing * 0.8;
+      if (armR.current) armR.current.rotation.x = swing * 0.5;
       // One footstep per bob: a puff of dust and a soft tap.
       const step = Math.floor(walkPhase.current / Math.PI);
       if (moving && step !== lastStep.current) {
@@ -78,50 +94,109 @@ export function Player(): ReactNode {
 
     const near = actors.player.distanceTo(actors.van) < ENTER_DISTANCE;
     game.setNearVan(near);
-    if (near && input.action && !actionHeld.current) {
+    if (input.action && !actionHeld.current) {
       actionHeld.current = true;
-      game.setMode("drive");
-      audio.door();
+      if (near) {
+        game.setMode("drive");
+        audio.door();
+      } else if (game.get().zone && !game.get().panel) {
+        game.openZone();
+        audio.rustle();
+      }
     }
     if (!input.action) actionHeld.current = false;
   });
 
   return (
-    <RigidBody ref={body} position={[-1, 0.8, 5]} colliders={false} enabledRotations={[false, false, false]} linearDamping={4} friction={0} userData={{ kind: "player" }}>
-      <CuboidCollider args={[0.32, 0.55, 0.32]} />
+    <RigidBody ref={body} position={[-1, 1, 6]} colliders={false} enabledRotations={[false, false, false]} linearDamping={4} friction={0} userData={{ kind: "player" }}>
+      <CuboidCollider args={[0.34, 0.75, 0.34]} />
       <group ref={visual} visible={mode === "walk"}>
-        {/* body */}
-        <mesh castShadow position={[0, -0.05, 0]}>
-          <capsuleGeometry args={[0.3, 0.5, 6, 14]} />
+        {/* legs */}
+        <group ref={legL} position={[-0.16, 0.05, 0]}>
+          <mesh castShadow position={[0, -0.32, 0]}>
+            <capsuleGeometry args={[0.11, 0.42, 4, 10]} />
+            <meshStandardMaterial color="#2b3a8f" roughness={0.85} />
+          </mesh>
+          <mesh castShadow position={[0, -0.6, 0.06]}>
+            <boxGeometry args={[0.22, 0.12, 0.34]} />
+            <meshStandardMaterial color="#171412" roughness={0.6} />
+          </mesh>
+        </group>
+        <group ref={legR} position={[0.16, 0.05, 0]}>
+          <mesh castShadow position={[0, -0.32, 0]}>
+            <capsuleGeometry args={[0.11, 0.42, 4, 10]} />
+            <meshStandardMaterial color="#2b3a8f" roughness={0.85} />
+          </mesh>
+          <mesh castShadow position={[0, -0.6, 0.06]}>
+            <boxGeometry args={[0.22, 0.12, 0.34]} />
+            <meshStandardMaterial color="#171412" roughness={0.6} />
+          </mesh>
+        </group>
+        {/* torso: dark tee */}
+        <mesh castShadow position={[0, 0.45, 0]}>
+          <capsuleGeometry args={[0.27, 0.42, 6, 14]} />
           <meshStandardMaterial color="#171412" roughness={0.8} />
         </mesh>
-        {/* head */}
-        <mesh castShadow position={[0, 0.72, 0]}>
-          <sphereGeometry args={[0.3, 20, 20]} />
+        {/* arms */}
+        <group ref={armL} position={[-0.36, 0.7, 0]}>
+          <mesh castShadow position={[0, -0.28, 0]}>
+            <capsuleGeometry args={[0.085, 0.4, 4, 10]} />
+            <meshStandardMaterial color="#171412" roughness={0.8} />
+          </mesh>
+          <mesh castShadow position={[0, -0.56, 0]}>
+            <sphereGeometry args={[0.09, 10, 10]} />
+            <meshStandardMaterial color="#f1c9a5" roughness={0.7} />
+          </mesh>
+        </group>
+        <group ref={armR} position={[0.36, 0.7, 0]}>
+          <mesh castShadow position={[0, -0.28, 0]}>
+            <capsuleGeometry args={[0.085, 0.4, 4, 10]} />
+            <meshStandardMaterial color="#171412" roughness={0.8} />
+          </mesh>
+          <mesh castShadow position={[0, -0.56, 0]}>
+            <sphereGeometry args={[0.09, 10, 10]} />
+            <meshStandardMaterial color="#f1c9a5" roughness={0.7} />
+          </mesh>
+          {/* the client brief, tucked under the arm */}
+          <mesh castShadow position={[0.1, -0.35, 0.02]} rotation={[0, 0, 0.15]}>
+            <boxGeometry args={[0.06, 0.5, 0.36]} />
+            <meshStandardMaterial color="#f5f0e6" roughness={1} />
+          </mesh>
+        </group>
+        {/* neck + head */}
+        <mesh position={[0, 0.82, 0]}>
+          <cylinderGeometry args={[0.08, 0.08, 0.1, 10]} />
           <meshStandardMaterial color="#f1c9a5" roughness={0.7} />
         </mesh>
-        {/* cap */}
-        <mesh castShadow position={[0, 0.9, 0]}>
-          <cylinderGeometry args={[0.32, 0.32, 0.16, 20]} />
+        <mesh castShadow position={[0, 1.12, 0]}>
+          <sphereGeometry args={[0.3, 24, 24]} />
+          <meshStandardMaterial color="#f1c9a5" roughness={0.7} />
+        </mesh>
+        {/* hair + red cap */}
+        <mesh castShadow position={[0, 1.22, -0.04]}>
+          <sphereGeometry args={[0.305, 24, 24, 0, Math.PI * 2, 0, Math.PI * 0.5]} />
+          <meshStandardMaterial color="#3a2a1c" roughness={0.9} />
+        </mesh>
+        <mesh castShadow position={[0, 1.3, 0]}>
+          <sphereGeometry args={[0.31, 24, 24, 0, Math.PI * 2, 0, Math.PI * 0.42]} />
           <meshStandardMaterial color="#d8321f" roughness={0.8} />
         </mesh>
-        <mesh castShadow position={[0, 0.84, 0.32]}>
-          <boxGeometry args={[0.4, 0.05, 0.3]} />
+        <mesh castShadow position={[0, 1.31, 0.3]} rotation={[0.15, 0, 0]}>
+          <boxGeometry args={[0.36, 0.04, 0.3]} />
           <meshStandardMaterial color="#d8321f" roughness={0.8} />
         </mesh>
-        {/* pixel eyes */}
-        <mesh position={[-0.1, 0.74, 0.27]}>
+        {/* eyes + smile */}
+        <mesh position={[-0.1, 1.14, 0.27]}>
           <boxGeometry args={[0.06, 0.08, 0.06]} />
           <meshStandardMaterial color="#171412" />
         </mesh>
-        <mesh position={[0.1, 0.74, 0.27]}>
+        <mesh position={[0.1, 1.14, 0.27]}>
           <boxGeometry args={[0.06, 0.08, 0.06]} />
           <meshStandardMaterial color="#171412" />
         </mesh>
-        {/* the brief under the arm */}
-        <mesh castShadow position={[0.36, -0.05, 0.05]} rotation={[0, 0, 0.2]}>
-          <boxGeometry args={[0.06, 0.5, 0.36]} />
-          <meshStandardMaterial color="#f5f0e6" />
+        <mesh position={[0, 1.02, 0.28]} rotation={[0, 0, Math.PI]}>
+          <torusGeometry args={[0.07, 0.015, 6, 12, Math.PI]} />
+          <meshStandardMaterial color="#9c4a3a" />
         </mesh>
       </group>
     </RigidBody>
@@ -163,17 +238,26 @@ export function Van(): ReactNode {
 
     audio.engine(speed.current, mode === "drive");
     if (mode !== "drive") {
-      speed.current *= 0.9;
+      speed.current = 0;
+      rb.setAngvel({ x: 0, y: 0, z: 0 }, true);
       return;
     }
     const axis = readAxis();
     const throttle = -axis.y;
-    speed.current += throttle * 16 * delta;
-    speed.current *= throttle === 0 ? 0.96 : 0.995;
-    speed.current = THREE.MathUtils.clamp(speed.current, -VAN_MAX * 0.45, VAN_MAX);
-    const steer = -axis.x * 2.4 * THREE.MathUtils.clamp(speed.current / 6, -1, 1);
     const v = rb.linvel();
-    rb.setLinvel({ x: forward.x * speed.current, y: v.y, z: forward.z * speed.current }, true);
+    const planar = new THREE.Vector3(v.x, 0, v.z);
+    const fwdSpeed = planar.dot(forward);
+    speed.current = fwdSpeed;
+    // Push the van with impulses so collisions stay physical; the brake pushes harder.
+    const braking = throttle < 0 && fwdSpeed > 0.5;
+    if (throttle !== 0 && Math.abs(fwdSpeed) < (throttle > 0 ? VAN_MAX : VAN_MAX * 0.4)) {
+      rb.applyImpulse({ x: forward.x * throttle * 40 * delta * (braking ? 2 : 1), y: 0, z: forward.z * throttle * 40 * delta * (braking ? 2 : 1) }, true);
+    }
+    // Tyre grip: bleed off sideways velocity.
+    const side = new THREE.Vector3(forward.z, 0, -forward.x);
+    const lateral = planar.dot(side);
+    rb.setLinvel({ x: v.x - side.x * lateral * 0.25, y: v.y, z: v.z - side.z * lateral * 0.25 }, true);
+    const steer = -axis.x * 2.2 * THREE.MathUtils.clamp(fwdSpeed / 6, -1, 1);
     rb.setAngvel({ x: 0, y: steer, z: 0 }, true);
 
     // Visual polish: wheels spin and steer, body leans in bends and squats on throttle.
@@ -193,7 +277,7 @@ export function Van(): ReactNode {
 
     // Dust from the rear wheels when moving fast or drifting.
     dustClock.current += delta;
-    const drifting = Math.abs(steer) > 1.2 && Math.abs(speed.current) > 6;
+    const drifting = Math.abs(lateral) > 2.5 && Math.abs(speed.current) > 5;
     if (Math.abs(speed.current) > 3 && dustClock.current > (drifting ? 0.03 : 0.08)) {
       dustClock.current = 0;
       const back = forward.clone().multiplyScalar(-d / 2 + 0.2);
@@ -215,7 +299,7 @@ export function Van(): ReactNode {
   }, []);
 
   return (
-    <RigidBody ref={body} position={[3.5, 0.6, 6]} rotation={[0, Math.PI, 0]} colliders={false} enabledRotations={[false, true, false]} mass={4} linearDamping={0.5} angularDamping={3} friction={0.6} userData={{ kind: "van" }} onContactForce={onHit}>
+    <RigidBody ref={body} position={[4, 0.6, 7]} rotation={[0, Math.PI, 0]} colliders={false} enabledRotations={[false, true, false]} mass={4} linearDamping={1.1} angularDamping={4} friction={0.7} userData={{ kind: "van" }} onContactForce={onHit}>
       <CuboidCollider args={[w / 2, h / 2, d / 2]} position={[0, h / 2 - 0.05, 0]} />
       <group ref={bodyVisual}>
         <Model name="van" size={3.4} onObject={onObject} />
@@ -254,15 +338,15 @@ export function FollowCamera(): ReactNode {
 
   useEffect(() => {
     const cam = camera as THREE.PerspectiveCamera;
-    cam.fov = size.width < size.height ? 62 : 44;
+    cam.fov = size.width < size.height ? 66 : 46;
     cam.updateProjectionMatrix();
   }, [camera, size]);
 
   useFrame(() => {
     const target = mode === "drive" ? actors.van : actors.player;
     const portrait = size.width < size.height;
-    const back = mode === "drive" ? (portrait ? 9 : 11) : portrait ? 8 : 9;
-    const up = mode === "drive" ? (portrait ? 12 : 10.5) : portrait ? 10 : 8.5;
+    const back = mode === "drive" ? (portrait ? 11 : 13) : portrait ? 9 : 10.5;
+    const up = mode === "drive" ? (portrait ? 15 : 13) : portrait ? 12 : 10.5;
     goal.set(target.x, target.y + up, target.z + back);
     camera.position.lerp(goal, 0.06);
     look.lerp(new THREE.Vector3(target.x, target.y + 0.5, target.z), 0.1);

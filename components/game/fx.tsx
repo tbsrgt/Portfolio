@@ -1,7 +1,7 @@
 "use client";
 
 import { useFrame, useThree } from "@react-three/fiber";
-import { Bloom, EffectComposer, Noise, TiltShift2, Vignette } from "@react-three/postprocessing";
+import { Bloom, EffectComposer, Noise, Vignette } from "@react-three/postprocessing";
 import { useMemo, useRef, type ReactNode } from "react";
 import * as THREE from "three";
 
@@ -224,9 +224,8 @@ export function Effects(): ReactNode {
   if (size.width < 1024) return null;
   return (
     <EffectComposer multisampling={0}>
-      <Bloom luminanceThreshold={0.85} luminanceSmoothing={0.3} intensity={0.35} mipmapBlur />
-      <TiltShift2 blur={0.12} taper={0.65} start={[0, 0.55]} end={[1, 0.55]} samples={6} />
-      <Noise opacity={0.045} />
+      <Bloom luminanceThreshold={1.1} luminanceSmoothing={0.2} intensity={0.5} mipmapBlur />
+      <Noise opacity={0.035} />
       <Vignette eskil={false} offset={0.2} darkness={0.55} />
     </EffectComposer>
   );
@@ -338,7 +337,7 @@ export function FlyingPapers({ area = [34, 24] }: { area?: [number, number] }): 
       {papers.map((p, i) => (
         <mesh key={i} castShadow position={[p.x, p.y, p.z]}>
           <planeGeometry args={[1.1, 1.5]} />
-          <meshStandardMaterial color="#f5f0e6" roughness={1} side={THREE.DoubleSide} />
+          <meshStandardMaterial color="#d8d1c2" roughness={1} side={THREE.DoubleSide} />
         </mesh>
       ))}
     </group>
