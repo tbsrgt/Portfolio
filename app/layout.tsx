@@ -7,6 +7,7 @@ import { baseMetadata, siteConfig } from "@/lib/metadata";
 import { site } from "@/lib/site";
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Caveat, Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import type { ReactNode } from "react";
 import "./globals.css";
 
@@ -32,7 +33,7 @@ const structuredData = {
     addressCountry: "FR",
   },
   areaServed: "Provence",
-  priceRange: "À partir de 500 €",
+  priceRange: "À partir de 900 €",
   sameAs: [site.linkedin],
   founder: { "@type": "Person", name: site.name, jobTitle: site.role, sameAs: [site.linkedin] },
 };
@@ -60,6 +61,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
           <Footer />
           <MobileCta />
         </Providers>
+        <Analytics />
       </body>
     </html>
   );

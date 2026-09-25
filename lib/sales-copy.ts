@@ -20,7 +20,7 @@ export const salesCopy = {
     heroKicker: "Designer & développeur produit · Aix-en-Provence",
     heroNote:
       "Pour les PME, artisans, industriels et réseaux B2B qui veulent un outil à leur mesure.",
-    heroPrice: "Sites dès 500 € · Logiciels dès 8 000 € HT",
+    heroPrice: "Sites dès 900 € · Logiciels de 8 000 à 60 000 € HT",
     marqueeLabel: "Aperçu des réalisations",
     servicesEyebrow: "Offres",
     servicesHeading: "Deux métiers, un seul interlocuteur.",
@@ -68,12 +68,6 @@ export const salesCopy = {
             description:
               "Mises à jour, sauvegardes, surveillance et petites évolutions.",
           },
-          {
-            title: "Refonte visuelle (petit budget)",
-            price: "dès 500 €",
-            description:
-              "Mêmes pages, mêmes textes : je modernise seulement le look, avec un rendu propre sur mobile. Sans réécriture ni référencement.",
-          },
         ],
         cta: "Estimer mon site",
         href: "/devis",
@@ -83,7 +77,7 @@ export const salesCopy = {
         eyebrow: "Logiciels sur mesure",
         title: "Un outil taillé pour vos process, pas l'inverse.",
         description:
-          "Fini les tableurs qui se croisent et les logiciels trop gros. Vos équipes ont un seul outil, simple, qui fait exactement ce dont elles ont besoin.",
+          "Fini les tableurs qui se croisent et les logiciels trop gros. Vos équipes ont un seul outil, simple, qui fait exactement ce dont elles ont besoin. Projets de 8 000 à 60 000 € HT, chiffrés après un atelier de cadrage.",
         offers: [
           {
             title: "Atelier de cadrage",
@@ -283,7 +277,7 @@ export const salesCopy = {
     heroKicker: "Product designer & developer · Aix-en-Provence",
     heroNote:
       "For SMEs, trades, manufacturers and B2B networks that want tools built around them.",
-    heroPrice: "Websites from €500 · Software from €8,000 excl. VAT",
+    heroPrice: "Websites from €900 · Software from €8,000 to €60,000 excl. VAT",
     marqueeLabel: "Work preview",
     servicesEyebrow: "Services",
     servicesHeading: "Two crafts, one point of contact.",
@@ -328,12 +322,6 @@ export const salesCopy = {
             price: "from €49/month",
             description: "Updates, backups, monitoring and small improvements.",
           },
-          {
-            title: "Visual refresh (small budget)",
-            price: "from €500",
-            description:
-              "Same pages, same text: I only modernise the look, with a clean result on mobile. No rewriting, no SEO.",
-          },
         ],
         cta: "Estimate my website",
         href: "/devis",
@@ -343,7 +331,7 @@ export const salesCopy = {
         eyebrow: "Custom software",
         title: "A tool shaped around your processes, not the other way round.",
         description:
-          "No more tangled spreadsheets or bloated software. Your teams get one simple tool that does exactly what they need.",
+          "No more tangled spreadsheets or bloated software. Your teams get one simple tool that does exactly what they need. Projects from €8,000 to €60,000 excl. VAT, priced after a scoping workshop.",
         offers: [
           {
             title: "Scoping workshop",
